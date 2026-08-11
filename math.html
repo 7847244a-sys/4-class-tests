@@ -1,768 +1,112 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математический Квест — 4 класс</title>
+    <title>Тест по Математике — 4 класс</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #e8f0fe;
-            color: #202124;
-            display: block;
-            min-height: 100vh;
-            padding: 20px 15px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 24px;
-            position: relative;
-        }
-
-        .header {
-            margin-bottom: 20px;
-        }
-
-        .progress-bar-bg {
-            background-color: #e0e0e0;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-
-        .progress-bar-fill {
-            background-color: #1a73e8;
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .question-counter {
-            font-size: 14px;
-            font-weight: 600;
-            color: #5f6368;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .question-text {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.4;
-            color: #1f2937;
-            margin-bottom: 24px;
-        }
-
-        .options-grid {
-            display: block;
-            margin-bottom: 20px;
-        }
-
-        .btn-option {
-            width: 100%;
-            display: block;
-            text-align: left;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            font-size: 17px;
-            font-weight: 500;
-            color: #3c4043;
-            background-color: #f8f9fa;
-            border: 2px solid #dadce0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn-option:hover:not(:disabled) {
-            background-color: #f1f3f4;
-            border-color: #bdc1c6;
-        }
-
-        .btn-option:active:not(:disabled) {
-            transform: scale(0.99);
-        }
-
-        .btn-option.correct {
-            background-color: #c6e7ce !important;
-            border-color: #34a853 !important;
-            color: #0d5223 !important;
-            font-weight: 600;
-        }
-
-        .btn-option.incorrect {
-            background-color: #f4c7c3 !important;
-            border-color: #ea4335 !important;
-            color: #8c1d18 !important;
-            font-weight: 600;
-        }
-
-        .btn-option:disabled {
-            cursor: default;
-            opacity: 0.95;
-        }
-
-        .explanation-box {
-            display: none;
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-left: 5px solid #1a73e8;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 24px;
-            font-size: 15px;
-            line-height: 1.5;
-            color: #3c4043;
-        }
-
-        .explanation-title {
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #1a73e8;
-            font-size: 16px;
-        }
-
-        .explanation-item {
-            margin-bottom: 8px;
-        }
-
-        .explanation-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .navigation {
-            display: table;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .nav-left {
-            display: table-cell;
-            text-align: left;
-            width: 50%;
-        }
-
-        .nav-right {
-            display: table-cell;
-            text-align: right;
-            width: 50%;
-        }
-
-        .btn-nav {
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-prev {
-            background-color: #f1f3f4;
-            color: #5f6368;
-        }
-
-        .btn-prev:hover {
-            background-color: #e8eaed;
-            color: #202124;
-        }
-
-        .btn-next {
-            background-color: #1a73e8;
-            color: #ffffff;
-            display: none;
-        }
-
-        .btn-next:hover {
-            background-color: #1557b0;
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        /* Final Screen */
-        .result-screen {
-            text-align: center;
-            padding: 20px 10px;
-        }
-
-        .result-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 12px;
-        }
-
-        .result-score {
-            font-size: 48px;
-            font-weight: 800;
-            color: #34a853;
-            margin: 20px 0;
-        }
-
-        .result-text {
-            font-size: 18px;
-            color: #5f6368;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .btn-restart {
-            background-color: #1a73e8;
-            color: white;
-            padding: 14px 28px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-restart:hover {
-            background-color: #1557b0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #e8f0fe; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #1a73e8; font-size: 22px; margin-bottom: 20px; }
+        .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
+        .btn:hover { background: #e8f0fe; border-color: #1a73e8; }
+        .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
+        .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+        .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
+        .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
+        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- QUIZ SCREEN -->
-    <div id="quiz-screen" class="screen active">
-        <div class="header">
-            <div class="progress-bar-bg">
-                <div id="progress-bar" class="progress-bar-fill"></div>
-            </div>
-            <div id="question-counter" class="question-counter">Вопрос 1 из 30</div>
-        </div>
-
-        <div id="question-text" class="question-text"></div>
-
-        <div id="options-grid" class="options-grid"></div>
-
-        <div id="explanation-box" class="explanation-box">
-            <div class="explanation-title">💡 Разбор вариантов:</div>
-            <div id="explanation-content"></div>
-        </div>
-
-        <div class="navigation">
-            <div class="nav-left">
-                <button id="btn-prev" class="btn-nav btn-prev" onclick="prevQuestion()">← Назад</button>
-            </div>
-            <div class="nav-right">
-                <button id="btn-next" class="btn-nav btn-next" onclick="nextQuestion()">Дальше →</button>
-            </div>
-        </div>
+<div class="card">
+    <h1>📐 Тест по Математике (4 класс)</h1>
+    
+    <div id="quiz-screen">
+        <div class="question" id="q-text">Загрузка вопроса...</div>
+        <div class="options" id="opt-container"></div>
     </div>
 
-    <!-- RESULT SCREEN -->
-    <div id="result-screen" class="screen">
-        <div class="result-screen">
-            <div class="result-title">🎉 Поздравляем!</div>
-            <p>Вы успешно прошли математический квест за 4 класс!</p>
-            <div id="final-score" class="result-score">0 / 30</div>
-            <div id="final-message" class="result-text"></div>
-            <button class="btn-restart" onclick="restartQuiz()">Пройти заново 🔄</button>
+    <div id="result-screen" style="display: none;">
+        <h2>Результат тестирования</h2>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-fill"></div>
         </div>
+        <div class="result-score" id="percent-text">0%</div>
+        <div class="result-details" id="stats-text"></div>
+        <div class="verdict" id="verdict-box"></div>
+        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
     </div>
 </div>
 
 <script>
-    var questionsData = [
-        {
-            q: "1. Какое число состоит из 5 единиц класса тысяч и 23 единиц класса единиц?",
-            options: ["523", "5023", "5230", "50023"],
-            correct: 1,
-            explanations: [
-                "<b>523:</b> Неверно. Это число состоит из 5 сотен, 2 десятков и 3 единиц (всего 523 единицы).",
-                "<b>5023 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Класс тысяч содержит 5 (5000), а класс единиц — 23. Так как в классе единиц 3 разряда (сотни, десятки, единицы), отсутствие сотен записывается нулём (023). Итого: 5023.",
-                "<b>5230:</b> Неверно. Здесь 5 тысяч, 2 сотни и 3 десятка (5000 + 230 = 5230).",
-                "<b>50023:</b> Неверно. Это число содержит 50 единиц класса тысяч, а не 5 (50 023)."
-            ]
-        },
-        {
-            q: "2. Какое число получится, если 4500 разделить на 100?",
-            options: ["45", "450", "4.5", "45000"],
-            correct: 0,
-            explanations: [
-                "<b>45 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> При делении числа, оканчивающегося нулями, на 100, нужно отбросить справа два нуля: 4500 : 100 = 45.",
-                "<b>450:</b> Неверно. Такое число получится при делении 4500 на 10 (отбрасываем 1 ноль).",
-                "<b>4.5:</b> Неверно. Это результат деления 4500 на 1000.",
-                "<b>45000:</b> Неверно. Это результат умножения 4500 на 10, а не деления."
-            ]
-        },
-        {
-            q: "3. Вычислите значение выражения: 120 - 20 * 5.",
-            options: ["500", "20", "100", "0"],
-            correct: 1,
-            explanations: [
-                "<b>500:</b> Неверно. Ошибка возникла из-за нарушения порядка действий: сначала вычли (120 - 20 = 100), а затем умножили (100 * 5 = 500).",
-                "<b>20 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> По правилам порядка действий сначала выполняется умножение, а затем вычитание. 1) 20 * 5 = 100; 2) 120 - 100 = 20.",
-                "<b>100:</b> Неверно. Это лишь результат первого действия (20 * 5 = 100), вычитание не выполнено.",
-                "<b>0:</b> Неверно. Расчет выполнен со ошибкой."
-            ]
-        },
-        {
-            q: "4. Укажите корень уравнения: х + 47 = 100.",
-            options: ["63", "43", "53", "147"],
-            correct: 2,
-            explanations: [
-                "<b>63:</b> Неверно. Проверка: 63 + 47 = 110 ≠ 100.",
-                "<b>43:</b> Неверно. Проверка: 43 + 47 = 90 ≠ 100.",
-                "<b>53 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Чтобы найти неизвестное слагаемое (x), нужно из суммы вычесть известное слагаемое: x = 100 - 47 = 53. Проверка: 53 + 47 = 100.",
-                "<b>147:</b> Неверно. Здесь слагаемые были сложены (100 + 47), вместо вычитания."
-            ]
-        },
-        {
-            q: "5. Чему равна 1/5 часть от одной минуты?",
-            options: ["5 секунд", "12 секунд", "20 секунд", "15 секунд"],
-            correct: 1,
-            explanations: [
-                "<b>5 секунд:</b> Неверно. Ошибка из-за путаницы с числом 5.",
-                "<b>12 секунд <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> В 1 минуте 60 секунд. Чтобы найти 1/5 часть, нужно 60 разделить на 5: 60 : 5 = 12 секунд.",
-                "<b>20 секунд:</b> Неверно. Это 1/3 часть минуты (60 : 3 = 20).",
-                "<b>15 секунд:</b> Неверно. Это 1/4 часть минуты (60 : 4 = 15)."
-            ]
-        },
-        {
-            q: "6. Велосипедист едет со скоростью 12 км/ч. Какое расстояние он проедет за 3 часа?",
-            options: ["4 км", "15 км", "36 км", "24 км"],
-            correct: 2,
-            explanations: [
-                "<b>4 км:</b> Неверно. Скорость была разделена на время (12 : 3 = 4), а не умножена.",
-                "<b>15 км:</b> Неверно. Скорость и время были сложены (12 + 3 = 15).",
-                "<b>36 км <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Формула расстояния: S = V * t. Умножаем скорость на время: 12 км/ч * 3 ч = 36 км.",
-                "<b>24 км:</b> Неверно. Это расстояние за 2 часа (12 * 2 = 24)."
-            ]
-        },
-        {
-            q: "7. Самолёт пролетел 1600 км за 2 часа. С какой скоростью летел самолёт?",
-            options: ["800 км/ч", "3200 км/ч", "400 км/ч", "600 км/ч"],
-            correct: 0,
-            explanations: [
-                "<b>800 км/ч <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Формула скорости: V = S / t. Делим пройденный путь на время: 1600 : 2 = 800 км/ч.",
-                "<b>3200 км/ч:</b> Неверно. Расстояние было умножено на время (1600 * 2), вместо деления.",
-                "<b>400 км/ч:</b> Неверно. Ошибка в делении (1600 : 4 = 400).",
-                "<b>600 км/ч:</b> Неверно. Расчет выполнен с ошибкой."
-            ]
-        },
-        {
-            q: "8. Периметр квадрата равен 36 см. Чему равна длина одной его стороны?",
-            options: ["6 см", "12 см", "9 см", "18 см"],
-            correct: 2,
-            explanations: [
-                "<b>6 см:</b> Неверно. 6 см — это сторона квадрата с площадью 36 см² (6 * 6 = 36), а не периметром.",
-                "<b>12 см:</b> Неверно. Периметр равен P = 4 * a. Если a = 12, P = 48 см.",
-                "<b>9 см <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> У квадрата 4 равные стороны. Периметр P = 4 * a. Значит, длина одной стороны a = P : 4 = 36 : 4 = 9 см.",
-                "<b>18 см:</b> Неверно. Периметр был разделен на 2 вместо 4 (36 : 2 = 18)."
-            ]
-        },
-        {
-            q: "9. Длина прямоугольника 8 см, а ширина 4 см. Чему равна его площадь?",
-            options: ["12 см²", "24 см²", "32 см²", "16 см²"],
-            correct: 2,
-            explanations: [
-                "<b>12 см²:</b> Неверно. Длина и ширина были сложены (8 + 4 = 12).",
-                "<b>24 см²:</b> Неверно. Найден периметр прямоугольника P = 2 * (8 + 4) = 24 см, а не площадь.",
-                "<b>32 см² <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Формула площади прямоугольника: S = a * b. Перемножаем длину и ширину: 8 * 4 = 32 см².",
-                "<b>16 см²:</b> Неверно. Ошибка в расчетах."
-            ]
-        },
-        {
-            q: "10. Сколько килограммов содержится в 3 тоннах и 50 килограммах?",
-            options: ["350 кг", "3050 кг", "3500 кг", "30050 кг"],
-            correct: 1,
-            explanations: [
-                "<b>350 кг:</b> Неверно. В 3 тоннах 3000 кг, а не 300 кг.",
-                "<b>3050 кг <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> В 1 тонне = 1000 кг. Значит, 3 т = 3000 кг. Прибавляем 50 кг: 3000 + 50 = 3050 кг.",
-                "<b>3500 кг:</b> Неверно. Это 3 тонны и 500 килограммов (3000 + 500 = 3500).",
-                "<b>30050 кг:</b> Неверно. Это 30 тонн и 50 килограммов."
-            ]
-        },
-        {
-            q: "11. Какой остаток получится при делении 44 на 6?",
-            options: ["1", "2", "4", "0"],
-            correct: 1,
-            explanations: [
-                "<b>1:</b> Неверно. 44 - 1 = 43, но 43 не делится на 6 без остатка.",
-                "<b>2 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Находим наибольшее число до 44, которое делится на 6 без остатка — это 42 (6 * 7 = 42). Находим остаток: 44 - 42 = 2.",
-                "<b>4:</b> Неверно. Если остаток 4, то делили 46 : 6 или до 48 не хватает 4.",
-                "<b>0:</b> Неверно. 44 не делится на 6 нацело."
-            ]
-        },
-        {
-            q: "12. Выберите число, которое делится на 9 без остатка:",
-            options: ["341", "522", "613", "709"],
-            correct: 1,
-            explanations: [
-                "<b>341:</b> Неверно. Признак делимости на 9: сумма цифр должна делиться на 9. Тут 3 + 4 + 1 = 8 (не делится на 9).",
-                "<b>522 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Сумма цифр числа: 5 + 2 + 2 = 9. Так как 9 делится на 9, то и число 522 делится на 9 без остатка (522 : 9 = 58).",
-                "<b>613:</b> Неверно. Сумма цифр: 6 + 1 + 3 = 10 (не делится на 9).",
-                "<b>709:</b> Неверно. Сумма цифр: 7 + 0 + 9 = 16 (не делится на 9)."
-            ]
-        },
-        {
-            q: "13. Какое действие выполняется последним в выражении: 80 + 20 : 4 - 5?",
-            options: ["Сложение", "Деление", "Вычитание", "Сначала сложение"],
-            correct: 2,
-            explanations: [
-                "<b>Сложение:</b> Неверно. По правилам порядка действий сначала выполняется деление (20 : 4 = 5), затем сложение (80 + 5 = 85), и в самом конце вычитание.",
-                "<b>Деление:</b> Неверно. Деление выполняется самым ПЕРВЫМ (20 : 4 = 5).",
-                "<b>Вычитание <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Порядок действий: 1) Деление: 20 : 4 = 5; 2) Сложение: 80 + 5 = 85; 3) Вычитание (последнее): 85 - 5 = 80.",
-                "<b>Сначала сложение:</b> Неверно. Сложение не имеет приоритета перед делением."
-            ]
-        },
-        {
-            q: "14. В одной книге 60 страниц, а в другой в 3 раза меньше. Сколько страниц во второй книге?",
-            options: ["57 страниц", "20 страниц", "180 страниц", "30 страниц"],
-            correct: 1,
-            explanations: [
-                "<b>57 страниц:</b> Неверно. Из 60 вычли 3, но предлог «в ... раз меньше» требует деления, а не вычитания.",
-                "<b>20 страниц <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Фраза «в 3 раза меньше» означает, что нужно число 60 разделить на 3: 60 : 3 = 20 страниц.",
-                "<b>180 страниц:</b> Неверно. Число 60 было умножено на 3 («в 3 раза больше»).",
-                "<b>30 страниц:</b> Неверно. Это было бы в 2 раза меньше (60 : 2 = 30)."
-            ]
-        },
-        {
-            q: "15. Чему равна площадь квадрата со стороной 7 дм?",
-            options: ["28 дм²", "14 дм²", "49 дм²", "35 дм²"],
-            correct: 2,
-            explanations: [
-                "<b>28 дм²:</b> Неверно. Это периметр квадрата (P = 4 * a = 4 * 7 = 28 дм).",
-                "<b>14 дм²:</b> Неверно. Длина стороны умножена на 2 (7 * 2 = 14).",
-                "<b>49 дм² <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Формула площади квадрата: S = a * a = a². Подставляем сторону: 7 * 7 = 49 дм².",
-                "<b>35 дм²:</b> Неверно. Ошибка в умножении (7 * 5 = 35)."
-            ]
-        },
-        {
-            q: "16. Сколько минут в 3 часа и 15 минутах?",
-            options: ["195 минут", "180 минут", "45 минут", "315 минут"],
-            correct: 0,
-            explanations: [
-                "<b>195 минут <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> В 1 часе 60 минут. В 3 часах: 3 * 60 = 180 минут. Прибавляем 15 минут: 180 + 15 = 195 минут.",
-                "<b>180 минут:</b> Неверно. Забыли прибавить 15 минут (3 * 60 = 180).",
-                "<b>45 минут:</b> Неверно. Ошибка в расчетах.",
-                "<b>315 минут:</b> Неверно. Числа просто записали рядом (3 и 15 = 315)."
-            ]
-        },
-        {
-            q: "17. Какое число пропущено в равенстве: 7000 + ... + 5 = 7405?",
-            options: ["4", "40", "400", "4000"],
-            correct: 2,
-            explanations: [
-                "<b>4:</b> Неверно. 4 — это разряд единиц, а нам нужны сотни.",
-                "<b>40:</b> Неверно. 40 — это разряд десятков (7000 + 40 + 5 = 7045).",
-                "<b>400 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Раскладываем число 7405 по разрядам: 7000 (тысячи) + 400 (сотни) + 0 (десятки) + 5 (единицы). Пропущенное число — 400.",
-                "<b>4000:</b> Неверно. 4000 — это разряд тысяч (7000 + 4000 + 5 = 11005)."
-            ]
-        },
-        {
-            q: "18. Ученик задумал число, умножил его на 6 и получил 42. Какое число задумал ученик?",
-            options: ["6", "7", "8", "36"],
-            correct: 1,
-            explanations: [
-                "<b>6:</b> Неверно. Проверка: 6 * 6 = 36 ≠ 42.",
-                "<b>7 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Пусть задуманное число x. Уравнение: x * 6 = 42. Чтобы найти неизвестный множитель, делим произведение на известный множитель: x = 42 : 6 = 7.",
-                "<b>8:</b> Неверно. Проверка: 8 * 6 = 48 ≠ 42.",
-                "<b>36:</b> Неверно. Из 42 вычли 6 (42 - 6 = 36) вместо деления."
-            ]
-        },
-        {
-            q: "19. Мотоциклист проехал 120 км со скоростью 60 км/ч. Сколько времени он затратил на дорогу?",
-            options: ["3 часа", "2 часа", "4 часа", "180 минут"],
-            correct: 1,
-            explanations: [
-                "<b>3 часа:</b> Неверно. При скорости 60 км/ч за 3 часа мотоциклист проедет 180 км.",
-                "<b>2 часа <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Формула времени: t = S / V. Делим расстояние на скорость: 120 : 60 = 2 часа.",
-                "<b>4 часа:</b> Неверно. При 4 часах расстояние составило бы 240 км.",
-                "<b>180 минут:</b> Неверно. 180 минут — это 3 часа."
-            ]
-        },
-        {
-            q: "20. Чему равен периметр треугольника, если все его стороны равны по 8 см?",
-            options: ["16 см", "24 см", "32 см", "12 см"],
-            correct: 1,
-            explanations: [
-                "<b>16 см:</b> Неверно. Сложено только 2 стороны (8 + 8 = 16).",
-                "<b>24 см <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Периметр — это сумма длин всех сторон. У треугольника 3 стороны: P = 8 + 8 + 8 = 8 * 3 = 24 см.",
-                "<b>32 см:</b> Неверно. Посчитано как для квадрата с 4 сторонами (8 * 4 = 32).",
-                "<b>12 см:</b> Неверно. Ошибка в расчетах."
-            ]
-        },
-        {
-            q: "21. Какое число в 4 раза больше, чем 25?",
-            options: ["29", "21", "100", "50"],
-            correct: 2,
-            explanations: [
-                "<b>29:</b> Неверно. К 25 прибавили 4 (25 + 4 = 29), но предлог «в ... раз больше» требует умножения.",
-                "<b>21:</b> Неверно. Из 25 вычли 4.",
-                "<b>100 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Предлог «в 4 раза больше» указывает на операцию умножения: 25 * 4 = 100.",
-                "<b>50:</b> Неверно. 50 — это в 2 раза больше, чем 25 (25 * 2 = 50)."
-            ]
-        },
-        {
-            q: "22. Из 20 метров ткани сшили 5 одинаковых платьев. Сколько метров ткани уходит на одно платье?",
-            options: ["4 метра", "15 метров", "25 метров", "2 метра"],
-            correct: 0,
-            explanations: [
-                "<b>4 метра <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Чтобы найти расход ткани на одно платье, делим общее количество ткани на количество платьев: 20 : 5 = 4 метра.",
-                "<b>15 метров:</b> Неверно. Из 20 вычли 5 (20 - 5 = 15).",
-                "<b>25 метров:</b> Неверно. К 20 прибавили 5 (20 + 5 = 25).",
-                "<b>2 метра:</b> Неверно. На 5 платьев ушло бы 10 метров (2 * 5 = 10)."
-            ]
-        },
-        {
-            q: "23. Сколько метров в 4 километрах и 80 метрах?",
-            options: ["480 м", "4080 м", "4800 м", "40080 м"],
-            correct: 1,
-            explanations: [
-                "<b>480 м:</b> Неверно. В 4 км содержится 4000 м, а не 400 м.",
-                "<b>4080 м <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> В 1 километре = 1000 метров. Значит, 4 км = 4000 м. Прибавляем 80 м: 4000 + 80 = 4080 метров.",
-                "<b>4800 м:</b> Неверно. Это 4 километра и 800 метров.",
-                "<b>40080 м:</b> Неверно. Это 40 километров и 80 метров."
-            ]
-        },
-        {
-            q: "24. Чему равно произведение чисел 15 и 4?",
-            options: ["19", "11", "60", "45"],
-            correct: 2,
-            explanations: [
-                "<b>19:</b> Неверно. Числа сложены (15 + 4 = 19), а произведение — это результат умножения.",
-                "<b>11:</b> Неверно. Выполнено вычитание (15 - 4 = 11).",
-                "<b>60 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Произведение — это результат дествия умножения: 15 * 4 = (10 + 5) * 4 = 40 + 20 = 60.",
-                "<b>45:</b> Неверно. Это 15 * 3 = 45."
-            ]
-        },
-        {
-            q: "25. Реши уравнение: 81 : х = 9. Чему равен х?",
-            options: ["72", "9", "90", "3"],
-            correct: 1,
-            explanations: [
-                "<b>72:</b> Неверно. Из 81 вычли 9.",
-                "<b>9 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Чтобы найти неизвестный делитель (x), нужно делимое разделить на частное: x = 81 : 9 = 9. Проверка: 81 : 9 = 9.",
-                "<b>90:</b> Неверно. К 81 прибавили 9.",
-                "<b>3:</b> Неверно. Проверка: 81 : 3 = 27 ≠ 9."
-            ]
-        },
-        {
-            q: "26. В коробке было 24 карандаша. Дети взяли 1/4 всех карандашей. Сколько карандашей взяли дети?",
-            options: ["4 карандаша", "6 карандашей", "8 карандашей", "12 карандашей"],
-            correct: 1,
-            explanations: [
-                "<b>4 карандаша:</b> Неверно. Взято значение знаменателя.",
-                "<b>6 карандашей <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Чтобы найти 1/4 часть от числа 24, нужно разделить его на знаменатель 4: 24 : 4 = 6 карандашей.",
-                "<b>8 карандашей:</b> Неверно. Это 1/3 часть карандашей (24 : 3 = 8).",
-                "<b>12 карандашей:</b> Неверно. Это половина или 1/2 всех карандашей (24 : 2 = 12)."
-            ]
-        },
-        {
-            q: "27. Школьная площадка имеет длину 10 м и ширину 5 м. Чему равен её периметр?",
-            options: ["15 м", "30 м", "50 м", "25 м"],
-            correct: 1,
-            explanations: [
-                "<b>15 м:</b> Неверно. Сложены только две стороны (10 + 5 = 15).",
-                "<b>30 м <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Периметр прямоугольника вычисляется по формуле: P = 2 * (a + b). P = 2 * (10 + 5) = 2 * 15 = 30 метров.",
-                "<b>50 м:</b> Неверно. Вычислена площадь площадки (S = 10 * 5 = 50 м²), а не периметр.",
-                "<b>25 м:</b> Неверно. Ошибка в расчетах."
-            ]
-        },
-        {
-            q: "28. Какое число на 150 меньше, чем 600?",
-            options: ["450", "750", "550", "350"],
-            correct: 0,
-            explanations: [
-                "<b>450 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> Фраза «на ... меньше» указывает на вычитание: 600 - 150 = 450.",
-                "<b>750:</b> Неверно. Выполнено сложение (600 + 150 = 750), что соответствует «на 150 больше».",
-                "<b>550:</b> Неверно. Ошибка при вычитании сотен (600 - 50 = 550).",
-                "<b>350:</b> Неверно. Ошибка при вычитании (600 - 250 = 350)."
-            ]
-        },
-        {
-            q: "29. Какое число является решением выражения: (35 + 15) : 2?",
-            options: ["50", "25", "10", "30"],
-            correct: 1,
-            explanations: [
-                "<b>50:</b> Неверно. Это только результат действия в скобках (35 + 15 = 50), деление на 2 не выполнено.",
-                "<b>25 <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> По правилам сначала выполняются действия в скобках: 1) 35 + 15 = 50; 2) 50 : 2 = 25.",
-                "<b>10:</b> Неверно. Ошибка в делении.",
-                "<b>30:</b> Неверно. Ошибка в порядке или расчетах."
-            ]
-        },
-        {
-            q: "30. Сколько копеек в 8 рублях и 5 копейках?",
-            options: ["85 коп", "805 коп", "850 коп", "8005 коп"],
-            correct: 1,
-            explanations: [
-                "<b>85 коп:</b> Неверно. В 8 рублях 800 копеек, а не 80.",
-                "<b>805 коп <span style=\"color: #1e7e34; background: #d4edda; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.9em;\">ПРАВИЛЬНО</span>:</b> В 1 рубле = 100 копеек. Значит, 8 рублей = 800 копеек. Прибавляем 5 копеек: 800 + 5 = 805 копеек.",
-                "<b>850 коп:</b> Неверно. Это 8 рублей и 50 копеек (800 + 50 = 850).",
-                "<b>8005 коп:</b> Неверно. Это 80 рублей и 5 копеек."
-            ]
-        }
+    const questions = [
+        { q: "Укажите значение выражения: 450 : 5 + 120", opts: ["210", "190", "150", "200"], correct: 0 },
+        { q: "Чему равна площадь прямоугольника со сторонами 8 см и 5 см?", opts: ["13 см²", "40 см²", "26 см²", "35 см²"], correct: 1 },
+        { q: "Найдите неизвестное число: x - 340 = 260", opts: ["500", "600", "800", "580"], correct: 1 },
+        { q: "Сколько минут в 3 часах 15 минутах?", opts: ["195 мин", "180 мин", "135 мин", "215 мин"], correct: 0 },
+        { q: "Какой остаток получится при делении 47 на 5?", opts: ["1", "3", "2", "4"], correct: 2 }
     ];
 
-    var currentQuestion = 0;
-    var userAnswers = new Array(questionsData.length).fill(null);
+    let currentQ = 0;
+    let score = 0;
 
-    function initQuiz() {
-        showQuestion(currentQuestion);
-    }
-
-    function showQuestion(index) {
-        var qData = questionsData[index];
-        
-        // Update Counter and Progress Bar
-        document.getElementById("question-counter").innerText = "Вопрос " + (index + 1) + " из " + questionsData.length;
-        var progressPercent = ((index + 1) / questionsData.length) * 100;
-        document.getElementById("progress-bar").style.width = progressPercent + "%";
-
-        // Update Question Text
-        document.getElementById("question-text").innerText = qData.q;
-
-        // Render Options
-        var optionsGrid = document.getElementById("options-grid");
-        optionsGrid.innerHTML = "";
-
-        var savedAnswer = userAnswers[index];
-
-        for (var i = 0; i < qData.options.length; i++) {
-            var btn = document.createElement("button");
-            btn.className = "btn-option";
-            btn.innerText = qData.options[i];
-            btn.setAttribute("data-index", i);
-
-            if (savedAnswer !== null) {
-                btn.disabled = true;
-                if (i === qData.correct) {
-                    btn.classList.add("correct");
-                }
-                if (savedAnswer === i && savedAnswer !== qData.correct) {
-                    btn.classList.add("incorrect");
-                }
-            } else {
-                btn.onclick = (function(optIndex) {
-                    return function() {
-                        selectOption(optIndex);
-                    };
-                })(i);
-            }
-
-            optionsGrid.appendChild(btn);
-        }
-
-        // Handle Explanation Box
-        var explBox = document.getElementById("explanation-box");
-        var explContent = document.getElementById("explanation-content");
-        if (savedAnswer !== null) {
-            explContent.innerHTML = qData.explanations.join("<br><br>");
-            explBox.style.display = "block";
-        } else {
-            explBox.style.display = "none";
-            explContent.innerHTML = "";
-        }
-
-        // Navigation Buttons
-        var btnPrev = document.getElementById("btn-prev");
-        var btnNext = document.getElementById("btn-next");
-
-        if (index === 0) {
-            btnPrev.style.visibility = "hidden";
-        } else {
-            btnPrev.style.visibility = "visible";
-        }
-
-        if (savedAnswer !== null) {
-            btnNext.style.display = "inline-block";
-            if (index === questionsData.length - 1) {
-                btnNext.innerText = "Завершить 🎉";
-            } else {
-                btnNext.innerText = "Дальше →";
-            }
-        } else {
-            btnNext.style.display = "none";
-        }
-    }
-
-    function selectOption(selectedIndex) {
-        userAnswers[currentQuestion] = selectedIndex;
-        showQuestion(currentQuestion);
-    }
-
-    function nextQuestion() {
-        if (currentQuestion < questionsData.length - 1) {
-            currentQuestion++;
-            showQuestion(currentQuestion);
-        } else {
+    function renderQuestion() {
+        if (currentQ >= questions.length) {
             showResults();
+            return;
         }
-    }
-
-    function prevQuestion() {
-        if (currentQuestion > 0) {
-            currentQuestion--;
-            showQuestion(currentQuestion);
-        }
+        let q = questions[currentQ];
+        document.getElementById("q-text").innerText = `Вопрос ${currentQ + 1} из ${questions.length}: ${q.q}`;
+        let container = document.getElementById("opt-container");
+        container.innerHTML = "";
+        q.opts.forEach((opt, idx) => {
+            let btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if (idx === q.correct) score++;
+                currentQ++;
+                renderQuestion();
+            };
+            container.appendChild(btn);
+        });
     }
 
     function showResults() {
-        document.getElementById("quiz-screen").classList.remove("active");
-        document.getElementById("result-screen").classList.add("active");
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        
+        let total = questions.length;
+        let percent = Math.round((score / total) * 100);
+        let errors = total - score;
 
-        var correctCount = 0;
-        for (var i = 0; i < questionsData.length; i++) {
-            if (userAnswers[i] === questionsData[i].correct) {
-                correctCount++;
-            }
-        }
+        document.getElementById("percent-text").innerText = `${percent}%`;
+        document.getElementById("stats-text").innerText = `Правильно: ${score} из ${total} | Ошибок: ${errors}`;
+        
+        let bar = document.getElementById("progress-bar");
+        bar.style.width = percent + "%";
 
-        document.getElementById("final-score").innerText = correctCount + " / " + questionsData.length;
-
-        var message = "";
-        var percent = (correctCount / questionsData.length) * 100;
+        let verdict = document.getElementById("verdict-box");
 
         if (percent === 100) {
-            message = "Потрясающий результат! Ты настоящая звезда математики! 🌟 Отличные знания за 4 класс!";
-        } else if (percent >= 80) {
-            message = "Замечательный результат! Ты прекрасно знаешь программу математики! 👏";
-        } else if (percent >= 50) {
-            message = "Хороший результат! Повтори правила по правильным ответам в тесте и сможешь набрать 100%! 👍";
+            bar.style.backgroundColor = "#2e7d32";
+            verdict.style.backgroundColor = "#e8f5e9";
+            verdict.style.color = "#2e7d32";
+            verdict.innerText = "🎉 Отлично! Всё выполнено на 100%! Покажи этот экран учителю.";
         } else {
-            message = "Не расстраивайся! Пройди тест еще раз, прочитай разборы к каждому вопросу, и у тебя всё получится! 💪";
+            bar.style.backgroundColor = "#d32f2f";
+            verdict.style.backgroundColor = "#ffebee";
+            verdict.style.color = "#c62828";
+            verdict.innerText = "❌ Задание не выполнено! Нажмите «Пройти заново» и сделайте всё на 100%.";
         }
-
-        document.getElementById("final-message").innerText = message;
     }
 
-    function restartQuiz() {
-        userAnswers = new Array(questionsData.length).fill(null);
-        currentQuestion = 0;
-        document.getElementById("result-screen").classList.remove("active");
-        document.getElementById("quiz-screen").classList.add("active");
-        showQuestion(currentQuestion);
-    }
-
-    // Start on load
-    window.onload = initQuiz;
+    renderQuestion();
 </script>
 
 </body>
