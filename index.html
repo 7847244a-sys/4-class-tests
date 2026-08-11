@@ -10,29 +10,27 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            /* Яркий, солнечный, уютный фон школьного класса */
-            background: linear-gradient(135deg, #fef9c3 0%, #bae6fd 50%, #e0e7ff 100%);
+            background: #1e293b url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 16px;
+            padding: 20px 16px;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* Декоративный паттерн на фоне */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(#0284c7 0.75px, transparent 0.75px);
-            background-size: 24px 24px;
-            opacity: 0.15;
+            background: rgba(15, 23, 42, 0.55);
             z-index: 1;
         }
 
@@ -40,83 +38,85 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 760px;
+            max-width: 780px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Главная школьная доска */
         .blackboard {
-            background: #14532d; /* Насыщенный зеленый цвет доски */
-            border: 12px solid #854d0e; /* Деревянная рамка */
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
-            padding: 32px 24px;
+            background: #153e2b;
+            border: 12px solid #78350f;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.5);
+            padding: 28px 20px;
             text-align: center;
             color: #ffffff;
+            width: 100%;
             position: relative;
         }
 
         .main-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
-            color: #fef08a; /* Меловой желтый */
+            color: #fef08a;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
             margin-bottom: 8px;
             line-height: 1.3;
         }
 
         .subtitle {
-            font-size: 16px;
+            font-size: 15px;
             color: #f8fafc;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             line-height: 1.4;
             background: rgba(0, 0, 0, 0.25);
-            padding: 10px 16px;
-            border-radius: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
             display: inline-block;
         }
 
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        /* Яркие 3D-кнопки предметов */
         .subject-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #ffffff;
             border: 3px solid #38bdf8;
-            border-radius: 16px;
-            padding: 14px 18px;
+            border-radius: 14px;
+            padding: 12px 16px;
             text-decoration: none;
             color: #0f172a;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
-            box-shadow: 0 6px 0px #0284c7, 0 10px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 0px #0284c7, 0 8px 12px rgba(0,0,0,0.2);
             transition: all 0.15s ease;
         }
 
         .subject-link:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             background: #fef08a;
             border-color: #eab308;
-            box-shadow: 0 9px 0px #ca8a04, 0 14px 20px rgba(0,0,0,0.25);
+            box-shadow: 0 7px 0px #ca8a04, 0 10px 15px rgba(0,0,0,0.3);
         }
 
         .subject-link:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0px #ca8a04, 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px #ca8a04;
         }
 
         .arrow {
-            font-size: 18px;
+            font-size: 16px;
             color: #0284c7;
             background: #e0f2fe;
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -124,17 +124,46 @@
         }
 
         .footer-note {
-            font-size: 14px;
+            font-size: 13px;
             color: #fef08a;
             background-color: rgba(255, 255, 255, 0.1);
-            border: 2px dashed rgba(254, 240, 138, 0.5);
-            padding: 12px;
-            border-radius: 12px;
+            border: 1px dashed rgba(254, 240, 138, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .desk {
+            width: 105%;
+            height: 22px;
+            background: linear-gradient(90deg, #92400e, #b45309, #92400e);
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            margin-top: -6px;
+            position: relative;
+            z-index: 3;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 40px;
+        }
+
+        .desk-item {
+            font-size: 28px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .desk-item:hover {
+            transform: scale(1.2) translateY(-5px);
         }
 
         @media (max-width: 480px) {
-            .main-title { font-size: 22px; }
-            .blackboard { padding: 20px 12px; border-width: 8px; }
+            .main-title { font-size: 20px; }
+            .blackboard { padding: 18px 10px; border-width: 8px; }
+            .desk { width: 100%; padding: 0 10px; }
+            .desk-item { font-size: 22px; margin-bottom: 4px; }
         }
     </style>
 </head>
@@ -154,15 +183,15 @@
                 <span>📐 Математика</span>
                 <span class="arrow">➔</span>
             </a>
-            <a href="./%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%B0.html" class="subject-link">
+            <a href="literature.html" class="subject-link">
                 <span>📖 Литературное чтение</span>
                 <span class="arrow">➔</span>
             </a>
-            <a href="./%D0%BC%D0%B8%D1%80.html" class="subject-link">
+            <a href="world.html" class="subject-link">
                 <span>🌍 Окружающий мир</span>
                 <span class="arrow">➔</span>
             </a>
-            <a href="./%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9.html" class="subject-link">
+            <a href="english.html" class="subject-link">
                 <span>🇬🇧 Английский язык</span>
                 <span class="arrow">➔</span>
             </a>
@@ -179,6 +208,14 @@
         <div class="footer-note">
             🌟 <strong>Правила:</strong> Отвечай на вопросы, делай работу над ошибками и получай 100% за каждый предмет!
         </div>
+    </div>
+
+    <div class="desk">
+        <span class="desk-item" title="Глобус">🌍</span>
+        <span class="desk-item" title="Учебники">📚</span>
+        <span class="desk-item" title="Микроскоп">🔬</span>
+        <span class="desk-item" title="Карандаши и линейка">✏️</span>
+        <span class="desk-item" title="Яблоко учителю">🍎</span>
     </div>
 </div>
 
