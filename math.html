@@ -3,110 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест по Математике — 4 класс</title>
+    <title>Квест по математике — 4 класс</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #e8f0fe; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: #1a73e8; font-size: 22px; margin-bottom: 20px; }
-        .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
-        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
-        .btn:hover { background: #e8f0fe; border-color: #1a73e8; }
-        .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
-        .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-        .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
-        .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
-        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e8f0fe;
+            color: #202124;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 10px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+
+        .option-btn:active:not(:disabled) {
+            background-color: #e8eaed;
+        }
+
+        .option-btn.correct {
+            background-color: #c6e7ce !important;
+            border-color: #34a853 !important;
+            color: #0d652d !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #f4c7c3 !important;
+            border-color: #ea4335 !important;
+            color: #a50e0e !important;
+        }
+
+        .result-box {
+            display: none;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 24px;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background-color: #1a73e8;
+            color: #ffffff;
+            display: none;
+        }
+
+        /* Финальный экран */
+        .final-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e8eaed;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34a853;
+            transition: width 0.5s ease;
+        }
+
+        .score-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 28px;
+        }
+
+        .restart-btn {
+            background-color: #1a73e8;
+            color: #ffffff;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>📐 Тест по Математике (4 класс)</h1>
-    
+<div class="card" id="quiz-card">
     <div id="quiz-screen">
-        <div class="question" id="q-text">Загрузка вопроса...</div>
-        <div class="options" id="opt-container"></div>
+        <div class="header" id="question-counter">Вопрос 1 из 30</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+        <div class="result-box" id="result-box"></div>
+        <div class="nav-footer">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="goPrev()">← Назад</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="goNext()">Дальше →</button>
+        </div>
     </div>
 
-    <div id="result-screen" style="display: none;">
-        <h2>Результат тестирования</h2>
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-fill"></div>
+    <div class="final-screen" id="final-screen">
+        <div class="final-title">Результаты квеста</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
         </div>
-        <div class="result-score" id="percent-text">0%</div>
-        <div class="result-details" id="stats-text"></div>
-        <div class="verdict" id="verdict-box"></div>
-        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
+        <div class="score-text" id="score-text"></div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
     </div>
 </div>
 
 <script>
-    const questions = [
-        { q: "Укажите значение выражения: 450 : 5 + 120", opts: ["210", "190", "150", "200"], correct: 0 },
-        { q: "Чему равна площадь прямоугольника со сторонами 8 см и 5 см?", opts: ["13 см²", "40 см²", "26 см²", "35 см²"], correct: 1 },
-        { q: "Найдите неизвестное число: x - 340 = 260", opts: ["500", "600", "800", "580"], correct: 1 },
-        { q: "Сколько минут в 3 часах 15 минутах?", opts: ["195 мин", "180 мин", "135 мин", "215 мин"], correct: 0 },
-        { q: "Какой остаток получится при делении 47 на 5?", opts: ["1", "3", "2", "4"], correct: 2 }
-    ];
-
-    let currentQ = 0;
-    let score = 0;
-
-    function renderQuestion() {
-        if (currentQ >= questions.length) {
-            showResults();
-            return;
-        }
-        let q = questions[currentQ];
-        document.getElementById("q-text").innerText = `Вопрос ${currentQ + 1} из ${questions.length}: ${q.q}`;
-        let container = document.getElementById("opt-container");
-        container.innerHTML = "";
-        q.opts.forEach((opt, idx) => {
-            let btn = document.createElement("button");
-            btn.className = "btn";
-            btn.innerText = opt;
-            btn.onclick = () => {
-                if (idx === q.correct) score++;
-                currentQ++;
-                renderQuestion();
-            };
-            container.appendChild(btn);
-        });
+var questions = [
+    {
+        q: "1. Какое число состоит из 5 единиц класса тысяч и 23 единиц класса единиц?",
+        opts: ["523", "5023", "5230", "50023"],
+        corr: 1,
+        facts: "Разбор: Класс тысяч — это цифра 5. Класс единиц должен содержать три знака, поэтому перед 23 пишется ноль (023). Получается 5023."
+    },
+    {
+        q: "2. Какое число получится, если 4500 разделить на 100?",
+        opts: ["45", "450", "4.5", "45000"],
+        corr: 0,
+        facts: "Разбор: При делении круглого числа на 100 мы отбрасываем два нуля на конце. 4500 без двух нулей — это 45. Умножение дало бы 45000."
+    },
+    {
+        q: "3. Вычислите значение выражения: 120 - 20 * 5.",
+        opts: ["500", "20", "100", "0"],
+        corr: 1,
+        facts: "Разбор: По правилам математики сначала выполняется умножение: 20 * 5 = 100. Затем из 120 вычитаем 100, получается 20. Считать слева направо — ошибка."
+    },
+    {
+        q: "4. Укажите корень уравнения: х + 47 = 100.",
+        opts: ["63", "43", "53", "147"],
+        corr: 2,
+        facts: "Разбор: Чтобы найти неизвестное слагаемое (х), нужно из суммы (100) вычесть известное слагаемое (47). 100 - 47 = 53."
+    },
+    {
+        q: "5. Чему равна 1/5 часть от одной минуты?",
+        opts: ["5 секунд", "12 секунд", "20 секунд", "15 секунд"],
+        corr: 1,
+        facts: "Разбор: В одной минуте ровно 60 секунд. Чтобы найти одну пятую часть, нужно 60 разделить на 5. 60 : 5 = 12 секунд."
+    },
+    {
+        q: "6. Велосипедист едет со скоростью 12 км/ч. Какое расстояние он проедет за 3 часа?",
+        opts: ["4 км", "15 км", "36 км", "24 км"],
+        corr: 2,
+        facts: "Разбор: Формула расстояния: S = V * t (скорость умножить на время). Умножаем 12 на 3, получаем 36 км. Деление 12 на 3 дало бы ложные 4 км."
+    },
+    {
+        q: "7. Самолёт пролетел 1600 км за 2 часа. С какой скоростью летел самолёт?",
+        opts: ["800 км/ч", "3200 км/ч", "400 км/ч", "600 км/ч"],
+        corr: 0,
+        facts: "Разбор: Формула скорости: V = S / t (расстояние разделить на время). 1600 делим на 2, получается 800 км/ч."
+    },
+    {
+        q: "8. Периметр квадрата равен 36 см. Чему равна длина одной его стороны?",
+        opts: ["6 см", "12 см", "9 см", "18 см"],
+        corr: 2,
+        facts: "Разбор: У квадрата все 4 стороны равны. Чтобы найти одну сторону, нужно весь периметр (36) разделить на 4 стороны. 36 : 4 = 9 см."
+    },
+    {
+        q: "9. Длина прямоугольника 8 см, а ширина 4 см. Чему равна его площадь?",
+        opts: ["12 см²", "24 см²", "32 см²", "16 см²"],
+        corr: 2,
+        facts: "Разбор: Формула площади прямоугольника: S = a * b (длину умножить на ширину). 8 * 4 = 32 см². Сумма сторон (12) тут не подходит."
+    },
+    {
+        q: "10. Сколько килограммов содержится в 3 тоннах и 50 килограммах?",
+        opts: ["350 кг", "3050 кг", "3500 кг", "30050 кг"],
+        corr: 1,
+        facts: "Разбор: В одной тонне ровно 1000 килограммов. Значит, 3 тонны — это 3000 кг. Прибавляем 50 кг, получаем 3050 кг."
+    },
+    {
+        q: "11. Какой остаток получится при делении 44 на 6?",
+        opts: ["1", "2", "4", "0"],
+        corr: 1,
+        facts: "Разбор: Ближайшее к 44 число, которое делится на 6 без остатка — это 42 (6 * 7 = 42). Ищем разницу между нашим числом и круглым: 44 - 42 = 2. Это и есть остаток."
+    },
+    {
+        q: "12. Выберите число, которое делится на 9 без остатка:",
+        opts: ["341", "522", "613", "709"],
+        corr: 1,
+        facts: "Разбор: Признак делимости на 9: сумма всех цифр числа должна делиться на 9. Складываем цифры: 5 + 2 + 2 = 9. Делится! У остальных чисел суммы цифр (8, 10, 16) на 9 не делятся."
+    },
+    {
+        q: "13. Какое действие выполняется последним в выражении: 80 + 20 : 4 - 5?",
+        opts: ["Сложение", "Деление", "Вычитание", "Сначала сложение"],
+        corr: 2,
+        facts: "Разбор: Первым делом делаем деление: 20 : 4 = 5. Выражение принимает вид: 80 + 5 - 5. Сложение и вычитание равны по силе, делаем их слева направо. Последним будет вычитание."
+    },
+    {
+        q: "14. В одной книге 60 страниц, а в другой в 3 раза меньше. Сколько страниц во второй книге?",
+        opts: ["57 страниц", "20 страниц", "180 страниц", "30 страниц"],
+        corr: 1,
+        facts: "Разбор: Предлог \"в ... раз меньше\" означает деление. Мы должны 60 разделить на 3. 60 : 3 = 20 страниц. Если бы было \"на 3 страницы меньше\", мы бы вычитали (57)."
+    },
+    {
+        q: "15. Чему равна площадь квадрата со стороной 7 дм?",
+        opts: ["28 дм²", "14 дм²", "49 дм²", "35 дм²"],
+        corr: 2,
+        facts: "Разбор: Площадь квадрата находится по формуле: S = a * a (сторону умножить саму на себя). 7 * 7 = 49 дм². Число 28 получилось бы при поиске периметра (7 * 4)."
+    },
+    {
+        q: "16. Сколько минут в 3 часах и 15 минутах?",
+        opts: ["195 минут", "180 минут", "45 минут", "315 минут"],
+        corr: 0,
+        facts: "Разбор: В одном часе ровно 60 минут. Переводим часы: 3 * 60 = 180 минут. Затем прибавляем оставшиеся 15 минут: 180 + 15 = 195 минут."
+    },
+    {
+        q: "17. Какое число пропущено в равенстве: 7000 + ... + 5 = 7405?",
+        opts: ["4", "40", "400", "4000"],
+        corr: 2,
+        facts: "Разбор: Посмотрим на разряды числа 7405. 7 — тысячи, 4 — сотни, 0 — десятки, 5 — единицы. Цифра 4 в разряде сотен означает число 400."
+    },
+    {
+        q: "18. Ученик задумал число, умножил его на 6 и получил 42. Какое число задумал ученик?",
+        opts: ["6", "7", "8", "36"],
+        corr: 1,
+        facts: "Разбор: Чтобы решить эту задачу, сделаем обратное действие: результат (42) разделить на известный множитель (6). 42 : 6 = 7."
+    },
+    {
+        q: "19. Мотоциклист проехал 120 км со скоростью 60 км/ч. Сколько времени он затратил на дорогу?",
+        opts: ["3 часа", "2 часа", "4 часа", "180 минут"],
+        corr: 1,
+        facts: "Разбор: Формула времени: t = S / V (расстояние разделить на скорость). Делим 120 на 60, получаем ровно 2 часа."
+    },
+    {
+        q: "20. Чему равен периметр треугольника, если все его три стороны равны по 8 см?",
+        opts: ["16 см", "24 см", "32 см", "12 см"],
+        corr: 1,
+        facts: "Разбор: Периметр — это сумма длин всех сторон. Так как сторон три и они равны, складываем их: 8 + 8 + 8 = 24 см (или 8 * 3 = 24 см)."
+    },
+    {
+        q: "21. Какое число в 4 раза больше, чем 25?",
+        opts: ["29", "21", "100", "50"],
+        corr: 2,
+        facts: "Разбор: Фраза \"в ... раз больше\" требует действия умножения. Мы должны 25 умножить на 4. 25 * 4 = 100. Если бы было \"на 4 больше\", получилось бы 29."
+    },
+    {
+        q: "22. Из 20 метров ткани сшили 5 одинаковых платьев. Сколько метров ткани уходит на одно платье?",
+        opts: ["4 метра", "15 метров", "25 метров", "2 метра"],
+        corr: 0,
+        facts: "Разбор: Общее количество ткани (20 метров) нужно поровну разделить на количество получившихся платьев (5 штук). 20 : 5 = 4 метра."
+    },
+    {
+        q: "23. Сколько метров в 4 километрах и 80 метрах?",
+        opts: ["480 м", "4080 м", "4800 м", "40080 м"],
+        corr: 1,
+        facts: "Разбор: В одном километре ровно 1000 метров. Значит, 4 километра — это 4000 метров. Прибавляем 80 метров, получаем 4080 метров."
+    },
+    {
+        q: "24. Чему равно произведение чисел 15 и 4?",
+        opts: ["19", "11", "60", "45"],
+        corr: 2,
+        facts: "Разбор: Математический термин \"произведение\" означает результат действия умножения. Умножаем 15 на 4, получаем ровно 60. Сложение дало бы 19."
+    },
+    {
+        q: "25. Реши уравнение: 81 : х = 9. Чему равен х?",
+        opts: ["72", "9", "90", "3"],
+        corr: 1,
+        facts: "Разбор: В этом уравнении х — неизвестный делитель. Чтобы его найти, нужно делимое (81) разделить на частное (9). 81 : 9 = 9. Проверка: 81 : 9 = 9 — верно."
+    },
+    {
+        q: "26. В коробке было 24 карандаша. Дети взяли 1/4 всех карандашей. Сколько карандашей взяли дети?",
+        opts: ["4 карандаша", "6 карандашей", "8 карандашей", "12 карандашей"],
+        corr: 1,
+        facts: "Разбор: Чтобы найти долю от числа, нужно это число разделить на знаменатель дроби. 24 делим на 4, получаем 6 карандашей."
+    },
+    {
+        q: "27. Школьная площадка имеет длину 10 м и ширину 5 м. Чему равен её периметр?",
+        opts: ["15 м", "30 м", "50 м", "25 м"],
+        corr: 1,
+        facts: "Разбор: Формула периметра прямоугольника: P = 2 * (a + b) (сумму длины и ширины умножить на два). (10 + 5) * 2 = 15 * 2 = 30 метров. Площадь была бы 50 м²."
+    },
+    {
+        q: "28. Какое число на 150 меньше, чем 600?",
+        opts: ["450", "750", "550", "350"],
+        corr: 0,
+        facts: "Разбор: Фраза \"на ... меньше\" требует вычитания. Из большего числа (600) вычитаем 150. 600 - 150 = 450. Прибавление дало бы 750."
+    },
+    {
+        q: "29. Чему равна сумма углов любого прямоугольника?",
+        opts: ["180 градусов", "360 градусов", "90 градусов", "270 градусов"],
+        corr: 1,
+        facts: "Разбор: У прямоугольника 4 прямых угла. Каждый прямой угол равен 90 градусов. 90 * 4 = 360 градусов."
+    },
+    {
+        q: "30. Вычислите: 500 - (120 + 80) : 2.",
+        opts: ["190", "400", "160", "250"],
+        corr: 1,
+        facts: "Разбор: 1) Скобки: 120 + 80 = 200. 2) Деление: 200 : 2 = 100. 3) Вычитание: 500 - 100 = 400."
     }
+];
 
-    function showResults() {
-        document.getElementById("quiz-screen").style.display = "none";
-        document.getElementById("result-screen").style.display = "block";
+var currentIndex = 0;
+var userAnswers = new Array(questions.length).fill(null);
+var firstTryCorrect = new Array(questions.length).fill(null);
+
+function renderQuestion() {
+    var item = questions[currentIndex];
+    
+    document.getElementById("question-counter").innerText = "Вопрос " + (currentIndex + 1) + " из " + questions.length;
+    document.getElementById("question-text").innerText = item.q;
+    
+    var container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+    resultBox.innerText = "";
+    
+    var btnNext = document.getElementById("btn-next");
+    btnNext.style.display = "none";
+    
+    var btnPrev = document.getElementById("btn-prev");
+    btnPrev.disabled = (currentIndex === 0);
+    
+    var answered = userAnswers[currentIndex] !== null;
+    
+    for (var i = 0; i < item.opts.length; i++) {
+        var btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = item.opts[i];
+        btn.setAttribute("data-index", i);
         
-        let total = questions.length;
-        let percent = Math.round((score / total) * 100);
-        let errors = total - score;
-
-        document.getElementById("percent-text").innerText = `${percent}%`;
-        document.getElementById("stats-text").innerText = `Правильно: ${score} из ${total} | Ошибок: ${errors}`;
-        
-        let bar = document.getElementById("progress-bar");
-        bar.style.width = percent + "%";
-
-        let verdict = document.getElementById("verdict-box");
-
-        if (percent === 100) {
-            bar.style.backgroundColor = "#2e7d32";
-            verdict.style.backgroundColor = "#e8f5e9";
-            verdict.style.color = "#2e7d32";
-            verdict.innerText = "🎉 Отлично! Всё выполнено на 100%! Покажи этот экран учителю.";
+        if (answered) {
+            btn.disabled = true;
+            var selectedIndex = userAnswers[currentIndex];
+            if (i === item.corr) {
+                btn.classList.add("correct");
+            }
+            if (i === selectedIndex && selectedIndex !== item.corr) {
+                btn.classList.add("wrong");
+            }
         } else {
-            bar.style.backgroundColor = "#d32f2f";
-            verdict.style.backgroundColor = "#ffebee";
-            verdict.style.color = "#c62828";
-            verdict.innerText = "❌ Задание не выполнено! Нажмите «Пройти заново» и сделайте всё на 100%.";
+            btn.onclick = function() {
+                var idx = parseInt(this.getAttribute("data-index"), 10);
+                selectAnswer(idx);
+            };
+        }
+        
+        container.appendChild(btn);
+    }
+    
+    if (answered) {
+        resultBox.innerText = item.facts;
+        resultBox.style.display = "block";
+        btnNext.style.display = "inline-block";
+    }
+}
+
+function selectAnswer(selectedIndex) {
+    var item = questions[currentIndex];
+    userAnswers[currentIndex] = selectedIndex;
+    
+    if (firstTryCorrect[currentIndex] === null) {
+        firstTryCorrect[currentIndex] = (selectedIndex === item.corr);
+    }
+    
+    var buttons = document.querySelectorAll("#options-container .option-btn");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === item.corr) {
+            buttons[i].classList.add("correct");
+        }
+        if (i === selectedIndex && selectedIndex !== item.corr) {
+            buttons[i].classList.add("wrong");
         }
     }
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.innerText = item.facts;
+    resultBox.style.display = "block";
+    
+    document.getElementById("btn-next").style.display = "inline-block";
+}
 
+function goNext() {
+    if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        showFinalScreen();
+    }
+}
+
+function goPrev() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function showFinalScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("final-screen").style.display = "block";
+    
+    var correctFirstTryCount = 0;
+    for (var i = 0; i < firstTryCorrect.length; i++) {
+        if (firstTryCorrect[i] === true) {
+            correctFirstTryCount++;
+        }
+    }
+    
+    var percent = Math.round((correctFirstTryCount / questions.length) * 100);
+    document.getElementById("progress-bar-fill").style.width = percent + "%";
+    document.getElementById("score-text").innerText = "Верных ответов с первой попытки: " + correctFirstTryCount + " из " + questions.length;
+    
+    var feedbackText = "";
+    if (correctFirstTryCount === 30) {
+        feedbackText = "Выполнено на 100%! Ты абсолютный супер-знаток математики! Поздравляем!";
+    } else if (correctFirstTryCount >= 24) {
+        feedbackText = "Выполнено! Отличный результат, ты прекрасно считаешь и готов к 5 классу!";
+    } else {
+        feedbackText = "Не выполнено! Квест пройден не полностью. Попробуй пройти заново, чтобы улучшить свой результат и повторить математические правила!";
+    }
+    
+    document.getElementById("feedback-text").innerText = feedbackText;
+}
+
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+    firstTryCorrect = new Array(questions.length).fill(null);
+    
+    document.getElementById("final-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+    
     renderQuestion();
+}
+
+window.onload = function() {
+    renderQuestion();
+};
 </script>
 
 </body>
