@@ -10,27 +10,28 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+            font-family: 'Comfortaa', 'Comic Sans MS', 'Segoe UI', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            /* Уютный фон школьного класса с книжными полками */
-            background: #2c3e50 url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
+            /* Светлый, солнечный, живописный векторный класс */
+            background: #e2e8f0 url('https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-65352.jpg') center/cover no-repeat fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
             position: relative;
         }
 
-        /* Тёмная подложка для читаемости на фоне класса */
+        /* Лёгкий тёплый фильтр, чтобы текст идеально читался */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(2px);
             z-index: 1;
         }
 
@@ -38,101 +39,101 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 780px;
+            max-width: 760px;
         }
 
-        /* Главная карточка в стиле школьной доски */
+        /* Игровая интерактивная доска */
         .blackboard {
-            background: #1b3b2b; /* Классический тёмно-зеленый цвет доски */
-            border: 12px solid #8b5a2b; /* Деревянная рамка */
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(0, 0, 0, 0.5);
-            padding: 30px 24px;
+            background: linear-gradient(145deg, #1e4d3b, #123326);
+            border: 10px solid #a66e38;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.6);
+            padding: 32px 24px;
             text-align: center;
             color: #ffffff;
             position: relative;
         }
 
-        /* Декоративные элементы по углам доски */
-        .decoration {
-            position: absolute;
-            font-size: 32px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-        }
-        .dec-top-left { top: -25px; left: -15px; transform: rotate(-15deg); }
-        .dec-top-right { top: -25px; right: -15px; transform: rotate(15deg); }
-        .dec-bottom-left { bottom: -20px; left: -10px; font-size: 36px; }
-        .dec-bottom-right { bottom: -20px; right: -10px; font-size: 36px; }
-
         .main-title {
             font-size: 28px;
-            font-weight: bold;
-            color: #fef08a; /* Меловой жёлтый цвет */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-            margin-bottom: 10px;
+            font-weight: 800;
+            color: #fef08a;
+            text-shadow: 2px 3px 0px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
             line-height: 1.3;
         }
 
         .subtitle {
             font-size: 16px;
-            color: #e2e8f0;
-            margin-bottom: 25px;
-            line-height: 1.5;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 10px;
+            color: #f1f5f9;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 16px;
+            border-radius: 12px;
+            display: inline-block;
         }
 
-        /* Сетка предметных кнопок */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
+        /* Яркие объемные кнопки */
         .subject-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #ffffff;
-            border: 3px solid #facc15;
-            border-radius: 14px;
-            padding: 12px 18px;
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+            border: 3px solid #38bdf8;
+            border-radius: 16px;
+            padding: 14px 18px;
             text-decoration: none;
-            color: #1e293b;
+            color: #0f172a;
             font-size: 17px;
             font-weight: 700;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.25);
-            transition: all 0.2s ease;
+            box-shadow: 0 6px 0px #0284c7, 0 10px 15px rgba(0,0,0,0.2);
+            transition: all 0.15s ease;
         }
 
         .subject-link:hover {
-            background: #fef08a;
-            border-color: #eab308;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+            transform: translateY(-3px);
+            background: #ffffff;
+            border-color: #facc15;
+            box-shadow: 0 9px 0px #ca8a04, 0 14px 20px rgba(0,0,0,0.3);
+        }
+
+        .subject-link:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0px #ca8a04, 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .arrow {
-            font-size: 20px;
-            color: #8b5a2b;
-            font-weight: bold;
+            font-size: 18px;
+            color: #0284c7;
+            background: #e0f2fe;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .footer-note {
             font-size: 14px;
-            color: #f8fafc;
-            background-color: rgba(255, 255, 255, 0.15);
-            border: 1px dashed #fef08a;
+            color: #fef08a;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(254, 240, 138, 0.5);
             padding: 12px;
-            border-radius: 10px;
-            line-height: 1.4;
+            border-radius: 12px;
         }
 
         @media (max-width: 480px) {
             .main-title { font-size: 22px; }
-            .blackboard { padding: 20px 14px; border-width: 8px; }
+            .blackboard { padding: 20px 12px; border-width: 6px; }
         }
     </style>
 </head>
@@ -140,48 +141,42 @@
 
 <div class="classroom-container">
     <div class="blackboard">
-        <!-- Атрибутика школьного класса -->
-        <div class="decoration dec-top-left">🌍</div>
-        <div class="decoration dec-top-right">📐</div>
-        <div class="decoration dec-bottom-left">🔬</div>
-        <div class="decoration dec-bottom-right">🎨</div>
-
         <h1 class="main-title">🎓 В 5 класс с отличием:<br>На сто из ста!</h1>
-        <p class="subtitle">Добро пожаловать в наш онлайн-кабинет! Пройди интерактивные квесты по всем предметам и докажи готовность к 5 классу!</p>
+        <p class="subtitle">🚀 Добро пожаловать в игровой онлайн-класс! Выбирай предмет и проходи испытания!</p>
 
         <div class="subjects-grid">
             <a href="russian.html" class="subject-link">
                 <span>📚 Русский язык</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="math.html" class="subject-link">
                 <span>📐 Математика</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="./%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%B0.html" class="subject-link">
                 <span>📖 Литературное чтение</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="./%D0%BC%D0%B8%D1%80.html" class="subject-link">
                 <span>🌍 Окружающий мир</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="./%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9.html" class="subject-link">
                 <span>🇬🇧 Английский язык</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="tech.html" class="subject-link">
                 <span>✂️ Технология</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
             <a href="orkse.html" class="subject-link">
                 <span>🕊️ ОРКСЭ</span>
-                <span class="arrow">→</span>
+                <span class="arrow">➔</span>
             </a>
         </div>
 
         <div class="footer-note">
-            💡 <strong>Правила онлайн-класса:</strong> Выбирай урок, отвечай на 30 вопросов и делай работу над ошибками до 100% результата!
+            🌟 <strong>Правила:</strong> Отвечай на вопросы, делай работу над ошибками и получай 100% за каждый предмет!
         </div>
     </div>
 </div>
