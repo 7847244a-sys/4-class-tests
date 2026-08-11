@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест по технологии (труду) — 4 класс</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e8f0fe;
+            color: #202124;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 10px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+
+        .option-btn:active:not(:disabled) {
+            background-color: #e8eaed;
+        }
+
+        .option-btn.correct {
+            background-color: #c6e7ce !important;
+            border-color: #34a853 !important;
+            color: #0d652d !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #f4c7c3 !important;
+            border-color: #ea4335 !important;
+            color: #a50e0e !important;
+        }
+
+        .result-box {
+            display: none;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 24px;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background-color: #1a73e8;
+            color: #ffffff;
+            display: none;
+        }
+
+        /* Финальный экран */
+        .final-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e8eaed;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34a853;
+            transition: width 0.5s ease;
+        }
+
+        .score-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 28px;
+        }
+
+        .restart-btn {
+            background-color: #1a73e8;
+            color: #ffffff;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="quiz-card">
+    <div id="quiz-screen">
+        <div class="header" id="question-counter">Вопрос 1 из 30</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+        <div class="result-box" id="result-box"></div>
+        <div class="nav-footer">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="goPrev()">← Назад</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="goNext()">Дальше →</button>
+        </div>
+    </div>
+
+    <div class="final-screen" id="final-screen">
+        <div class="final-title">Результаты квеста</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <div class="score-text" id="score-text"></div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+    </div>
+</div>
+
+<script>
+var questions = [
+    {
+        q: "1. Как называется уменьшенное или увеличенное изображение детали, выполненное по линейке с указанием точных размеров в миллиметрах?",
+        opts: ["Рисунок", "Эскиз", "Чертеж", "Фотография"],
+        corr: 2,
+        facts: "Разбор: Чертеж выполняется инструментами строго по правилам с точными размерами. Рисунок — изображение от руки, эскиз — быстрый набросок без линейки, но с размерами, фотография — снимок камерой."
+    },
+    {
+        q: "2. В каких единицах измерения всегда указываются размеры на технических чертежах в России?",
+        opts: ["В сантиметрах", "В миллиметрах", "В метрах", "В шагах"],
+        corr: 1,
+        facts: "Разбор: На чертежах буквы \"мм\" не пишут, но все мастера знают, что любые цифры там — это строго миллиметры для максимальной точности."
+    },
+    {
+        q: "3. Какое главное правило безопасности нужно соблюдать при работе с ножницами?",
+        opts: ["Держать их лезвиями вверх", "Передавать кольцами вперед с сомкнутыми лезвиями", "Бросать на стол открытыми", "Резать на ходу"],
+        corr: 1,
+        facts: "Разбор: Это бережет пальцы того, кому вы их даете. Лезвиями вверх держать опасно — можно поранить глаза, бросать открытыми — можно случайно схватиться за лезвие."
+    },
+    {
+        q: "4. Как называется плотная поделочная бумага, из которой делают коробки и макеты зданий?",
+        opts: ["Салфетка", "Картон", "Калька", "Газета"],
+        corr: 1,
+        facts: "Разбор: Картон — многослойный жесткий материал. Салфетка слишком мягкая, калька — прозрачная бумага для копирования чертежей, газета легко рвется."
+    },
+    {
+        q: "5. Какой инструмент используется для разметки идеальной окружности на бумаге или картоне?",
+        opts: ["Линейка", "Угольник", "Циркуль", "Транспортир"],
+        corr: 2,
+        facts: "Разбор: Циркуль имеет иглу и грифель для идеальных кругов. Линейка нужна для прямых линий, угольник — для прямых углов (90 градусов), транспортир — для измерения углов."
+    },
+    {
+        q: "6. Как называется ручной инструмент в виде металлического стержня со специальной ручкой, предназначенный для закручивания винтов и шурупов?",
+        opts: ["Молоток", "Отвертка", "Плоскогубцы", "Пила"],
+        corr: 1,
+        facts: "Разбор: Отвертка бывает крестовой или плоской (шлицевой). Молоток забивает гвозди, плоскогубцы зажимают проволоку, пила пилит дерево."
+    },
+    {
+        q: "7. Какое свойство пластилина позволяет нам лепить из него любые фигурки, изменять его форму и раскатывать в тонкие колбаски?",
+        opts: ["Прочность", "Прозрачность", "Пластичность", "Хрупкость"],
+        corr: 2,
+        facts: "Разбор: Пластичность — это свойство менять форму под нажимом и сохранять её. Хрупкое стекло ломается, прочный металл не согнуть руками."
+    },
+    {
+        q: "8. Как называется тонкая прозрачная ткань или бумага, которую накладывают на рисунок, чтобы точно скопировать его карандашом?",
+        opts: ["Калька", "Фетр", "Мешковина", "Картон"],
+        corr: 0,
+        facts: "Разбор: Калька идеально пропускает свет. Фетр — плотный шерстяной материал для поделок, мешковина — грубая ткань для мешков."
+    },
+    {
+        q: "9. Какой клей лучше всего использовать для прочного соединения деталей из древесины или ткани при моделировании?",
+        opts: ["Клей ПВА", "Силикатный (канцелярский)", "Клей-карандаш", "Вода"],
+        corr: 0,
+        facts: "Разбор: ПВА (поливинилацетатный) глубоко впитывается в поры дерева и волокна ткани, намертво скрепляя их после высыхания. Клей-карандаш держит только тонкую бумагу."
+    },
+    {
+        q: "10. Как называется текстильный материал, состоящий из переплетенных нитей, из которого шьют одежду?",
+        opts: ["Пластилин", "Ткань", "Фольга", "Бумага"],
+        corr: 1,
+        facts: "Разбор: Ткань ткут на станках. Нити, идущие вдоль, называются основой, а поперек — утком. Фольга — это тонкий листовой металл."
+    },
+    {
+        q: "11. Какой природный материал собирают на берегах рек, сушат и используют для создания глиняной посуды и свистулек?",
+        opts: ["Песок", "Глина", "Торф", "Гранит"],
+        corr: 1,
+        facts: "Разбор: Влажная глина очень пластична, а после обжига в печи становится твердой как камень (керамика). Песок рассыпается, гранит слишком твердый."
+    },
+    {
+        q: "12. Как называется шов, выполняемый иглой вручную, который выглядит как ровная пунктирная линия с одинаковыми промежутками?",
+        opts: ["Вперед иголку", "Назад иголку", "Петельный", "Крестик"],
+        corr: 0,
+        facts: "Разбор: Это самый простой базовый шов — игла двигается всё время вперед. Шов \"назад иголку\" более прочный и имитирует машинную строчку."
+    },
+    {
+        q: "13. Где должна храниться швейная игла во время перерыва в работе на уроке технологии?",
+        opts: ["В кармане", "В парте", "В игольнице", "Во рту"],
+        corr: 2,
+        facts: "Разбор: Хранить иглу во рту или втыкать в одежду смертельно опасно! Игла всегда должна быть с вдетой ниткой и строго в подушечке-игольнице."
+    },
+    {
+        q: "14. Как называется профессия мастера, который строит и ремонтирует деревянные изделия: мебель, рамы, двери и лодки?",
+        opts: ["Повар", "Столяр", "Швея", "Электрик"],
+        corr: 1,
+        facts: "Разбор: Столяр искусно работает с деревом. Швея создает одежду из ткани, электрик чинит проводку, повар готовит пищу."
+    },
+    {
+        q: "15. Из какого волокна делают натуральные хлопчатобумажные ткани (ситец, сатин)?",
+        opts: ["Из шерсти овец", "Из коконов шелкопряда", "Из растения хлопчатник", "Из нефти"],
+        corr: 2,
+        facts: "Разбор: На кустах хлопчатника созревают белые пушистые коробочки. Шерсть дают животные, а коконы бабочки-шелкопряда — натуральный шелк."
+    },
+    {
+        q: "16. Какой материал получают из коры деревьев, он легкий, не тонет в воде и используется для поделок и укупорки бутылок?",
+        opts: ["Металл", "Пробка", "Пластик", "Стекло"],
+        corr: 1,
+        facts: "Разбор: Пробка — это кора пробкового дуба. Она пористая, упругая, на 90% состоит из воздуха, поэтому совершенно не боится влаги."
+    },
+    {
+        q: "17. Как называется операция по сгибанию бумаги или картона по ровной линии с помощью ребра линейки или специальной палочки?",
+        opts: ["Фальцовка (биговка)", "Резание", "Склеивание", "Окрашивание"],
+        corr: 0,
+        facts: "Разбор: Нанесение прямой бороздки (биговка) помогает сложить плотный картон идеально ровно и без трещин."
+    },
+    {
+        q: "18. Как называется деталь в виде колеса с зубьями, которая передает движение другому такому же колесу в механических часах или велосипеде?",
+        opts: ["Болт", "Гайка", "Шестеренка", "Пружина"],
+        corr: 2,
+        facts: "Разбор: Зубчатая передача (шестеренки) — основа многих механизмов. Болт и гайка служат для прочного неподвижного крепежа деталей."
+    },
+    {
+        q: "19. Какое главное правило нужно соблюдать при работе с горячим клеевым пистолетом?",
+        opts: ["Трогать сопло руками", "Оставлять включенным без присмотра", "Ставить на специальную подставку соплом вниз", "Направлять в лицо другу"],
+        corr: 2,
+        facts: "Разбор: Металлический носик (сопло) нагревается выше 150 градусов, прикосновение вызовет сильный ожог. Пистолет должен стоять только на подставке."
+    },
+    {
+        q: "20. Как называется лицевая, верхняя сторона ткани с ярким и четким рисунком?",
+        opts: ["Изнаночная", "Лицевая", "Кромка", "Бахрома"],
+        corr: 1,
+        facts: "Разбор: На лицевой стороне рисунок ярче, нет узелков и ворсинок. Изнанка — внутренняя, бледная сторона. Кромка — плотный край ткани вдоль рулона."
+    },
+    {
+        q: "21. Какой инструмент используется для забивания металлических гвоздей в деревянную доску?",
+        opts: ["Шило", "Пила", "Молоток", "Клещи"],
+        corr: 2,
+        facts: "Разбор: Молоток — ударный инструмент. Шило делает круглые отверстия в коже или картоне, пила пилит, клещи вытаскивают старые гвозди."
+    },
+    {
+        q: "22. Как называется тонкий листовой металл, который легко сгибается и используется для запекания пищи или поделок?",
+        opts: ["Фольга", "Фанера", "Оргстекло", "Железо"],
+        corr: 0,
+        facts: "Разбор: Фольга (часто алюминиевая) очень тонкая и гибкая. Фанера — это склеенные слои шпона дерева, оргстекло — прозрачный пластик."
+    },
+    {
+        q: "23. Какое главное правило нужно соблюдать при работе с разметочным шилом?",
+        opts: ["Носить шило в кармане без чехла", "Прокалывать отверстия на подкладной доске или коврике", "Направлять острие на себя", "Кидать шило в стену"],
+        corr: 1,
+        facts: "Разбор: Подкладная доска защищает стол от проколов. Направлять острый инструмент на себя или носиться с ним категорически запрещено."
+    },
+    {
+        q: "24. Как называется многослойный древесный материал, полученный путем склеивания тонких слоев шпона?",
+        opts: ["ДСП", "Фанера", "Картон", "Брус"],
+        corr: 1,
+        facts: "Разбор: Фанера состоит из нечетного числа слоев шпона (3, 5 и более), склеенных так, чтобы волокна перекрещивались для высокой прочности."
+    },
+    {
+        q: "25. Какое устройство используется для защиты пальцев рук от уколов при ручном шитье плотных тканей?",
+        opts: ["Наперсток", "Перчатка", "Булавка", "Прижим"],
+        corr: 0,
+        facts: "Разбор: Наперсток — это металлический или пластмассовый колпачок с ямочками, который надевают на палец, протолкающий иглу."
+    },
+    {
+        q: "26. Как называется технологический процесс получения нитей из отдельных коротких волокон (например, шерсти или хлопка)?",
+        opts: ["Прядение", "Ткачество", "Вязание", "Вышивка"],
+        corr: 0,
+        facts: "Разбор: Прядение скручивает волокна в непрерывную нить. Ткачество создает из готовых нитей ткань, а вышивка украшает её узорами."
+    },
+    {
+        q: "27. Какое свойство бумаги нужно учитывать при сгибании: вдоль или поперек располагаются ее волокна?",
+        opts: ["Цвет", "Направление волокон", "Запах", "Прозрачность"],
+        corr: 1,
+        facts: "Разбор: Бумага легко и ровно сгибается вдоль направления волокон. Если сгибать поперек, край может получиться неровным и с заломами."
+    },
+    {
+        q: "28. Как называется объемная модель будущего здания или сооружения, выполненная из бумаги, картона или пластика?",
+        opts: ["Макет", "Картина", "Эскиз", "Портрет"],
+        corr: 0,
+        facts: "Разбор: Архитектурный макет точно показывает, как будет выглядеть настоящий дом или мост со всех сторон в уменьшенном масштабе."
+    },
+    {
+        q: "29. Какое правило нужно соблюдать при завязывании узелка на нитке перед шитьем?",
+        opts: ["Делать узелок размером с кулак", "Делать аккуратный узелок на конце длинной нити", "Завязывать узелок посредине", "Не завязывать узелок вовсе"],
+        corr: 1,
+        facts: "Разбор: Узелок на конце нити удерживает её в ткани, не давая выскочить при первом же стежке. Слишком крупный узел будет портить вид изделия."
+    },
+    {
+        q: "30. Как называется древнее искусство складывания фигур из бумаги без использования клея и ножниц?",
+        opts: ["Оригами", "Аппликация", "Папье-маше", "Квиллинг"],
+        corr: 0,
+        facts: "Разбор: Оригами родилось в Японии. Аппликация требует вырезания и клея, папье-маше — клея и размоченной бумаги, квиллинг — скручивания бумажных полосок."
+    }
+];
+
+var currentIndex = 0;
+var userAnswers = new Array(questions.length).fill(null);
+var firstTryCorrect = new Array(questions.length).fill(null);
+
+function renderQuestion() {
+    var item = questions[currentIndex];
+    
+    document.getElementById("question-counter").innerText = "Вопрос " + (currentIndex + 1) + " из " + questions.length;
+    document.getElementById("question-text").innerText = item.q;
+    
+    var container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+    resultBox.innerText = "";
+    
+    var btnNext = document.getElementById("btn-next");
+    btnNext.style.display = "none";
+    
+    var btnPrev = document.getElementById("btn-prev");
+    btnPrev.disabled = (currentIndex === 0);
+    
+    var answered = userAnswers[currentIndex] !== null;
+    
+    for (var i = 0; i < item.opts.length; i++) {
+        var btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = item.opts[i];
+        btn.setAttribute("data-index", i);
+        
+        if (answered) {
+            btn.disabled = true;
+            var selectedIndex = userAnswers[currentIndex];
+            if (i === item.corr) {
+                btn.classList.add("correct");
+            }
+            if (i === selectedIndex && selectedIndex !== item.corr) {
+                btn.classList.add("wrong");
+            }
+        } else {
+            btn.onclick = function() {
+                var idx = parseInt(this.getAttribute("data-index"), 10);
+                selectAnswer(idx);
+            };
+        }
+        
+        container.appendChild(btn);
+    }
+    
+    if (answered) {
+        resultBox.innerText = item.facts;
+        resultBox.style.display = "block";
+        btnNext.style.display = "inline-block";
+    }
+}
+
+function selectAnswer(selectedIndex) {
+    var item = questions[currentIndex];
+    userAnswers[currentIndex] = selectedIndex;
+    
+    if (firstTryCorrect[currentIndex] === null) {
+        firstTryCorrect[currentIndex] = (selectedIndex === item.corr);
+    }
+    
+    var buttons = document.querySelectorAll("#options-container .option-btn");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === item.corr) {
+            buttons[i].classList.add("correct");
+        }
+        if (i === selectedIndex && selectedIndex !== item.corr) {
+            buttons[i].classList.add("wrong");
+        }
+    }
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.innerText = item.facts;
+    resultBox.style.display = "block";
+    
+    document.getElementById("btn-next").style.display = "inline-block";
+}
+
+function goNext() {
+    if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        showFinalScreen();
+    }
+}
+
+function goPrev() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function showFinalScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("final-screen").style.display = "block";
+    
+    var correctFirstTryCount = 0;
+    for (var i = 0; i < firstTryCorrect.length; i++) {
+        if (firstTryCorrect[i] === true) {
+            correctFirstTryCount++;
+        }
+    }
+    
+    var percent = Math.round((correctFirstTryCount / questions.length) * 100);
+    document.getElementById("progress-bar-fill").style.width = percent + "%";
+    document.getElementById("score-text").innerText = "Верных ответов с первой попытки: " + correctFirstTryCount + " из " + questions.length;
+    
+    var feedbackText = "";
+    if (correctFirstTryCount === 30) {
+        feedbackText = "Выполнено на 100%! Ты настоящий мастер на все руки, инженер и главный помощник дома! Поздравляем!";
+    } else if (correctFirstTryCount >= 24) {
+        feedbackText = "Выполнено! Отличный результат, ты прекрасно разбираешься в инструментах, материалах и чертежах!";
+    } else {
+        feedbackText = "Не выполнено! Квест пройден не полностью. Попробуй пройти заново, чтобы улучшить свой результат и повторить важные правила мастеров!";
+    }
+    
+    document.getElementById("feedback-text").innerText = feedbackText;
+}
+
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+    firstTryCorrect = new Array(questions.length).fill(null);
+    
+    document.getElementById("final-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+    
+    renderQuestion();
+}
+
+window.onload = function() {
+    renderQuestion();
+};
+</script>
+
+</body>
+</html>
