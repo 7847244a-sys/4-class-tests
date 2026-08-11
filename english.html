@@ -45,11 +45,21 @@
             padding-bottom: 12px;
         }
 
+        .question-container {
+            margin-bottom: 24px;
+        }
+
+        .question-ru {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
         .question-box {
             font-size: 22px;
             font-weight: 700;
             color: #2d3748;
-            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -252,9 +262,12 @@
             <span id="counter">Вопрос 1 из 30</span>
         </div>
 
-        <div class="question-box">
-            <button class="audio-btn" id="q-speech-btn" onclick="speakQuestionText()">🔊</button>
-            <span id="question-text"></span>
+        <div class="question-container">
+            <div class="question-ru" id="question-ru"></div>
+            <div class="question-box">
+                <button class="audio-btn" id="q-speech-btn" onclick="speakQuestionText()">🔊</button>
+                <span id="question-en"></span>
+            </div>
         </div>
 
         <div class="options-grid" id="options-container">
@@ -291,194 +304,222 @@
 <script>
     const questions = [
         {
-            q: "He ... to school every day.",
+            ru: "Вставьте правильную форму глагола (Каждый день):",
+            en: "He ... to school every day.",
             opts: ["go", "goes", "going", "went"],
             corr: 1,
             facts: "С he/she/it в Present Simple добавляется -s/-es. Every day - маркер настоящего времени."
         },
         {
-            q: "Как переводится слово \"Wednesday\"?",
+            ru: "Как переводится на русский язык день недели:",
+            en: "Wednesday",
             opts: ["Понедельник", "Вторник", "Среда", "Пятница"],
             corr: 2,
-            facts: "Monday-пон., Tuesday-вторник, Wednesday-среда, Friday-пятница."
+            facts: "Monday-понедельник, Tuesday-вторник, Wednesday-среда, Friday-пятница."
         },
         {
-            q: "Какое местоимение переводится как \"Она\"?",
+            ru: "Выберите местоимение, которое переводится как «Она»:",
+            en: "She",
             opts: ["He", "She", "It", "They"],
             corr: 1,
-            facts: "He-он, She-она, It-оно, They-они."
+            facts: "He - он, She - она, It - оно, They - они."
         },
         {
-            q: "I have got ... apple.",
+            ru: "Выберите правильный артикль перед словом apple:",
+            en: "I have got ... apple.",
             opts: ["a", "an", "the", "-"],
             corr: 1,
             facts: "Артикль an ставится перед существительными в ед.ч., начинающимися с гласного звука."
         },
         {
-            q: "Какое числительное переводится как \"12\"?",
+            ru: "Выберите английское числительное для числа 12:",
+            en: "12",
             opts: ["Two", "Ten", "Twelve", "Twenty"],
             corr: 2,
-            facts: "two-2, ten-10, twelve-12, twenty-20."
+            facts: "two - 2, ten - 10, twelve - 12, twenty - 20."
         },
         {
-            q: "Переведите слово \"Семья\":",
+            ru: "Как по-английски сказать «Семья»?",
+            en: "Family",
             opts: ["Friend", "Family", "House", "Mother"],
             corr: 1,
-            facts: "friend-друг, family-семья, house-дом, mother-мама."
+            facts: "friend - друг, family - семья, house - дом, mother - мама."
         },
         {
-            q: "They ... happy.",
+            ru: "Вставьте правильную форму глагола to be:",
+            en: "They ... happy.",
             opts: ["am", "is", "are", "was"],
             corr: 2,
             facts: "Для множественного числа (they, we, you) в настоящем времени используется are."
         },
         {
-            q: "На какой вопрос отвечает слово \"Where\"?",
+            ru: "Выберите вопрос, который переводится как «Где / Куда»:",
+            en: "Where",
             opts: ["Что?", "Когда?", "Где?", "Почему?"],
             corr: 2,
-            facts: "What-что, When-когда, Where-где/куда, Why-почему."
+            facts: "What - что, When - когда, Where - где/куда, Why - почему."
         },
         {
-            q: "Множественное число слова \"Cat\":",
+            ru: "Выберите форму множественного числа для слова Cat (Кошка):",
+            en: "Cats",
             opts: ["Cats", "Cat", "Cates", "Mice"],
             corr: 0,
-            facts: "Множественное число образуется окончанием -s. Mice-мыши (исключение)."
+            facts: "Множественное число образуется окончанием -s (cats). Mice (мыши) — исключение."
         },
         {
-            q: "Как переводится \"Good morning\"?",
+            ru: "Переведите приветствие:",
+            en: "Good morning",
             opts: ["Добрый вечер", "Добрый день", "Доброе утро", "Привет"],
             corr: 2,
-            facts: "Good morning-доброе утро, Good afternoon-добрый день, Good evening-вечер."
+            facts: "Good morning - доброе утро, Good afternoon - добрый день, Good evening - добрый вечер."
         },
         {
-            q: "Лишнее слово:",
+            ru: "Найдите лишнее слово в группе:",
+            en: "Apple, Banana, Orange, Tomato",
             opts: ["Apple", "Banana", "Orange", "Tomato"],
             corr: 3,
-            facts: "Первые три - сладкие фрукты, а Tomato - овощ."
+            facts: "Первые три (apple, banana, orange) — сладкие фрукты, а Tomato — овощ."
         },
         {
-            q: "Выберите предлог времени: ... 5 o'clock.",
+            ru: "Выберите верный предлог времени для точного времени (5 часов):",
+            en: "... 5 o'clock",
             opts: ["in", "at", "on", "under"],
             corr: 1,
             facts: "С точным временем на часах используется предлог at."
         },
         {
-            q: "Как сказать \"Я умею плавать\"?",
+            ru: "Как по-английски сказать «Я умею плавать»?",
+            en: "I can swim",
             opts: ["I can swim", "I must swim", "I should swim", "I swim"],
             corr: 0,
-            facts: "Модальный глагол can означает уметь/мочь. Must-должен, should-следует."
+            facts: "Модальный глагол can означает уметь/мочь. Must — должен, should — следует."
         },
         {
-            q: "Прошедшее время (Past Simple) глагола \"Play\":",
+            ru: "Выберите прошедшую форму (Past Simple) глагола Play:",
+            en: "Played",
             opts: ["Playing", "Played", "Plays", "Play"],
             corr: 1,
-            facts: "У правильных глаголов прошедшее время образуется окончанием -ed."
+            facts: "У правильных глаголов прошедшее время образуется добавлением окончания -ed."
         },
         {
-            q: "Как пишется \"Книга\"?",
+            ru: "Выберите английское слово, обозначающее «Книга»:",
+            en: "Book",
             opts: ["Pen", "Bag", "Book", "Ruler"],
             corr: 2,
-            facts: "pen-ручка, bag-сумка, book-книга, ruler-линейка."
+            facts: "pen - ручка, bag - сумка, book - книга, ruler - линейка."
         },
         {
-            q: "This is ... book. (Моя книга).",
+            ru: "Вставьте притяжательное местоимение «Моя»:",
+            en: "This is ... book.",
             opts: ["me", "my", "mine", "I"],
             corr: 1,
-            facts: "Притяжательное местоимение my (мой) ставится прямо перед существительным."
+            facts: "Притяжательное местоимение my (мой/моя) ставится прямо перед существительным."
         },
         {
-            q: "Как переводится слово \"Autumn\"?",
+            ru: "Переведите название времени года:",
+            en: "Autumn",
             opts: ["Весна", "Лето", "Осень", "Зима"],
             corr: 2,
-            facts: "Spring-весна, Summer-лето, Autumn-осень, Winter-зима."
+            facts: "Spring - весна, Summer - лето, Autumn - осень, Winter - зима."
         },
         {
-            q: "Вопрос к фразе \"My name is Tom\":",
+            ru: "Выберите верный вопрос к фразе «Меня зовут Том»:",
+            en: "My name is Tom",
             opts: ["How old are you?", "Where are you from?", "What is your name?", "Who are you?"],
             corr: 2,
-            facts: "What is your name? перевод как Как тебя зовут?."
+            facts: "What is your name? переводится как «Как тебя зовут?»."
         },
         {
-            q: "Какое животное переводится как \"Bear\"?",
+            ru: "Переведите название животного:",
+            en: "Bear",
             opts: ["Лиса", "Волк", "Медведь", "Заяц"],
             corr: 2,
-            facts: "fox-лиса, wolf-волк, bear-медведь, hare-заяц."
+            facts: "fox - лиса, wolf - волк, bear - медведь, hare - заяц."
         },
         {
-            q: "Какая из этих букв гласная?",
+            ru: "Выберите гласную букву английского алфавита:",
+            en: "Vowel letter",
             opts: ["B", "E", "G", "R"],
             corr: 1,
-            facts: "В английском 6 гласных букв (A, E, I, O, U, Y). Буква E - гласная."
+            facts: "В английском 6 гласных букв (A, E, I, O, U, Y). Буква E — гласная."
         },
         {
-            q: "We ... TV yesterday.",
+            ru: "Вставьте глагол в Past Simple (Слово-маркер: yesterday):",
+            en: "We ... TV yesterday.",
             opts: ["watch", "watched", "watching", "watches"],
             corr: 1,
-            facts: "Yesterday (вчера) требует Past Simple, к правильному глаголу добавляем -ed."
+            facts: "Yesterday (вчера) указывает на прошедшее время Past Simple (-ed)."
         },
         {
-            q: "Как переводится слово \"Kitchen\"?",
+            ru: "Переведите название комнаты в доме:",
+            en: "Kitchen",
             opts: ["Спальня", "Кухня", "Ванная", "Гостиная"],
             corr: 1,
-            facts: "bedroom-спальня, kitchen-кухня, bathroom-ванная, living room-гостиная."
+            facts: "bedroom - спальня, kitchen - кухня, bathroom - ванная, living room - гостиная."
         },
         {
-            q: "Какое слово означает \"Большой\"?",
+            ru: "Выберите слово, обозначающее «Большой»:",
+            en: "Big",
             opts: ["Small", "Big", "Short", "Long"],
             corr: 1,
-            facts: "small-маленький, big-большой, short-короткий/низкий, long-длинный."
+            facts: "small - маленький, big - большой, short - короткий/низкий, long - длинный."
         },
         {
-            q: "Выберите отрицание: I ... like milk.",
+            ru: "Выберите отрицательную форму в Present Simple для I:",
+            en: "I ... like milk.",
             opts: ["not", "don't", "doesn't", "am not"],
             corr: 1,
-            facts: "Отрицание в Present Simple для I строится с помощью don't (do not)."
+            facts: "Отрицание в Present Simple для I/you/we/they строится с помощью don't."
         },
         {
-            q: "Как сказать по-английски \"Спасибо\"?",
+            ru: "Как сказать по-английски «Спасибо»?",
+            en: "Thank you",
             opts: ["Please", "Hello", "Thank you", "Goodbye"],
             corr: 2,
-            facts: "please-пожалуйста, hello-привет, thank you-спасибо, goodbye-до свидания."
+            facts: "please - пожалуйста, hello - привет, thank you - спасибо, goodbye - до свидания."
         },
         {
-            q: "Множественное число слова \"Child\":",
+            ru: "Выберите множественное число для слова-исключения Child (Ребенок):",
+            en: "Children",
             opts: ["Childs", "Children", "Childrens", "Childes"],
             corr: 1,
-            facts: "Child - слово-исключение. Во множественном числе меняется на children."
+            facts: "Child — слово-исключение. Во множественном числе будет children."
         },
         {
-            q: "Как переводится цвет \"Yellow\"?",
+            ru: "Переведите цвет:",
+            en: "Yellow",
             opts: ["Красный", "Синий", "Зелёный", "Жёлтый"],
             corr: 3,
-            facts: "red-красный, blue-синий, green-зеленый, yellow-желтый."
+            facts: "red - красный, blue - синий, green - зеленый, yellow - желтый."
         },
         {
-            q: "Выберите верное слово: The sun is in the ...",
+            ru: "Выберите подходящее по смыслу слово (Солнце в небе):",
+            en: "The sun is in the ...",
             opts: ["sky", "ground", "sea", "room"],
             corr: 0,
-            facts: "Фраза переводится как \"Солнце в небе\". Sky - это небо."
+            facts: "Фраза переводится как «Солнце в небе». Sky — это небо."
         },
         {
-            q: "Какое слово означает \"Завтрак\"?",
+            ru: "Выберите слово, которое означает «Завтрак»:",
+            en: "Breakfast",
             opts: ["Lunch", "Dinner", "Breakfast", "Food"],
             corr: 2,
-            facts: "breakfast-завтрак, lunch-обед, dinner-ужин, food-еда."
+            facts: "breakfast - завтрак, lunch - обед, dinner - ужин, food - еда."
         },
         {
-            q: "Как переводится фраза \"I am ten\"?",
+            ru: "Переведите выражение возраста:",
+            en: "I am ten",
             opts: ["Мне 5 лет", "Мне 10 лет", "У меня десять книг", "Я иду домой"],
             corr: 1,
-            facts: "Глагол to be используется для указания возраста."
+            facts: "Глагол to be используется для указания возраста: I am ten — мне 10 лет."
         }
     ];
 
     let currentIndex = 0;
-    // Массив состояния ответа для каждого вопроса: null, selectedIndex
     let userAnswers = new Array(questions.length).fill(null);
-    // Отслеживание того, был ли ответ правильным с ПЕРВОЙ попытки
     let firstAttemptCorrect = new Array(questions.length).fill(null);
 
-    // Функция проверки наличия английского текста для озвучки
+    // Функция проверки наличия английского текста
     function isEnglish(text) {
         return /[a-zA-Z]/.test(text);
     }
@@ -497,9 +538,7 @@
 
     function speakQuestionText() {
         const q = questions[currentIndex];
-        if (isEnglish(q.q)) {
-            speakText(q.q);
-        }
+        speakText(q.en);
     }
 
     function loadQuestion() {
@@ -508,16 +547,9 @@
         // Счетчик
         document.getElementById('counter').innerText = `Вопрос ${currentIndex + 1} из ${questions.length}`;
         
-        // Текст вопроса
-        document.getElementById('question-text').innerText = q.q;
-        
-        // Показ/скрытие кнопки озвучки вопроса
-        const qSpeechBtn = document.getElementById('q-speech-btn');
-        if (isEnglish(q.q)) {
-            qSpeechBtn.style.display = 'inline-flex';
-        } else {
-            qSpeechBtn.style.display = 'none';
-        }
+        // Русский и английский тексты вопроса
+        document.getElementById('question-ru').innerText = q.ru;
+        document.getElementById('question-en').innerText = q.en;
 
         // Кнопки навигации
         const prevBtn = document.getElementById('prev-btn');
@@ -544,7 +576,7 @@
             textSpan.className = 'btn-text';
             textSpan.innerText = optText;
 
-            // Добавление кнопки озвучки к английским вариантам ответа
+            // Добавление кнопки озвучки ТОЛЬКО к английским вариантам
             if (isEnglish(optText)) {
                 const speechBtn = document.createElement('button');
                 speechBtn.className = 'audio-btn';
@@ -562,7 +594,7 @@
             // Обработка клика
             btn.onclick = () => selectOption(index);
 
-            // Отрисовка состояния, если на вопрос уже отвечали
+            // Отрисовка состояния
             if (hasAnswered) {
                 btn.disabled = true;
                 if (index === q.corr) {
@@ -612,7 +644,6 @@
             }
         });
 
-        // Автоматическая озвучка правильности или текста ответа (опционально)
         if (isEnglish(q.opts[index])) {
             speakText(q.opts[index]);
         }
@@ -644,7 +675,6 @@
         const finalScreen = document.getElementById('final-screen');
         finalScreen.classList.add('visible');
 
-        // Подсчет баллов с первой попытки
         const score = firstAttemptCorrect.filter(val => val === true).length;
         const total = questions.length;
         const percentage = Math.round((score / total) * 100);
@@ -685,7 +715,6 @@
         loadQuestion();
     }
 
-    // Инициализация при старте
     window.onload = loadQuestion;
 </script>
 
