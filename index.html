@@ -10,127 +10,179 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #e8f0fe;
-            color: #202124;
+            /* Уютный фон школьного класса с книжными полками */
+            background: #2c3e50 url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 16px;
+            padding: 20px;
+            position: relative;
         }
 
-        .main-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 650px;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            padding: 32px 24px;
-            text-align: center;
+        /* Тёмная подложка для читаемости на фоне класса */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.65);
+            z-index: 1;
         }
+
+        .classroom-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 780px;
+        }
+
+        /* Главная карточка в стиле школьной доски */
+        .blackboard {
+            background: #1b3b2b; /* Классический тёмно-зеленый цвет доски */
+            border: 12px solid #8b5a2b; /* Деревянная рамка */
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(0, 0, 0, 0.5);
+            padding: 30px 24px;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Декоративные элементы по углам доски */
+        .decoration {
+            position: absolute;
+            font-size: 32px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+        .dec-top-left { top: -25px; left: -15px; transform: rotate(-15deg); }
+        .dec-top-right { top: -25px; right: -15px; transform: rotate(15deg); }
+        .dec-bottom-left { bottom: -20px; left: -10px; font-size: 36px; }
+        .dec-bottom-right { bottom: -20px; right: -10px; font-size: 36px; }
 
         .main-title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #1a73e8;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fef08a; /* Меловой жёлтый цвет */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            margin-bottom: 10px;
             line-height: 1.3;
         }
 
         .subtitle {
             font-size: 16px;
-            color: #5f6368;
-            margin-bottom: 24px;
+            color: #e2e8f0;
+            margin-bottom: 25px;
             line-height: 1.5;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
         }
 
+        /* Сетка предметных кнопок */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 12px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+            margin-bottom: 25px;
         }
 
         .subject-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: #f8f9fa;
-            border: 2px solid #dadce0;
-            border-radius: 12px;
-            padding: 14px 18px;
+            background: #ffffff;
+            border: 3px solid #facc15;
+            border-radius: 14px;
+            padding: 12px 18px;
             text-decoration: none;
-            color: #202124;
+            color: #1e293b;
             font-size: 17px;
-            font-weight: 600;
+            font-weight: 700;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.25);
             transition: all 0.2s ease;
         }
 
         .subject-link:hover {
-            background-color: #e8f0fe;
-            border-color: #1a73e8;
-            color: #1a73e8;
-            transform: translateY(-2px);
+            background: #fef08a;
+            border-color: #eab308;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.35);
         }
 
         .arrow {
-            font-size: 18px;
-            color: #1a73e8;
+            font-size: 20px;
+            color: #8b5a2b;
+            font-weight: bold;
         }
 
         .footer-note {
             font-size: 14px;
-            color: #70757a;
-            background-color: #f1f3f4;
+            color: #f8fafc;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px dashed #fef08a;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 10px;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 480px) {
+            .main-title { font-size: 22px; }
+            .blackboard { padding: 20px 14px; border-width: 8px; }
         }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <h1 class="main-title">🎓 В 5 класс с отличием:<br>На сто из ста!</h1>
-    <p class="subtitle">Пройди интерактивные квесты по всем предметам на 100% и докажи полную готовность к старшим классам!</p>
+<div class="classroom-container">
+    <div class="blackboard">
+        <!-- Атрибутика школьного класса -->
+        <div class="decoration dec-top-left">🌍</div>
+        <div class="decoration dec-top-right">📐</div>
+        <div class="decoration dec-bottom-left">🔬</div>
+        <div class="decoration dec-bottom-right">🎨</div>
 
-    <div class="subjects-grid">
-        <a href="russian.html" class="subject-link">
-            <span>📚 Русский язык</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="math.html" class="subject-link">
-            <span>📐 Математика</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="./%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%B0.html" class="subject-link">
-            <span>📖 Литературное чтение</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="./%D0%BC%D0%B8%D1%80.html" class="subject-link">
-            <span>🌍 Окружающий мир</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="./%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9.html" class="subject-link">
-            <span>🇬🇧 Английский язык</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="tech.html" class="subject-link">
-            <span>✂️ Технология</span>
-            <span class="arrow">→</span>
-        </a>
-        <a href="orkse.html" class="subject-link">
-            <span>🕊️ ОРКСЭ</span>
-            <span class="arrow">→</span>
-        </a>
-    </div>
+        <h1 class="main-title">🎓 В 5 класс с отличием:<br>На сто из ста!</h1>
+        <p class="subtitle">Добро пожаловать в наш онлайн-кабинет! Пройди интерактивные квесты по всем предметам и докажи готовность к 5 классу!</p>
 
-    <div class="footer-note">
-        💡 <strong>Условие перехода:</strong> Выбирай предмет, отвечай на 30 вопросов и делай работу над ошибками до 100% результата!
+        <div class="subjects-grid">
+            <a href="russian.html" class="subject-link">
+                <span>📚 Русский язык</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="math.html" class="subject-link">
+                <span>📐 Математика</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="./%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%B0.html" class="subject-link">
+                <span>📖 Литературное чтение</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="./%D0%BC%D0%B8%D1%80.html" class="subject-link">
+                <span>🌍 Окружающий мир</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="./%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9.html" class="subject-link">
+                <span>🇬🇧 Английский язык</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="tech.html" class="subject-link">
+                <span>✂️ Технология</span>
+                <span class="arrow">→</span>
+            </a>
+            <a href="orkse.html" class="subject-link">
+                <span>🕊️ ОРКСЭ</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+
+        <div class="footer-note">
+            💡 <strong>Правила онлайн-класса:</strong> Выбирай урок, отвечай на 30 вопросов и делай работу над ошибками до 100% результата!
+        </div>
     </div>
 </div>
 
