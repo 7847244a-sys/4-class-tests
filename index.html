@@ -3,57 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тесты 4 класс</title>
+    <title>В 5 класс с отличием: На сто из ста!</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #e8f0fe;
+            color: #202124;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            padding: 16px;
         }
-        .menu-card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+
+        .main-card {
+            background: #ffffff;
             width: 100%;
-            max-width: 400px;
+            max-width: 650px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            padding: 32px 24px;
             text-align: center;
         }
-        h1 {
-            color: #1e293b;
+
+        .main-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1a73e8;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #5f6368;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
             margin-bottom: 24px;
         }
-        .btn {
-            display: block;
-            background-color: #3b82f6;
-            color: white;
+
+        .subject-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 12px;
+            padding: 14px 18px;
             text-decoration: none;
-            padding: 14px;
-            margin: 10px 0;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 18px;
-            transition: background-color 0.2s;
+            color: #202124;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
-        .btn:hover {
-            background-color: #2563eb;
+
+        .subject-link:hover {
+            background-color: #e8f0fe;
+            border-color: #1a73e8;
+            color: #1a73e8;
+            transform: translateY(-2px);
+        }
+
+        .arrow {
+            font-size: 18px;
+            color: #1a73e8;
+        }
+
+        .footer-note {
+            font-size: 14px;
+            color: #70757a;
+            background-color: #f1f3f4;
+            padding: 12px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-<div class="menu-card">
-    <h1>Квесты за 4 класс</h1>
-    <a class="btn" href="english.html">🇬🇧 Английский язык</a>
-    <a class="btn" href="math.html">📐 Математика</a>
-    <a class="btn" href="russian.html">📝 Русский язык</a>
-    <a class="btn" href="literature.html">📚 Литература</a>
-    <a class="btn" href="world.html">🌍 Окружающий мир</a>
+<div class="main-card">
+    <h1 class="main-title">🎓 В 5 класс с отличием:<br>На сто из ста!</h1>
+    <p class="subtitle">Пройди интерактивные квесты по всем предметам на 100% и докажи полную готовность к старшим классам!</p>
+
+    <div class="subjects-grid">
+        <a href="russian.html" class="subject-link">
+            <span>📚 Русский язык</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="math.html" class="subject-link">
+            <span>📐 Математика</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="reading.html" class="subject-link">
+            <span>📖 Литературное чтение</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="world.html" class="subject-link">
+            <span>🌍 Окружающий мир</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="english.html" class="subject-link">
+            <span>🇬🇧 Английский язык</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="технология.html" class="subject-link">
+            <span>✂️ Технология</span>
+            <span class="arrow">→</span>
+        </a>
+        <a href="orkse.html" class="subject-link">
+            <span>🕊️ ОРКСЭ</span>
+            <span class="arrow">→</span>
+        </a>
+    </div>
+
+    <div class="footer-note">
+        💡 <strong>Условие перехода:</strong> Выбирай предмет, отвечай на 30 вопросов и делай работу над ошибками до 100% результата!
+    </div>
 </div>
 
 </body>
