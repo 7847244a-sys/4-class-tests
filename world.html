@@ -3,110 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест по Окружающему миру — 4 класс</title>
+    <title>Квест по окружающему миру — 4 класс</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #f1f8e9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: #33691e; font-size: 22px; margin-bottom: 20px; }
-        .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
-        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
-        .btn:hover { background: #f1f8e9; border-color: #33691e; }
-        .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
-        .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-        .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
-        .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
-        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #33691e; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e8f0fe;
+            color: #202124;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 10px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+
+        .option-btn:active:not(:disabled) {
+            background-color: #e8eaed;
+        }
+
+        .option-btn.correct {
+            background-color: #c6e7ce !important;
+            border-color: #34a853 !important;
+            color: #0d652d !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #f4c7c3 !important;
+            border-color: #ea4335 !important;
+            color: #a50e0e !important;
+        }
+
+        .result-box {
+            display: none;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 24px;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background-color: #1a73e8;
+            color: #ffffff;
+            display: none;
+        }
+
+        /* Финальный экран */
+        .final-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e8eaed;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34a853;
+            transition: width 0.5s ease;
+        }
+
+        .score-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 28px;
+        }
+
+        .restart-btn {
+            background-color: #1a73e8;
+            color: #ffffff;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>🌍 Тест по Окружающему миру (4 класс)</h1>
-    
+<div class="card" id="quiz-card">
     <div id="quiz-screen">
-        <div class="question" id="q-text">Загрузка вопроса...</div>
-        <div class="options" id="opt-container"></div>
+        <div class="header" id="question-counter">Вопрос 1 из 30</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+        <div class="result-box" id="result-box"></div>
+        <div class="nav-footer">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="goPrev()">← Назад</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="goNext()">Дальше →</button>
+        </div>
     </div>
 
-    <div id="result-screen" style="display: none;">
-        <h2>Результат тестирования</h2>
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-fill"></div>
+    <div class="final-screen" id="final-screen">
+        <div class="final-title">Результаты квеста</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
         </div>
-        <div class="result-score" id="percent-text">0%</div>
-        <div class="result-details" id="stats-text"></div>
-        <div class="verdict" id="verdict-box"></div>
-        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
+        <div class="score-text" id="score-text"></div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
     </div>
 </div>
 
 <script>
-    const questions = [
-        { q: "Какая природная зона расположена южнее зоны лесов?", opts: ["Тундра", "Степь", "Арктическая пустыня", "Тайга"], correct: 1 },
-        { q: "Какой орган человека отвечает за дыхание?", opts: ["Сердце", "Желудок", "Лёгкие", "Печень"], correct: 2 },
-        { q: "Самая большая планета Солнечной системы:", opts: ["Марс", "Юпитер", "Земля", "Венера"], correct: 1 },
-        { q: "Основной закон нашей страны называется:", opts: ["Декларация", "Конституция", "Указ", "Кодекс"], correct: 1 },
-        { q: "Какое полезное ископаемое используется как топливо?", opts: ["Каменный уголь", "Гранит", "Песок", "Глина"], correct: 0 }
-    ];
-
-    let currentQ = 0;
-    let score = 0;
-
-    function renderQuestion() {
-        if (currentQ >= questions.length) {
-            showResults();
-            return;
-        }
-        let q = questions[currentQ];
-        document.getElementById("q-text").innerText = `Вопрос ${currentQ + 1} из ${questions.length}: ${q.q}`;
-        let container = document.getElementById("opt-container");
-        container.innerHTML = "";
-        q.opts.forEach((opt, idx) => {
-            let btn = document.createElement("button");
-            btn.className = "btn";
-            btn.innerText = opt;
-            btn.onclick = () => {
-                if (idx === q.correct) score++;
-                currentQ++;
-                renderQuestion();
-            };
-            container.appendChild(btn);
-        });
+var questions = [
+    {
+        q: "1. Какую форму имеет наша планета Земля?",
+        opts: ["Диск на трех китах", "Кубик", "Шар, сплюснутый с полюсов", "Тарелка"],
+        corr: 2,
+        facts: "Разбор: Из-за постоянного вращения наша Земля слегка расширилась на экваторе и сплюснулась у полюсов. Эта форма называется геоид! Диск на китах — это древний миф, а кубических планет не бывает из-за силы гравитации."
+    },
+    {
+        q: "2. Что вызывает смену дня и ночи на Земле?",
+        opts: ["Вращение Земли вокруг своей оси", "Вращение Земли вокруг Солнца", "Вращение Луны вокруг Земли", "Солнце вращается вокруг Земли"],
+        corr: 0,
+        facts: "Разбор: Земля делает полный оборот вокруг себя за 24 часа. Освещенный Солнцем бок — это день, а противоположный — ночь. Вращение вокруг Солнца занимает целый год и меняет времена года."
+    },
+    {
+        q: "3. Какая планета находится ближе всего к Солнцу?",
+        opts: ["Венера", "Марс", "Земля", "Меркурий"],
+        corr: 3,
+        facts: "Разбор: Меркурий — самый близкий сосед Солнца (днем там пекло, ночью — космический холод). Венера — вторая, но самая горячая из-за плотной атмосферы и парникового эффекта. Марс — четвертый, Земля — третья."
+    },
+    {
+        q: "4. Как называется наша Галактика?",
+        opts: ["Андромеда", "Млечный Путь", "Солнечная система", "Вселенная"],
+        corr: 1,
+        facts: "Разбор: Наша огромная звездная система называется Млечный Путь. На ночном небе она выглядит как серебристая дорожка из миллиардов звезд. Андромеда — соседняя галактика, а Солнечная система — лишь наш звездный дом внутри нее."
+    },
+    {
+        q: "5. Почему на Земле происходит смена времён года?",
+        opts: ["Земля то приближается, то удаляется от Солнца", "Из-за наклона земной оси к плоскости орбиты", "Из-за вращения Земли вокруг оси", "Из-за активности на Солнце"],
+        corr: 1,
+        facts: "Разбор: Земля наклонена под углом. Когда северная часть наклоняется к лучам — у нас лето, а в южном полушарии в этот момент — зима. Расстояние до Солнца тут ни при чем."
+    },
+    {
+        q: "6. Какой океан на нашей планете самый большой и глубокий?",
+        opts: ["Атлантический", "Индийский", "Тихий", "Северный Ледовитый"],
+        corr: 2,
+        facts: "Разбор: Тихий океан занимает треть всей планеты. В нем находится Марианская впадина — самая глубокая точка Земли (около 11 км). В Атлантическом океане лежит затонувший некогда Титаник."
+    },
+    {
+        q: "7. Какой цвет преобладает на физической карте в горах?",
+        opts: ["Зеленый", "Синий", "Желтый", "Коричневый"],
+        corr: 3,
+        facts: "Разбор: На картах горы всегда красят в коричневый цвет. Чем выше и суровее горный хребет, тем темнее оттенок. Зеленый цвет — это равнины, а синий — реки, моря и океаны."
+    },
+    {
+        q: "8. Как называется участок суши, со всех сторон окружённый водой?",
+        opts: ["Полуостров", "Остров", "Материк", "Мыс"],
+        corr: 1,
+        facts: "Разбор: Остров полностью отрезан водой от большой земли (крупнейший — Гренландия). Полуостров окружен водой только с трех сторон, а одной стороной прочно держится за большой материк."
+    },
+    {
+        q: "9. Какой из океанов является самым маленьким по размеру?",
+        opts: ["Тихий", "Атлантический", "Индийский", "Северный Ледовитый"],
+        corr: 3,
+        facts: "Разбор: Северный Ледовитый — самый крошечный, мелкий и холодный океан Земли. Большая его часть круглый год скрыта под толстыми панцирями полярного льда."
+    },
+    {
+        q: "10. Какой океан омывает берега Евразии, Африки, Австралии и Антарктиды?",
+        opts: ["Северный Ледовитый", "Индийский", "Атлантический", "Тихий"],
+        corr: 1,
+        facts: "Разбор: Индийский океан — самый теплый в мире, на его берегах всегда лето. Он уютно расположился точно между этими четырьмя материками суши."
+    },
+    {
+        q: "11. Какая природная зона самая холодная и безлесная на севере нашей страны?",
+        opts: ["Тайга", "Степь", "Тундра", "Смешанные леса"],
+        corr: 2,
+        facts: "Разбор: Из-за суровых морозов почва в тундре промерзает на сотни метров (вечная мерзлота). Крупные корни деревьев там выжить не могут, поэтому растут только мхи и лишайники. Тайга — хвойный лес."
+    },
+    {
+        q: "12. Какой зверек является настоящим хозяином тайги?",
+        opts: ["Белый медведь", "Бурый медведь", "Лев", "Пингвин"],
+        corr: 1,
+        facts: "Разбор: Бурый мишка — главный символ таежных лесов России. Он всеяден, очень умен и спит всю зиму в берлоге. Белый медведь — царь ледяной Арктики, а пингвины живут в Антарктиде."
+    },
+    {
+        q: "13. Какая природная зона находится южнее тайги и отличается плодородной почвой?",
+        opts: ["Тундра", "Степь", "Арктика", "Пустыня"],
+        corr: 1,
+        facts: "Разбор: В степях очень тёплое лето. За тысячи лет из степных трав там образовался чернозем — самая богатая и плодородная почва на Земле, идеальная для выращивания хлеба."
+    },
+    {
+        q: "14. Как называется природная зона с очень жарким климатом, где растут колючки?",
+        opts: ["Тайга", "Тундра", "Широколиственные леса", "Пустыня"],
+        corr: 3,
+        facts: "Разбор: Пустыни известны знойным климатом и песками. Местные растения превратили свои листья в колючки, чтобы не испарять драгоценную воду на солнце."
+    },
+    {
+        q: "15. Какое дерево не сбрасывает иголки на зиму и является главным в тайге?",
+        opts: ["Дуб", "Береза", "Ель", "Клен"],
+        corr: 2,
+        facts: "Разбор: Ели и сосны покрыты особым восковым налетом, который защищает хвою от зимних морозов, они зелены круглый год. Береза и дуб сбрасывают листву, чтобы ветви не ломались от тяжелого снега."
+    },
+    {
+        q: "16. Какое растение является символом тундры и любимой едой северных оленей?",
+        opts: ["Папоротник", "Верблюжья колючка", "Кувшинка", "Ягель (олений мох)"],
+        corr: 3,
+        facts: "Разбор: Ягель — это особый выносливый лишайник. Он растет очень медленно (всего по 3-5 мм в год), но северные олени легко находят и раскапывают его копытами даже из-под глубокого снега."
+    },
+    {
+        q: "17. Какой редкий хищник обитает в степях и приспособлен к зною?",
+        opts: ["Морж", "Тигр", "Степная лисица (корсак)", "Белка"],
+        corr: 2,
+        facts: "Разбор: Лисичка корсак меньше обычной лисы, имеет светлую маскировочную шубку, умеет подолгу обходиться без капли воды и виртуозно охотится на грызунов. Белке нужны деревья."
+    },
+    {
+        q: "18. Как называется высотная природная зона, где условия меняются при подъеме вверх?",
+        opts: ["Пустыня", "Горы", "Степь", "Тайга"],
+        corr: 1,
+        facts: "Разбор: Это явление зовется высотной поясностью. В горах с высотой становится всё холоднее, поэтому за один день подъема можно пройти путь от зеленых лесов до ледников на вершине."
+    },
+    {
+        q: "19. Какие почвы образуются в хвойных и смешанных лесах?",
+        opts: ["Черноземы", "Каштановые", "Подзолистые", "Красные"],
+        corr: 2,
+        facts: "Разбор: Частые дожди вымывают из лесной почвы питательные вещества, делая её бледной и серой, очень похожей на обычную золу. Отсюда и пошло название — подзолистые."
+    },
+    {
+        q: "20. Какой природный заповедник находится на юге и восстанавливает леопардов?",
+        opts: ["Байкальский", "Кавказский", "Астраханский", "Кронштадтский"],
+        corr: 1,
+        facts: "Разбор: Кавказский заповедник — это царство каменистых гор. Именно там ученые помогают возродиться редчайшему переднеазиатскому леопарду. На Байкале охраняют пресноводных тюленей — нерп."
+    },
+    {
+        q: "21. Какой орган перекачивает кровь по всему нашему телу, словно насос?",
+        opts: ["Легкие", "Желудок", "Сердце", "Печень"],
+        corr: 2,
+        facts: "Разбор: Наше сердце — это неутомимая мышца размером с кулак. За одну жизнь человека оно делает больше 2 миллиардов ударов без остановок. Легкие нужны для дыхания, желудок варит еду."
+    },
+    {
+        q: "22. Какой орган помогает нам дышать и забирает кислород из воздуха?",
+        opts: ["Легкие", "Почки", "Мозг", "Кишечник"],
+        corr: 0,
+        facts: "Разбор: Два наших легких похожи на мягкие губки из миллионов крошечных пузырьков (альвеол), которые впитывают кислород при каждом вдохе. Почки работают фильтрами отходов в крови."
+    },
+    {
+        q: "23. Какая система органов отвечает за движение нашего тела?",
+        opts: ["Пищеварительная", "Опорно-двигательная", "Нервная", "Кровеносная"],
+        corr: 1,
+        facts: "Разбор: Опорно-двигательная система состоит из скелета (костей) и мышц. Кости дают нашему телу крепкую опору, а мышцы сжимаются и заставляют нас бегать и прыгать."
+    },
+    {
+        q: "24. Как называется главный управляющий центр нашего организма?",
+        opts: ["Сердце", "Печень", "Головной мозг", "Желудок"],
+        corr: 2,
+        facts: "Разбор: Головной мозг управляет всеми мыслями, движениями, речью и даже снами. По нервным волокнам, как по проводам, он отправляет команды всем органам."
+    },
+    {
+        q: "25. В каком веке произошло Крещение Руси при князе Владимире?",
+        opts: ["В X веке (988 год)", "В XV веке", "В XII веке", "В XXI веке"],
+        corr: 0,
+        facts: "Разбор: Крещение Руси произошло в 988 году (десятый век). Это важнейшее историческое событие объединило славянские племена и подтолкнуло развитие грамоты и культуры."
+    },
+    {
+        q: "26. Какой великий князь одержал победу на Куликовом поле в 1380 году?",
+        opts: ["Александр Невский", "Дмитрий Донской", "Иван Грозный", "Ярослав Мудрый"],
+        corr: 1,
+        facts: "Разбор: Дмитрий Донской возглавил русские войска в битве на Куликовом поле на реке Дон и разгромил ордынцев. Александр Невский победил шведов на Неве."
+    },
+    {
+        q: "27. Кто был первым царём единого Российского государства?",
+        opts: ["Петр I", "Иван IV (Грозный)", "Екатерина II", "Михаил Романов"],
+        corr: 1,
+        facts: "Разбор: Иван IV первым официально венчался на царство в Успенском соборе и стал именоваться Царём. Петр I спустя годы стал уже Императором."
+    },
+    {
+        q: "28. В каком году началась Великая Отечественная война?",
+        opts: ["В 1812 году", "В 1914 году", "В 1941 году", "В 1945 году"],
+        corr: 2,
+        facts: "Разбор: Великая Отечественная война началась 22 июня 1941 года, когда на нашу страну напали фашистские захватчики. Великая Победа была одержана в 1945 году. В 1812 была война с Наполеоном."
+    },
+    {
+        q: "29. Какой праздник мы отмечаем в России 12 июня?",
+        opts: ["День Победы", "День Народного Единства", "День России", "День Защитника Отечества"],
+        corr: 2,
+        facts: "Разбор: 12 июня отмечается День России — главный государственный праздник страны. День Победы мы празднуем 9 мая, а День Народного Единства — 4 ноября."
+    },
+    {
+        q: "30. Как называется документ, содержащий главный закон нашей страны?",
+        opts: ["Указ", "Декларация", "Конституция РФ", "Договор"],
+        corr: 2,
+        facts: "Разбор: Конституция Российской Федерации — это основной закон государства, в котором записаны главные права, свободы и обязанности всех граждан страны."
     }
+];
 
-    function showResults() {
-        document.getElementById("quiz-screen").style.display = "none";
-        document.getElementById("result-screen").style.display = "block";
+var currentIndex = 0;
+var userAnswers = new Array(questions.length).fill(null);
+var firstTryCorrect = new Array(questions.length).fill(null);
+
+function renderQuestion() {
+    var item = questions[currentIndex];
+    
+    document.getElementById("question-counter").innerText = "Вопрос " + (currentIndex + 1) + " из " + questions.length;
+    document.getElementById("question-text").innerText = item.q;
+    
+    var container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+    resultBox.innerText = "";
+    
+    var btnNext = document.getElementById("btn-next");
+    btnNext.style.display = "none";
+    
+    var btnPrev = document.getElementById("btn-prev");
+    btnPrev.disabled = (currentIndex === 0);
+    
+    var answered = userAnswers[currentIndex] !== null;
+    
+    for (var i = 0; i < item.opts.length; i++) {
+        var btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = item.opts[i];
+        btn.setAttribute("data-index", i);
         
-        let total = questions.length;
-        let percent = Math.round((score / total) * 100);
-        let errors = total - score;
-
-        document.getElementById("percent-text").innerText = `${percent}%`;
-        document.getElementById("stats-text").innerText = `Правильно: ${score} из ${total} | Ошибок: ${errors}`;
-        
-        let bar = document.getElementById("progress-bar");
-        bar.style.width = percent + "%";
-
-        let verdict = document.getElementById("verdict-box");
-
-        if (percent === 100) {
-            bar.style.backgroundColor = "#2e7d32";
-            verdict.style.backgroundColor = "#e8f5e9";
-            verdict.style.color = "#2e7d32";
-            verdict.innerText = "🎉 Отлично! Всё выполнено на 100%! Покажи этот экран учителю.";
+        if (answered) {
+            btn.disabled = true;
+            var selectedIndex = userAnswers[currentIndex];
+            if (i === item.corr) {
+                btn.classList.add("correct");
+            }
+            if (i === selectedIndex && selectedIndex !== item.corr) {
+                btn.classList.add("wrong");
+            }
         } else {
-            bar.style.backgroundColor = "#d32f2f";
-            verdict.style.backgroundColor = "#ffebee";
-            verdict.style.color = "#c62828";
-            verdict.innerText = "❌ Задание не выполнено! Нажмите «Пройти заново» и сделайте всё на 100%.";
+            btn.onclick = function() {
+                var idx = parseInt(this.getAttribute("data-index"), 10);
+                selectAnswer(idx);
+            };
+        }
+        
+        container.appendChild(btn);
+    }
+    
+    if (answered) {
+        resultBox.innerText = item.facts;
+        resultBox.style.display = "block";
+        btnNext.style.display = "inline-block";
+    }
+}
+
+function selectAnswer(selectedIndex) {
+    var item = questions[currentIndex];
+    userAnswers[currentIndex] = selectedIndex;
+    
+    if (firstTryCorrect[currentIndex] === null) {
+        firstTryCorrect[currentIndex] = (selectedIndex === item.corr);
+    }
+    
+    var buttons = document.querySelectorAll("#options-container .option-btn");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === item.corr) {
+            buttons[i].classList.add("correct");
+        }
+        if (i === selectedIndex && selectedIndex !== item.corr) {
+            buttons[i].classList.add("wrong");
         }
     }
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.innerText = item.facts;
+    resultBox.style.display = "block";
+    
+    document.getElementById("btn-next").style.display = "inline-block";
+}
 
+function goNext() {
+    if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        showFinalScreen();
+    }
+}
+
+function goPrev() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function showFinalScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("final-screen").style.display = "block";
+    
+    var correctFirstTryCount = 0;
+    for (var i = 0; i < firstTryCorrect.length; i++) {
+        if (firstTryCorrect[i] === true) {
+            correctFirstTryCount++;
+        }
+    }
+    
+    var percent = Math.round((correctFirstTryCount / questions.length) * 100);
+    document.getElementById("progress-bar-fill").style.width = percent + "%";
+    document.getElementById("score-text").innerText = "Верных ответов с первой попытки: " + correctFirstTryCount + " из " + questions.length;
+    
+    var feedbackText = "";
+    if (correctFirstTryCount === 30) {
+        feedbackText = "Выполнено на 100%! Ты абсолютный супер-знаток природы и истории! Поздравляем!";
+    } else if (correctFirstTryCount >= 24) {
+        feedbackText = "Выполнено! Отличный результат, ты прекрасно знаешь окружающий мир и готов к 5 классу!";
+    } else {
+        feedbackText = "Не выполнено! Квест пройден не полностью. Попробуй пройти заново, чтобы улучшить свой результат и повторить интересные факты!";
+    }
+    
+    document.getElementById("feedback-text").innerText = feedbackText;
+}
+
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+    firstTryCorrect = new Array(questions.length).fill(null);
+    
+    document.getElementById("final-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+    
     renderQuestion();
+}
+
+window.onload = function() {
+    renderQuestion();
+};
 </script>
 
 </body>
