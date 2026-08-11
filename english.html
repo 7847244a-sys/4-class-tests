@@ -3,91 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Квест по английскому языку (4 класс)</title>
+    <title>Квест по английскому языку — 4 класс</title>
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: #e8f0fe;
-            margin: 0;
-            padding: 15px;
+            color: #202124;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 16px;
         }
 
         .card {
             background: #ffffff;
             width: 100%;
             max-width: 600px;
-            border-radius: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             padding: 24px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #edf2f7;
-            padding-bottom: 12px;
+            color: #5f6368;
+            margin-bottom: 16px;
+            text-align: center;
         }
 
-        .question-container {
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1a73e8;
             margin-bottom: 24px;
         }
 
-        .question-ru {
-            font-size: 16px;
-            color: #4a5568;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .question-box {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2d3748;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            line-height: 1.4;
-        }
-
-        .audio-btn {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
-            transition: transform 0.1s;
-        }
-
-        .audio-btn:active {
-            transform: scale(0.92);
-        }
-
-        .options-grid {
+        .options-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -96,64 +59,44 @@
 
         .option-btn {
             width: 100%;
-            padding: 16px 20px;
+            padding: 16px;
             font-size: 18px;
-            font-weight: 600;
-            color: #2d3748;
-            background-color: #f7fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            font-weight: 500;
             text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 10px;
+            color: #3c4043;
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: background-color 0.15s, border-color 0.15s;
         }
 
-        .option-btn .btn-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-grow: 1;
+        .option-btn:active:not(:disabled) {
+            background-color: #e8eaed;
         }
 
         .option-btn.correct {
             background-color: #c6e7ce !important;
-            border-color: #48bb78 !important;
-            color: #1c4527 !important;
+            border-color: #34a853 !important;
+            color: #0d652d !important;
         }
 
         .option-btn.wrong {
             background-color: #f4c7c3 !important;
-            border-color: #f56565 !important;
-            color: #63171b !important;
-        }
-
-        .option-btn:disabled {
-            cursor: default;
+            border-color: #ea4335 !important;
+            color: #a50e0e !important;
         }
 
         .result-box {
-            background-color: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
-            font-size: 16px;
-            color: #334155;
-            line-height: 1.5;
             display: none;
-        }
-
-        .result-box.visible {
-            display: block;
-        }
-
-        .result-title {
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #1e293b;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 24px;
         }
 
         .nav-footer {
@@ -161,561 +104,461 @@
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
+            padding-top: 12px;
         }
 
         .nav-btn {
             padding: 12px 24px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 10px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
-            transition: opacity 0.2s;
         }
 
-        .nav-btn-prev {
-            background-color: #e2e8f0;
-            color: #475569;
+        .btn-prev {
+            background-color: #f1f3f4;
+            color: #5f6368;
         }
 
-        .nav-btn-next {
-            background-color: #3b82f6;
-            color: white;
-            margin-left: auto;
-            visibility: hidden;
+        .btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
-        .nav-btn-next.visible {
-            visibility: visible;
+        .btn-next {
+            background-color: #1a73e8;
+            color: #ffffff;
+            display: none;
         }
 
         /* Финальный экран */
         .final-screen {
             display: none;
             text-align: center;
-            padding: 20px 0;
-        }
-
-        .final-screen.visible {
-            display: block;
         }
 
         .final-title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 16px;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 24px;
-            background-color: #e2e8f0;
-            border-radius: 12px;
+            height: 20px;
+            background-color: #e8eaed;
+            border-radius: 10px;
             overflow: hidden;
             margin-bottom: 20px;
         }
 
         .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #10b981);
             width: 0%;
-            transition: width 0.8s ease-in-out;
+            background-color: #34a853;
+            transition: width 0.5s ease;
         }
 
         .score-text {
             font-size: 20px;
-            font-weight: 700;
-            color: #334155;
+            font-weight: 600;
             margin-bottom: 16px;
+            color: #1a73e8;
         }
 
-        .feedback-msg {
+        .feedback-text {
             font-size: 18px;
             line-height: 1.5;
-            color: #475569;
-            margin-bottom: 30px;
-            padding: 16px;
-            border-radius: 12px;
-            background-color: #f1f5f9;
+            color: #3c4043;
+            margin-bottom: 28px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .restart-btn {
-            background-color: #10b981;
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
+            background-color: #1a73e8;
+            color: #ffffff;
             padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .home-btn {
+            background-color: #34a853;
+            color: #ffffff;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
         }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <!-- Игровой интерфейс -->
+<div class="card" id="quiz-card">
     <div id="quiz-screen">
-        <div class="header">
-            <span id="counter">Вопрос 1 из 30</span>
-        </div>
-
-        <div class="question-container">
-            <div class="question-ru" id="question-ru"></div>
-            <div class="question-box">
-                <button class="audio-btn" id="q-speech-btn" onclick="speakQuestionText()">🔊</button>
-                <span id="question-en"></span>
-            </div>
-        </div>
-
-        <div class="options-grid" id="options-container">
-            <!-- Кнопки создаются через JS -->
-        </div>
-
-        <div class="result-box" id="result-box">
-            <div class="result-title">💡 Разбор задания:</div>
-            <div id="result-text"></div>
-        </div>
-
+        <div class="header" id="question-counter">Вопрос 1 из 30</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+        <div class="result-box" id="result-box"></div>
         <div class="nav-footer">
-            <button class="nav-btn nav-btn-prev" id="prev-btn" onclick="prevQuestion()">← Назад</button>
-            <button class="nav-btn nav-btn-next" id="next-btn" onclick="nextQuestion()">Дальше →</button>
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="goPrev()">← Назад</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="goNext()">Дальше →</button>
         </div>
     </div>
 
-    <!-- Финальный экран -->
     <div class="final-screen" id="final-screen">
         <div class="final-title">Результаты квеста</div>
-        
-        <div class="score-text" id="score-text">Правильных ответов (с 1 попытки): 0 из 30</div>
-
         <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progress-bar"></div>
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
         </div>
-
-        <div class="feedback-msg" id="feedback-msg"></div>
-
-        <button class="restart-btn" onclick="restartQuiz()">Пройти заново 🔄</button>
+        <div class="score-text" id="score-text"></div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <div class="action-buttons">
+            <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+            <button class="home-btn" id="home-btn" onclick="goHome()">На главную 🏠</button>
+        </div>
     </div>
 </div>
 
 <script>
-    const questions = [
-        {
-            ru: "Вставьте правильную форму глагола (Каждый день):",
-            en: "He ... to school every day.",
-            opts: ["go", "goes", "going", "went"],
-            corr: 1,
-            facts: "С he/she/it в Present Simple добавляется -s/-es. Every day - маркер настоящего времени."
-        },
-        {
-            ru: "Как переводится на русский язык день недели:",
-            en: "Wednesday",
-            opts: ["Понедельник", "Вторник", "Среда", "Пятница"],
-            corr: 2,
-            facts: "Monday-понедельник, Tuesday-вторник, Wednesday-среда, Friday-пятница."
-        },
-        {
-            ru: "Выберите местоимение, которое переводится как «Она»:",
-            en: "She",
-            opts: ["He", "She", "It", "They"],
-            corr: 1,
-            facts: "He - он, She - она, It - оно, They - они."
-        },
-        {
-            ru: "Выберите правильный артикль перед словом apple:",
-            en: "I have got ... apple.",
-            opts: ["a", "an", "the", "-"],
-            corr: 1,
-            facts: "Артикль an ставится перед существительными в ед.ч., начинающимися с гласного звука."
-        },
-        {
-            ru: "Выберите английское числительное для числа 12:",
-            en: "12",
-            opts: ["Two", "Ten", "Twelve", "Twenty"],
-            corr: 2,
-            facts: "two - 2, ten - 10, twelve - 12, twenty - 20."
-        },
-        {
-            ru: "Как по-английски сказать «Семья»?",
-            en: "Family",
-            opts: ["Friend", "Family", "House", "Mother"],
-            corr: 1,
-            facts: "friend - друг, family - семья, house - дом, mother - мама."
-        },
-        {
-            ru: "Вставьте правильную форму глагола to be:",
-            en: "They ... happy.",
-            opts: ["am", "is", "are", "was"],
-            corr: 2,
-            facts: "Для множественного числа (they, we, you) в настоящем времени используется are."
-        },
-        {
-            ru: "Выберите вопрос, который переводится как «Где / Куда»:",
-            en: "Where",
-            opts: ["Что?", "Когда?", "Где?", "Почему?"],
-            corr: 2,
-            facts: "What - что, When - когда, Where - где/куда, Why - почему."
-        },
-        {
-            ru: "Выберите форму множественного числа для слова Cat (Кошка):",
-            en: "Cats",
-            opts: ["Cats", "Cat", "Cates", "Mice"],
-            corr: 0,
-            facts: "Множественное число образуется окончанием -s (cats). Mice (мыши) — исключение."
-        },
-        {
-            ru: "Переведите приветствие:",
-            en: "Good morning",
-            opts: ["Добрый вечер", "Добрый день", "Доброе утро", "Привет"],
-            corr: 2,
-            facts: "Good morning - доброе утро, Good afternoon - добрый день, Good evening - добрый вечер."
-        },
-        {
-            ru: "Найдите лишнее слово в группе:",
-            en: "Apple, Banana, Orange, Tomato",
-            opts: ["Apple", "Banana", "Orange", "Tomato"],
-            corr: 3,
-            facts: "Первые три (apple, banana, orange) — сладкие фрукты, а Tomato — овощ."
-        },
-        {
-            ru: "Выберите верный предлог времени для точного времени (5 часов):",
-            en: "... 5 o'clock",
-            opts: ["in", "at", "on", "under"],
-            corr: 1,
-            facts: "С точным временем на часах используется предлог at."
-        },
-        {
-            ru: "Как по-английски сказать «Я умею плавать»?",
-            en: "I can swim",
-            opts: ["I can swim", "I must swim", "I should swim", "I swim"],
-            corr: 0,
-            facts: "Модальный глагол can означает уметь/мочь. Must — должен, should — следует."
-        },
-        {
-            ru: "Выберите прошедшую форму (Past Simple) глагола Play:",
-            en: "Played",
-            opts: ["Playing", "Played", "Plays", "Play"],
-            corr: 1,
-            facts: "У правильных глаголов прошедшее время образуется добавлением окончания -ed."
-        },
-        {
-            ru: "Выберите английское слово, обозначающее «Книга»:",
-            en: "Book",
-            opts: ["Pen", "Bag", "Book", "Ruler"],
-            corr: 2,
-            facts: "pen - ручка, bag - сумка, book - книга, ruler - линейка."
-        },
-        {
-            ru: "Вставьте притяжательное местоимение «Моя»:",
-            en: "This is ... book.",
-            opts: ["me", "my", "mine", "I"],
-            corr: 1,
-            facts: "Притяжательное местоимение my (мой/моя) ставится прямо перед существительным."
-        },
-        {
-            ru: "Переведите название времени года:",
-            en: "Autumn",
-            opts: ["Весна", "Лето", "Осень", "Зима"],
-            corr: 2,
-            facts: "Spring - весна, Summer - лето, Autumn - осень, Winter - зима."
-        },
-        {
-            ru: "Выберите верный вопрос к фразе «Меня зовут Том»:",
-            en: "My name is Tom",
-            opts: ["How old are you?", "Where are you from?", "What is your name?", "Who are you?"],
-            corr: 2,
-            facts: "What is your name? переводится как «Как тебя зовут?»."
-        },
-        {
-            ru: "Переведите название животного:",
-            en: "Bear",
-            opts: ["Лиса", "Волк", "Медведь", "Заяц"],
-            corr: 2,
-            facts: "fox - лиса, wolf - волк, bear - медведь, hare - заяц."
-        },
-        {
-            ru: "Выберите гласную букву английского алфавита:",
-            en: "Vowel letter",
-            opts: ["B", "E", "G", "R"],
-            corr: 1,
-            facts: "В английском 6 гласных букв (A, E, I, O, U, Y). Буква E — гласная."
-        },
-        {
-            ru: "Вставьте глагол в Past Simple (Слово-маркер: yesterday):",
-            en: "We ... TV yesterday.",
-            opts: ["watch", "watched", "watching", "watches"],
-            corr: 1,
-            facts: "Yesterday (вчера) указывает на прошедшее время Past Simple (-ed)."
-        },
-        {
-            ru: "Переведите название комнаты в доме:",
-            en: "Kitchen",
-            opts: ["Спальня", "Кухня", "Ванная", "Гостиная"],
-            corr: 1,
-            facts: "bedroom - спальня, kitchen - кухня, bathroom - ванная, living room - гостиная."
-        },
-        {
-            ru: "Выберите слово, обозначающее «Большой»:",
-            en: "Big",
-            opts: ["Small", "Big", "Short", "Long"],
-            corr: 1,
-            facts: "small - маленький, big - большой, short - короткий/низкий, long - длинный."
-        },
-        {
-            ru: "Выберите отрицательную форму в Present Simple для I:",
-            en: "I ... like milk.",
-            opts: ["not", "don't", "doesn't", "am not"],
-            corr: 1,
-            facts: "Отрицание в Present Simple для I/you/we/they строится с помощью don't."
-        },
-        {
-            ru: "Как сказать по-английски «Спасибо»?",
-            en: "Thank you",
-            opts: ["Please", "Hello", "Thank you", "Goodbye"],
-            corr: 2,
-            facts: "please - пожалуйста, hello - привет, thank you - спасибо, goodbye - до свидания."
-        },
-        {
-            ru: "Выберите множественное число для слова-исключения Child (Ребенок):",
-            en: "Children",
-            opts: ["Childs", "Children", "Childrens", "Childes"],
-            corr: 1,
-            facts: "Child — слово-исключение. Во множественном числе будет children."
-        },
-        {
-            ru: "Переведите цвет:",
-            en: "Yellow",
-            opts: ["Красный", "Синий", "Зелёный", "Жёлтый"],
-            corr: 3,
-            facts: "red - красный, blue - синий, green - зеленый, yellow - желтый."
-        },
-        {
-            ru: "Выберите подходящее по смыслу слово (Солнце в небе):",
-            en: "The sun is in the ...",
-            opts: ["sky", "ground", "sea", "room"],
-            corr: 0,
-            facts: "Фраза переводится как «Солнце в небе». Sky — это небо."
-        },
-        {
-            ru: "Выберите слово, которое означает «Завтрак»:",
-            en: "Breakfast",
-            opts: ["Lunch", "Dinner", "Breakfast", "Food"],
-            corr: 2,
-            facts: "breakfast - завтрак, lunch - обед, dinner - ужин, food - еда."
-        },
-        {
-            ru: "Переведите выражение возраста:",
-            en: "I am ten",
-            opts: ["Мне 5 лет", "Мне 10 лет", "У меня десять книг", "Я иду домой"],
-            corr: 1,
-            facts: "Глагол to be используется для указания возраста: I am ten — мне 10 лет."
-        }
-    ];
-
-    let currentIndex = 0;
-    let userAnswers = new Array(questions.length).fill(null);
-    let firstAttemptCorrect = new Array(questions.length).fill(null);
-
-    // Функция проверки наличия английского текста
-    function isEnglish(text) {
-        return /[a-zA-Z]/.test(text);
+var questions = [
+    {
+        q: "1. Выберите правильную форму глагола to be: She ... a good pupil.",
+        opts: ["am", "is", "are", "be"],
+        corr: 1,
+        facts: "Разбор: Местоимение She (она) употребляется с формой глагола is. Am используется с I, are — с we/you/they."
+    },
+    {
+        q: "2. Переведите слово «яблоко» на английский язык:",
+        opts: ["Banana", "Apple", "Orange", "Pear"],
+        corr: 1,
+        facts: "Разбор: Apple — яблоко. Banana — банан, Orange — апельсин, Pear — груша."
+    },
+    {
+        q: "3. Какое из этих слов является множественным числом для слова «child» (ребенок)?",
+        opts: ["Childs", "Children", "Childrens", "Childes"],
+        corr: 1,
+        facts: "Разбор: Слово child — исключение. Множественное число образуется путем добавления окончания -ren: children."
+    },
+    {
+        q: "4. Выберите правильное местоимение: Look at ...! He is swimming.",
+        opts: ["he", "his", "him", "himself"],
+        corr: 2,
+        facts: "Разбор: После предлога (at) используется объектное местоимение him (на него)."
+    },
+    {
+        q: "5. Как переводится предложение: «I have got a red cat»?",
+        opts: ["У меня есть рыжая кошка", "У меня есть красная кошка", "Я вижу рыжую кошку", "У меня была кошка"],
+        corr: 0,
+        facts: "Разбор: В английском языке слово red в отношении животных обозначает рыжий цвет."
+    },
+    {
+        q: "6. Выберите глагол в Present Continuous (настоящее длительное время):",
+        opts: ["reads", "readed", "is reading", "will read"],
+        corr: 2,
+        facts: "Разбор: Present Continuous образуется с помощью формы to be (am/is/are) + глагол с окончанием -ing."
+    },
+    {
+        q: "7. Какое слово лишнее в этой группе?",
+        opts: ["Monday", "Tuesday", "Summer", "Friday"],
+        corr: 2,
+        facts: "Разбор: Summer (лето) — это время года. Остальные слова — дни недели (понедельник, вторник, пятница)."
+    },
+    {
+        q: "8. Вставьте пропущенный предлог: We go to school ... 8 o'clock.",
+        opts: ["in", "on", "at", "under"],
+        corr: 2,
+        facts: "Разбор: Для указания точного времени на часах всегда используется предлог at."
+    },
+    {
+        q: "9. Какой числительное означает «тринадцать»?",
+        opts: ["Three", "Thirteen", "Thirty", "Third"],
+        corr: 1,
+        facts: "Разбор: Thirteen — 13. Three — 3, Thirty — 30, Third — третий."
+    },
+    {
+        q: "10. Выберите правильную форму прошедшего времени (Past Simple) для глагола «go»:",
+        opts: ["goed", "went", "gone", "going"],
+        corr: 1,
+        facts: "Разбор: Go — неправильный глагол. Вторая форма прошедшего времени — went."
+    },
+    {
+        q: "11. Какое из этих слов означает «погода»?",
+        opts: ["Winter", "Season", "Weather", "Water"],
+        corr: 2,
+        facts: "Разбор: Weather — погода. Winter — зима, Season — время года, Water — вода."
+    },
+    {
+        q: "12. Найдите антоним (противоположное по смыслу слово) к слову «big»:",
+        opts: ["Small", "Large", "Tall", "Long"],
+        corr: 0,
+        facts: "Разбор: Big (большой) — Small (маленький). Large — крупный, Tall — высокий, Long — длинный."
+    },
+    {
+        q: "13. Вставьте правильный артикль: I can see ... elephant at the zoo.",
+        opts: ["a", "an", "the", "—"],
+        corr: 1,
+        facts: "Разбор: Перед словами, начинающимися с гласного звука (e - elephant), используется неопределенный артикль an."
+    },
+    {
+        q: "14. Выберите верный вариант: There ... a book and two pens on the table.",
+        opts: ["is", "are", "am", "be"],
+        corr: 0,
+        facts: "Разбор: В конструкции There is/are глагол согласуется с первым существительным после него (a book — единственное число -> is)."
+    },
+    {
+        q: "15. Как правильно сказать по-английски «Солнце светит ярко»?",
+        opts: ["The sun shines brightly", "Sun shine bright", "The sun is shine bright", "A sun shines brightly"],
+        corr: 0,
+        facts: "Разбор: Единственный в своем роде объект (Солнце) требует артикля The, глагол в 3-м лице получаeт -s (shines), а наречие — -ly (brightly)."
+    },
+    {
+        q: "16. Выберите правильное вопросительное слово: ... is your name?",
+        opts: ["Who", "What", "Where", "When"],
+        corr: 1,
+        facts: "Разбор: Что / Как — What. Фраза «What is your name?» переводится как «Как тебя зовут?»."
+    },
+    {
+        q: "17. Какое из следующих существительных является неисчисляемым?",
+        opts: ["Apple", "Book", "Milk", "Dog"],
+        corr: 2,
+        facts: "Разбор: Milk (молоко) нельзя посчитать штуками. Яблоки, книги и собак посчитать можно."
+    },
+    {
+        q: "18. Как сказать «лучший» по-английски?",
+        opts: ["Good", "Better", "Best", "The best"],
+        corr: 3,
+        facts: "Разбор: Превосходная степень прилагательного good (хороший) — the best (самый лучший)."
+    },
+    {
+        q: "19. Переведите: «They are playing football now».",
+        opts: ["Они играли в футбол", "Они играют в футбол сейчас", "Они будут играть в футбол", "Они любят футбол"],
+        corr: 1,
+        facts: "Разбор: Конструкция are playing указывает на действие, происходящее прямо сейчас (Present Continuous)."
+    },
+    {
+        q: "20. Какое слово переводится как «завтрак»?",
+        opts: ["Lunch", "Dinner", "Supper", "Breakfast"],
+        corr: 3,
+        facts: "Разбор: Breakfast — завтрак. Lunch — обед, Dinner/Supper — ужин."
+    },
+    {
+        q: "21. Найдите правильное отрицание для предложения: He likes apples.",
+        opts: ["He not likes apples", "He don't like apples", "He doesn't like apples", "He doesn't likes apples"],
+        corr: 2,
+        facts: "Разбор: Для 3-го лица (he/she/it) в Present Simple отрицание образуется с помощью doesn't + смысловой глагол без окончания (like)."
+    },
+    {
+        q: "22. Как пишется числительное «80»?",
+        opts: ["Eighteen", "Eighty", "Eight", "Eighth"],
+        corr: 1,
+        facts: "Разбор: Eighty — 80. Eighteen — 18, Eight — 8."
+    },
+    {
+        q: "23. Выберите правильно записанную дату: «5 мая»",
+        opts: ["5 May", "The fifth of May", "May five", "The five May"],
+        corr: 1,
+        facts: "Разбор: Порядковые числительные с датами употребляются с артиклем the и предлогом of: The fifth of May."
+    },
+    {
+        q: "24. Какая буква пропущена в слове: W _ n t e r (зима)?",
+        opts: ["a", "e", "i", "o"],
+        corr: 2,
+        facts: "Разбор: Слово «зима» по-английски пишется Winter."
+    },
+    {
+        q: "25. Выберите верный модальный глагол: You ... cross the street when the light is red.",
+        opts: ["must", "mustn't", "can", "should"],
+        corr: 1,
+        facts: "Разбор: Mustn't означает категорический запрет: «Нельзя переходить дорогу на красный свет»."
+    },
+    {
+        q: "26. Переведите словосочетание «in front of»:",
+        opts: ["За", "Рядом с", "Перед", "Под"],
+        corr: 2,
+        facts: "Разбор: In front of — перед чем-то/кем-то. Behind — за, Under — под, Next to — рядом с."
+    },
+    {
+        q: "27. Какое из этих слов обозначает профессию?",
+        opts: ["Doctor", "Hospital", "Medicine", "Sick"],
+        corr: 0,
+        facts: "Разбор: Doctor — врач (профессия). Hospital — больница, Medicine — лекарство, Sick — больной."
+    },
+    {
+        q: "28. Как сказать «сегодня теплая погода»?",
+        opts: ["It is warm today", "It was warm today", "It is cold today", "It will be warm today"],
+        corr: 0,
+        facts: "Разбор: Warm — теплый. Cold — холодный. Настоящее время выражается конструкцией It is..."
+    },
+    {
+        q: "29. Выберите правильную форму прошедшего времени для глагола «see»:",
+        opts: ["seed", "saw", "seen", "seeing"],
+        corr: 1,
+        facts: "Разбор: See (видеть) — неправильный глагол. Форма прошедшего времени (Past Simple) — saw."
+    },
+    {
+        q: "30. Как переводится «Good night!»?",
+        opts: ["Доброе утро!", "Добрый день!", "Добрый вечер!", "Спокойной ночи!"],
+        corr: 3,
+        facts: "Разбор: Good night — Спокойной ночи! Good morning — Доброе утро, Good afternoon — Добрый день, Good evening — Добрый вечер."
     }
+];
 
-    // Озвучка английского текста
-    function speakText(text, event) {
-        if (event) event.stopPropagation();
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.85;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
+var currentIndex = 0;
+var userAnswers = new Array(questions.length).fill(null);
 
-    function speakQuestionText() {
-        const q = questions[currentIndex];
-        speakText(q.en);
-    }
-
-    function loadQuestion() {
-        const q = questions[currentIndex];
+function renderQuestion() {
+    var item = questions[currentIndex];
+    
+    document.getElementById("question-counter").innerText = "Вопрос " + (currentIndex + 1) + " из " + questions.length;
+    document.getElementById("question-text").innerText = item.q;
+    
+    var container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+    resultBox.innerText = "";
+    
+    var btnNext = document.getElementById("btn-next");
+    btnNext.style.display = "none";
+    
+    var btnPrev = document.getElementById("btn-prev");
+    btnPrev.disabled = (currentIndex === 0);
+    
+    var answered = userAnswers[currentIndex] !== null;
+    
+    for (var i = 0; i < item.opts.length; i++) {
+        var btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = item.opts[i];
+        btn.setAttribute("data-index", i);
         
-        // Счетчик
-        document.getElementById('counter').innerText = `Вопрос ${currentIndex + 1} из ${questions.length}`;
-        
-        // Русский и английский тексты вопроса
-        document.getElementById('question-ru').innerText = q.ru;
-        document.getElementById('question-en').innerText = q.en;
-
-        // Кнопки навигации
-        const prevBtn = document.getElementById('prev-btn');
-        if (currentIndex === 0) {
-            prevBtn.style.visibility = 'hidden';
-        } else {
-            prevBtn.style.visibility = 'visible';
-        }
-
-        const nextBtn = document.getElementById('next-btn');
-        nextBtn.innerText = (currentIndex === questions.length - 1) ? 'Завершить 🏁' : 'Дальше →';
-
-        // Варианты ответов
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-
-        const hasAnswered = userAnswers[currentIndex] !== null;
-
-        q.opts.forEach((optText, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            
-            const textSpan = document.createElement('span');
-            textSpan.className = 'btn-text';
-            textSpan.innerText = optText;
-
-            // Добавление кнопки озвучки ТОЛЬКО к английским вариантам
-            if (isEnglish(optText)) {
-                const speechBtn = document.createElement('button');
-                speechBtn.className = 'audio-btn';
-                speechBtn.innerText = '🔊';
-                speechBtn.style.width = '32px';
-                speechBtn.style.height = '32px';
-                speechBtn.style.minWidth = '32px';
-                speechBtn.style.fontSize = '14px';
-                speechBtn.onclick = (e) => speakText(optText, e);
-                textSpan.prepend(speechBtn);
-            }
-
-            btn.appendChild(textSpan);
-
-            // Обработка клика
-            btn.onclick = () => selectOption(index);
-
-            // Отрисовка состояния
-            if (hasAnswered) {
-                btn.disabled = true;
-                if (index === q.corr) {
-                    btn.classList.add('correct');
-                }
-                if (index === userAnswers[currentIndex] && index !== q.corr) {
-                    btn.classList.add('wrong');
-                }
-            }
-
-            optionsContainer.appendChild(btn);
-        });
-
-        // Отрисовка блока разбора
-        const resultBox = document.getElementById('result-box');
-        const resultText = document.getElementById('result-text');
-        
-        if (hasAnswered) {
-            resultText.innerText = q.facts;
-            resultBox.classList.add('visible');
-            nextBtn.classList.add('visible');
-        } else {
-            resultBox.classList.remove('visible');
-            nextBtn.classList.remove('visible');
-        }
-    }
-
-    function selectOption(index) {
-        if (userAnswers[currentIndex] !== null) return;
-
-        const q = questions[currentIndex];
-        userAnswers[currentIndex] = index;
-
-        // Фиксация первой попытки
-        if (firstAttemptCorrect[currentIndex] === null) {
-            firstAttemptCorrect[currentIndex] = (index === q.corr);
-        }
-
-        const buttons = document.querySelectorAll('.option-btn');
-        buttons.forEach((btn, idx) => {
+        if (answered) {
             btn.disabled = true;
-            if (idx === q.corr) {
-                btn.classList.add('correct');
+            var selectedIndex = userAnswers[currentIndex];
+            if (i === item.corr) {
+                btn.classList.add("correct");
             }
-            if (idx === index && idx !== q.corr) {
-                btn.classList.add('wrong');
+            if (i === selectedIndex && selectedIndex !== item.corr) {
+                btn.classList.add("wrong");
             }
-        });
-
-        if (isEnglish(q.opts[index])) {
-            speakText(q.opts[index]);
-        }
-
-        document.getElementById('result-text').innerText = q.facts;
-        document.getElementById('result-box').classList.add('visible');
-        document.getElementById('next-btn').classList.add('visible');
-    }
-
-    function nextQuestion() {
-        if (currentIndex < questions.length - 1) {
-            currentIndex++;
-            loadQuestion();
         } else {
-            showFinalScreen();
+            btn.onclick = function() {
+                var idx = parseInt(this.getAttribute("data-index"), 10);
+                selectAnswer(idx);
+            };
+        }
+        
+        container.appendChild(btn);
+    }
+    
+    if (answered) {
+        resultBox.innerText = item.facts;
+        resultBox.style.display = "block";
+        btnNext.style.display = "inline-block";
+    }
+}
+
+function selectAnswer(selectedIndex) {
+    var item = questions[currentIndex];
+    userAnswers[currentIndex] = selectedIndex;
+    
+    var buttons = document.querySelectorAll("#options-container .option-btn");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === item.corr) {
+            buttons[i].classList.add("correct");
+        }
+        if (i === selectedIndex && selectedIndex !== item.corr) {
+            buttons[i].classList.add("wrong");
         }
     }
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.innerText = item.facts;
+    resultBox.style.display = "block";
+    
+    document.getElementById("btn-next").style.display = "inline-block";
+}
 
-    function prevQuestion() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            loadQuestion();
+function goNext() {
+    if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        showFinalScreen();
+    }
+}
+
+function goPrev() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function showFinalScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("final-screen").style.display = "block";
+    
+    var correctCount = 0;
+    for (var i = 0; i < userAnswers.length; i++) {
+        if (userAnswers[i] === questions[i].corr) {
+            correctCount++;
         }
     }
+    
+    var percent = Math.round((correctCount / questions.length) * 100);
+    document.getElementById("progress-bar-fill").style.width = percent + "%";
+    document.getElementById("score-text").innerText = "Правильных ответов: " + correctCount + " из " + questions.length;
+    
+    var feedbackText = "";
+    var homeBtn = document.getElementById("home-btn");
 
-    function showFinalScreen() {
-        document.getElementById('quiz-screen').style.display = 'none';
-        
-        const finalScreen = document.getElementById('final-screen');
-        finalScreen.classList.add('visible');
-
-        const score = firstAttemptCorrect.filter(val => val === true).length;
-        const total = questions.length;
-        const percentage = Math.round((score / total) * 100);
-
-        document.getElementById('score-text').innerText = `Правильных ответов (с 1 попытки): ${score} из ${total}`;
-        
-        const progressBar = document.getElementById('progress-bar');
-        setTimeout(() => {
-            progressBar.style.width = percentage + '%';
-        }, 100);
-
-        const feedbackMsg = document.getElementById('feedback-msg');
-
-        if (score === 30) {
-            feedbackMsg.innerText = "Выполнено на 100%! Ты абсолютный супер-знаток! Поздравляем! 🎉🏆";
-            feedbackMsg.style.color = "#15803d";
-            feedbackMsg.style.backgroundColor = "#dcfce7";
-        } else if (score >= 24) {
-            feedbackMsg.innerText = "Выполнено! Отличный результат, ты прекрасно готов к 5 классу! 👍✨";
-            feedbackMsg.style.color = "#1d4ed8";
-            feedbackMsg.style.backgroundColor = "#dbeafe";
-        } else {
-            feedbackMsg.innerText = "Не выполнено! Квест пройден не полностью. Попробуй пройти заново, чтобы улучшить свой результат и повторить правила! 💪📚";
-            feedbackMsg.style.color = "#b91c1c";
-            feedbackMsg.style.backgroundColor = "#fee2e2";
-        }
+    if (correctCount === questions.length) {
+        feedbackText = "Выполнено на 100%! Ты отлично знаешь английский язык! Поздравляем!";
+        homeBtn.style.display = "inline-block";
+    } else {
+        feedbackText = "Квест пройден на " + percent + "%. Чтобы перейти к выбору следующих предметов, необходимо пройти этот тест на 100%. Нажми «Пройти заново» и исправь ошибки!";
+        homeBtn.style.display = "none";
     }
+    
+    document.getElementById("feedback-text").innerText = feedbackText;
+}
 
-    function restartQuiz() {
-        currentIndex = 0;
-        userAnswers.fill(null);
-        firstAttemptCorrect.fill(null);
-        
-        document.getElementById('progress-bar').style.width = '0%';
-        document.getElementById('final-screen').classList.remove('visible');
-        document.getElementById('quiz-screen').style.display = 'block';
-        
-        loadQuestion();
-    }
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+    
+    document.getElementById("home-btn").style.display = "none";
+    document.getElementById("final-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+    
+    renderQuestion();
+}
 
-    window.onload = loadQuestion;
+function goHome() {
+    window.location.href = "index.html";
+}
+
+window.onload = function() {
+    renderQuestion();
+};
 </script>
 
 </body>
