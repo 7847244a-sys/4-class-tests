@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест по ОРКСЭ — 4 класс</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e8f0fe;
+            color: #202124;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 10px;
+            color: #3c4043;
+            cursor: pointer;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+
+        .option-btn:active:not(:disabled) {
+            background-color: #e8eaed;
+        }
+
+        .option-btn.correct {
+            background-color: #c6e7ce !important;
+            border-color: #34a853 !important;
+            color: #0d652d !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #f4c7c3 !important;
+            border-color: #ea4335 !important;
+            color: #a50e0e !important;
+        }
+
+        .result-box {
+            display: none;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px 8px 8px 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 24px;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-prev {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background-color: #1a73e8;
+            color: #ffffff;
+            display: none;
+        }
+
+        /* Финальный экран */
+        .final-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e8eaed;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34a853;
+            transition: width 0.5s ease;
+        }
+
+        .score-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        .feedback-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #3c4043;
+            margin-bottom: 28px;
+        }
+
+        .restart-btn {
+            background-color: #1a73e8;
+            color: #ffffff;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="quiz-card">
+    <div id="quiz-screen">
+        <div class="header" id="question-counter">Вопрос 1 из 30</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options-container" id="options-container"></div>
+        <div class="result-box" id="result-box"></div>
+        <div class="nav-footer">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="goPrev()">← Назад</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="goNext()">Дальше →</button>
+        </div>
+    </div>
+
+    <div class="final-screen" id="final-screen">
+        <div class="final-title">Результаты квеста</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <div class="score-text" id="score-text"></div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+    </div>
+</div>
+
+<script>
+var questions = [
+    {
+        q: "1. Как называется система правил и норм поведения человека в обществе, основанная на понятиях добра, зла, чести и совести?",
+        opts: ["Этика", "Этикет", "Закон", "Наука"],
+        corr: 0,
+        facts: "Разбор: Этика изучает мораль и правила добра. Этикет — это правила хорошего тона за столом или в гостях, закон — правила государства, наука — изучение мира."
+    },
+    {
+        q: "2. Что является противоположностью понятию \"Добро\" в светской этике?",
+        opts: ["Радость", "Зло", "Правда", "Справедливость"],
+        corr: 1,
+        facts: "Разбор: Главное противостояние в этике — это Добро и Зло. Радость — эмоция, правда — отсутствие лжи, справедливость — честное отношение к людям."
+    },
+    {
+        q: "3. Как называется внутренний голос человека, его способность оценивать свои поступки и отличать хорошее от плохого?",
+        opts: ["Память", "Фантазия", "Совесть", "Характер"],
+        corr: 2,
+        facts: "Разбор: Именно совесть заставляет нас радоваться хорошим делам и переживать (чувствовать стыд), если мы кого-то обидели. Память хранит информацию."
+    },
+    {
+        q: "4. Как звучит Золотое правило нравственности, общее для всех мировых культур и религий?",
+        opts: ["Слушайся только старших", "Поступай с другими так, как хочешь, чтобы поступали с тобой", "Будь всегда самым сильным", "Никогда ни с кем не делись"],
+        corr: 1,
+        facts: "Разбор: Это главное правило человечества. Если хочешь, чтобы тебя уважали и не обижали — начни с себя и делай так же по отношению к людям."
+    },
+    {
+        q: "5. Как называется священная книга христиан?",
+        opts: ["Коран", "Библия", "Тора", "Веды"],
+        corr: 1,
+        facts: "Разбор: Библия — священная книга в христианстве. Коран — главная книга мусульман (в исламе), Тора — в иудаизме, Веды — в индуизме."
+    },
+    {
+        q: "6. Как в светской этике называется бескорыстная забота о благополучии других людей, готовность жертвовать своими интересами?",
+        opts: ["Эгоизм", "Альтруизм", "Жадность", "Равнодушие"],
+        corr: 1,
+        facts: "Разбор: Альтруизм — это искреннее желание помогать без выгоды для себя. Эгоизм — противоположность, когда человек думает только о себе."
+    },
+    {
+        q: "7. Как называется священный город для трех мировых религий (христианства, ислама и иудаизма)?",
+        opts: ["Рим", "Иерусалим", "Афины", "Париж"],
+        corr: 1,
+        facts: "Разбор: Иерусалим — уникальный древний город, где находятся важнейшие исторические святыни трех религиозных культур."
+    },
+    {
+        q: "8. Какое качество человека помогает ему спокойно, без злобы принимать мнения и обычаи других людей, даже если они непривычны?",
+        opts: ["Толерантность (терпимость)", "Гордость", "Скупость", "Зависть"],
+        corr: 0,
+        facts: "Разбор: Терпимость позволяет людям разных культур жить в мире. Гордость, скупость и зависть разрушают дружбу."
+    },
+    {
+        q: "9. Кто является основателем буддизма, одной из древнейших мировых религий?",
+        opts: ["Сиддхартха Гаутама (Будда)", "Моисей", "Мухаммед", "Иисус Христос"],
+        corr: 0,
+        facts: "Разбор: Индийский царевич Сиддхартха Гаутама стал Буддой (Просветленным). Иисус — в христианстве, Мухаммед — в исламе, Моисей — в иудаизме."
+    },
+    {
+        q: "10. Что такое \"мораль\" простыми словами?",
+        opts: ["Правила дорожного движения", "Законы природы", "Одобренные обществом правила поведения", "Школьное расписание"],
+        corr: 2,
+        facts: "Разбор: Мораль — это неписаные правила о том, как быть хорошим человеком: помогать слабым, держать слово, не лгать."
+    },
+    {
+        q: "11. Как называется священная книга мусульман (последователей ислама)?",
+        opts: ["Тора", "Коран", "Библия", "Трипитака"],
+        corr: 1,
+        facts: "Разбор: Коран — священное писание мусульман, продиктованное пророку Мухаммеду. Библия — у христиан, Тора — у иудеев."
+    },
+    {
+        q: "12. Какое этическое понятие означает честность перед самим собой и другими, верность правде?",
+        opts: ["Искренность", "Хитрость", "Лицемерие", "Равнодушие"],
+        corr: 0,
+        facts: "Разбор: Искренний человек говорит то, что думает, и не обманывает друзей. Хитрость и лицемерие — это обман и маски."
+    },
+    {
+        q: "13. Как называется христианский праздник в честь воскресения Иисуса Христа, символом которого являются крашеные яйца и куличи?",
+        opts: ["Рождество", "Пасха", "Масленица", "Троица"],
+        corr: 1,
+        facts: "Разбор: Пасха — главный и самый радостный христианский праздник. Рождество — день рождения Христа, Масленица — проводы зимы."
+    },
+    {
+        q: "14. Что означает этическое понятие \"долг\"?",
+        opts: ["Обязанность взять деньги взаймы", "Внутреннее осознание своих обязанностей перед семьей и Родиной", "Приказ учителя", "Штраф"],
+        corr: 1,
+        facts: "Разбор: Патриотический или сыновний долг — это когда человек сам, без приказов понимает, что должен защищать Родину и заботиться о родителях."
+    },
+    {
+        q: "15. Как называется исламский священный месяц, во время которого мусульмане соблюдают строгий пост от рассвета до заката?",
+        opts: ["Сабантуй", "Рамадан", "Хадж", "Навруз"],
+        corr: 1,
+        facts: "Разбор: Рамадан — месяц духовного очищения и добрых дел. Хадж — паломничество в Мекку, Сабантуй и Навруз — народные праздники."
+    },
+    {
+        q: "16. Какое качество противоположно вежливости и уважению к людям?",
+        opts: ["Хамство (грубость)", "Скромность", "Доброта", "Честность"],
+        corr: 0,
+        facts: "Разбор: Грубость и хамство ранят людей и разрушают общение. Скромность и доброта украшают человека."
+    },
+    {
+        q: "17. Какое сооружение является молитвенным домом в исламе?",
+        opts: ["Церковь", "Мечеть", "Синагога", "Буддийский храм"],
+        corr: 1,
+        facts: "Разбор: Мечеть — здание для молитвы у мусульман (часто с минаретами). Церковь — у христиан, синагога — у иудеев."
+    },
+    {
+        q: "18. Как называется чувство глубокой привязанности, преданности и бескорыстной симпатии к другому человеку, другу или семье?",
+        opts: ["Любовь", "Равнодушие", "Зависть", "Эгоизм"],
+        corr: 0,
+        facts: "Разбор: Любовь — величайшее чувство, основа семьи и дружбы. Зависть и эгоизм разделяют людей."
+    },
+    {
+        q: "19. Кто в христианстве считается первыми людьми на Земле, сотворенными Богом?",
+        opts: ["Ромул и Рем", "Адам и Ева", "Руслан и Людмила", "Иван да Марья"],
+        corr: 1,
+        facts: "Разбор: Согласно Библии, Адам и Ева жили в прекрасном райском саду (Эдеме). Ромул и Рем — основатели Рима из мифов."
+    },
+    {
+        q: "20. Какое понятие означает способность человека разделять чужую боль, сопереживать и помогать тем, кто попал в беду?",
+        opts: ["Сострадание (милосердие)", "Любопытство", "Жадность", "Хвастовство"],
+        corr: 0,
+        facts: "Разбор: Милосердие — это доброе сердце в действии. Любопытство — просто интерес, жадность — нежелание делиться."
+    },
+    {
+        q: "21. Как в иудаизме называется еженедельный день отдыха, когда запрещено работать?",
+        opts: ["Пятница", "Воскресенье", "Шаббат (суббота)", "Понедельник"],
+        corr: 2,
+        facts: "Разбор: Шаббат — священный день покоя, который посвящают семье и молитве. У христиан день отдыха — воскресенье."
+    },
+    {
+        q: "22. Как называется качество человека, готового прощать чужие ошибки и не копить обиду и месть?",
+        opts: ["Великодушие", "Злопамятность", "Упрямство", "Гордыня"],
+        corr: 0,
+        facts: "Разбор: Великодушный человек имеет «большую душу», он умеет прощать. Злопамятный — долго помнит обиды и хочет отомстить."
+    },
+    {
+        q: "23. Какое дерево в традиционной славянской культуре считается символом России, чистоты и девичьей красоты?",
+        opts: ["Пальма", "Дуб", "Береза", "Баобаб"],
+        corr: 2,
+        facts: "Разбор: Береза — любимое дерево в русской культуре, ей посвящали песни и стихи. Дубу приписывали силу и мощь."
+    },
+    {
+        q: "24. Что такое \"этикет\"?",
+        opts: ["Правила проведения научных опытов", "Правила вежливости и хорошего тона в обществе", "Государственный закон", "Спортивные правила"],
+        corr: 1,
+        facts: "Разбор: Этикет учит, как правильно вести себя в театре, за столом, как здороваться и одеваться."
+    },
+    {
+        q: "25. Какое чувство испытывает человек к своей Родине, проявляя любовь и готовность защищать её?",
+        opts: ["Эгоизм", "Патриотизм", "Корысть", "Апатия"],
+        corr: 1,
+        facts: "Разбор: Патриотизм — это любовь к Отечеству, верность своей стране и уважение к её истории. Корысть и эгоизм ищут лишь личную выгоду."
+    },
+    {
+        q: "26. Как называется священная книга иудеев?",
+        opts: ["Тора", "Коран", "Веды", "Колобок"],
+        corr: 0,
+        facts: "Разбор: Тора — главное священное писание в иудаизме, записанное на свитке. Коран принадлежит исламу, а Веды — индуизму."
+    },
+    {
+        q: "27. Какая традиционная ценность является основой крепкого общества и объединяет родителей и детей?",
+        opts: ["Семья", "Богатство", "Карьера", "Развлечения"],
+        corr: 0,
+        facts: "Разбор: Семья — это главный оплот человека, где его любят, поддерживают и воспитывают. Богатство и развлечения не заменят родного дома."
+    },
+    {
+        q: "28. Как называется умение бескорыстно делиться с другими тем, что у тебя есть?",
+        opts: ["Щедрость", "Скупость", "Зависть", "Лень"],
+        corr: 0,
+        facts: "Разбор: Щедрость — это прекрасное качество души, когда человек радостно помогает друзьям и близким. Скупость делает человека одиноким."
+    },
+    {
+        q: "29. Какой праздник в Исламе знаменует окончание священного месяца поста Рамадан?",
+        opts: ["Ураза-байрам", "Рождество", "Ханука", "Песах"],
+        corr: 0,
+        facts: "Разбор: Ураза-байрам (Ид аль-Фитр) — праздник разговения у мусульман. Ханука и Песах — праздники в иудаизме, Рождество — в христианстве."
+    },
+    {
+        q: "30. Какое из этих качеств помогает победить страх и защитить слабого в опасной ситуации?",
+        opts: ["Мужество (храбрость)", "Трусость", "Хитрость", "Жадность"],
+        corr: 0,
+        facts: "Разбор: Мужество позволяет человеку преодолеть испуг ради совершения доброго и благородного поступка. Трусость заставляет прятаться."
+    }
+];
+
+var currentIndex = 0;
+var userAnswers = new Array(questions.length).fill(null);
+var firstTryCorrect = new Array(questions.length).fill(null);
+
+function renderQuestion() {
+    var item = questions[currentIndex];
+    
+    document.getElementById("question-counter").innerText = "Вопрос " + (currentIndex + 1) + " из " + questions.length;
+    document.getElementById("question-text").innerText = item.q;
+    
+    var container = document.getElementById("options-container");
+    container.innerHTML = "";
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.style.display = "none";
+    resultBox.innerText = "";
+    
+    var btnNext = document.getElementById("btn-next");
+    btnNext.style.display = "none";
+    
+    var btnPrev = document.getElementById("btn-prev");
+    btnPrev.disabled = (currentIndex === 0);
+    
+    var answered = userAnswers[currentIndex] !== null;
+    
+    for (var i = 0; i < item.opts.length; i++) {
+        var btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = item.opts[i];
+        btn.setAttribute("data-index", i);
+        
+        if (answered) {
+            btn.disabled = true;
+            var selectedIndex = userAnswers[currentIndex];
+            if (i === item.corr) {
+                btn.classList.add("correct");
+            }
+            if (i === selectedIndex && selectedIndex !== item.corr) {
+                btn.classList.add("wrong");
+            }
+        } else {
+            btn.onclick = function() {
+                var idx = parseInt(this.getAttribute("data-index"), 10);
+                selectAnswer(idx);
+            };
+        }
+        
+        container.appendChild(btn);
+    }
+    
+    if (answered) {
+        resultBox.innerText = item.facts;
+        resultBox.style.display = "block";
+        btnNext.style.display = "inline-block";
+    }
+}
+
+function selectAnswer(selectedIndex) {
+    var item = questions[currentIndex];
+    userAnswers[currentIndex] = selectedIndex;
+    
+    if (firstTryCorrect[currentIndex] === null) {
+        firstTryCorrect[currentIndex] = (selectedIndex === item.corr);
+    }
+    
+    var buttons = document.querySelectorAll("#options-container .option-btn");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === item.corr) {
+            buttons[i].classList.add("correct");
+        }
+        if (i === selectedIndex && selectedIndex !== item.corr) {
+            buttons[i].classList.add("wrong");
+        }
+    }
+    
+    var resultBox = document.getElementById("result-box");
+    resultBox.innerText = item.facts;
+    resultBox.style.display = "block";
+    
+    document.getElementById("btn-next").style.display = "inline-block";
+}
+
+function goNext() {
+    if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        showFinalScreen();
+    }
+}
+
+function goPrev() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function showFinalScreen() {
+    document.getElementById("quiz-screen").style.display = "none";
+    document.getElementById("final-screen").style.display = "block";
+    
+    var correctFirstTryCount = 0;
+    for (var i = 0; i < firstTryCorrect.length; i++) {
+        if (firstTryCorrect[i] === true) {
+            correctFirstTryCount++;
+        }
+    }
+    
+    var percent = Math.round((correctFirstTryCount / questions.length) * 100);
+    document.getElementById("progress-bar-fill").style.width = percent + "%";
+    document.getElementById("score-text").innerText = "Верных ответов с первой попытки: " + correctFirstTryCount + " из " + questions.length;
+    
+    var feedbackText = "";
+    if (correctFirstTryCount === 30) {
+        feedbackText = "Выполнено на 100%! Ты настоящий знаток этики, мудрый и чуткий человек! Поздравляем!";
+    } else if (correctFirstTryCount >= 24) {
+        feedbackText = "Выполнено! Отличный результат, ты прекрасно понимаешь правила дружбы, уважения и культурных традиций!";
+    } else {
+        feedbackText = "Не выполнено! Квест пройден не полностью. Попробуй пройти заново, чтобы улучшить свой результат и повторить важные правила человечности!";
+    }
+    
+    document.getElementById("feedback-text").innerText = feedbackText;
+}
+
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+    firstTryCorrect = new Array(questions.length).fill(null);
+    
+    document.getElementById("final-screen").style.display = "none";
+    document.getElementById("quiz-screen").style.display = "block";
+    
+    renderQuestion();
+}
+
+window.onload = function() {
+    renderQuestion();
+};
+</script>
+
+</body>
+</html>
