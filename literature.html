@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест по Математике — 4 класс</title>
+    <title>Тест по Литературному чтению — 4 класс</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #e8f0fe; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        body { background-color: #fff3e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: #1a73e8; font-size: 22px; margin-bottom: 20px; }
+        h1 { color: #e65100; font-size: 22px; margin-bottom: 20px; }
         .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
         .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
-        .btn:hover { background: #e8f0fe; border-color: #1a73e8; }
+        .btn:hover { background: #fff3e0; border-color: #e65100; }
         .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
         .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
         .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
         .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
         .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
-        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #e65100; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>📐 Тест по Математике (4 класс)</h1>
+    <h1>📚 Тест по Литературе (4 класс)</h1>
     
     <div id="quiz-screen">
         <div class="question" id="q-text">Загрузка вопроса...</div>
@@ -45,11 +45,11 @@
 
 <script>
     const questions = [
-        { q: "Укажите значение выражения: 450 : 5 + 120", opts: ["210", "190", "150", "200"], correct: 0 },
-        { q: "Чему равна площадь прямоугольника со сторонами 8 см и 5 см?", opts: ["13 см²", "40 см²", "26 см²", "35 см²"], correct: 1 },
-        { q: "Найдите неизвестное число: x - 340 = 260", opts: ["500", "600", "800", "580"], correct: 1 },
-        { q: "Сколько минут в 3 часах 15 минутах?", opts: ["195 мин", "180 мин", "135 мин", "215 мин"], correct: 0 },
-        { q: "Какой остаток получится при делении 47 на 5?", opts: ["1", "3", "2", "4"], correct: 2 }
+        { q: "Кто автор «Сказки о царе Салтане»?", opts: ["А.С. Пушкин", "М.Ю. Лермонтов", "И.А. Крылов", "Л.Н. Толстой"], correct: 0 },
+        { q: "Какой жанр у произведения «Ворона и Лисица»?", opts: ["Сказка", "Басня", "Рассказ", "Стихотворение"], correct: 1 },
+        { q: "Кто написал рассказ «Филипок»?", opts: ["Н.Н. Носов", "Л.Н. Толстой", "К.Г. Паустовский", "В.Ю. Драгунский"], correct: 1 },
+        { q: "Как называлась волшебная страна из сказки Волкова?", opts: ["Изумрудный город", "Зазеркалье", "Лукоморье", "Цветочный город"], correct: 0 },
+        { q: "Что такое олицетворение в литературе?", opts: ["Преувеличение", "Придание неодушевленным предметам свойств живых существ", "Сравнение двух предметов"], correct: 1 }
     ];
 
     let currentQ = 0;
