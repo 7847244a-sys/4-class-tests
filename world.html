@@ -1,490 +1,109 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивный квест по Окружающему миру (4 класс)</title>
+    <title>Тест по Окружающему миру — 4 класс</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #e8f0fe;
-            color: #202124;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 16px;
-        }
-
-        .quiz-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header-status {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a73e8;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .question-text {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: 20px;
-            color: #202124;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            width: 100%;
-            padding: 14px 18px;
-            font-size: 16px;
-            text-align: left;
-            background-color: #f8f9fa;
-            border: 2px solid #dadce0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            color: #3c4043;
-            outline: none;
-        }
-
-        .option-btn:not(:disabled):hover, .option-btn:not(:disabled):active {
-            background-color: #f1f3f4;
-            border-color: #1a73e8;
-        }
-
-        .option-btn:disabled {
-            cursor: default;
-        }
-
-        .option-btn.correct {
-            background-color: #c6e7ce !important;
-            border-color: #34a853 !important;
-            color: #137333;
-            font-weight: bold;
-        }
-
-        .option-btn.wrong {
-            background-color: #f4c7c3 !important;
-            border-color: #ea4335 !important;
-            color: #c5221f;
-        }
-
-        .explanation-block {
-            display: none;
-            background-color: #f1f3f4;
-            border-left: 4px solid #1a73e8;
-            padding: 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 15px;
-            line-height: 1.5;
-            color: #3c4043;
-        }
-
-        .explanation-block.visible {
-            display: block;
-        }
-
-        .navigation-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .nav-btn {
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .prev-btn {
-            background-color: #f1f3f4;
-            color: #5f6368;
-        }
-
-        .prev-btn:hover {
-            background-color: #e8eaed;
-        }
-
-        .next-btn {
-            background-color: #1a73e8;
-            color: #ffffff;
-            margin-left: auto;
-        }
-
-        .next-btn:hover {
-            background-color: #1557b0;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .final-screen {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .final-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a73e8;
-            margin-bottom: 12px;
-        }
-
-        .final-text {
-            font-size: 18px;
-            margin-bottom: 24px;
-            color: #3c4043;
-        }
-
-        .restart-btn {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .restart-btn:hover {
-            background-color: #1557b0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #f1f8e9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #33691e; font-size: 22px; margin-bottom: 20px; }
+        .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
+        .btn:hover { background: #f1f8e9; border-color: #33691e; }
+        .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
+        .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+        .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
+        .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
+        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #33691e; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="quiz-card" id="quizCard">
-    <div id="gameScreen">
-        <div class="header-status" id="counterText">Вопрос 1 из 30</div>
-        <div class="question-text" id="questionText">Текст вопроса...</div>
-        <div class="options-container" id="optionsContainer"></div>
-        <div class="explanation-block" id="explanationBlock"></div>
-        
-        <div class="navigation-container">
-            <button class="nav-btn prev-btn" id="prevBtn" onclick="goToPreviousQuestion()">← Назад</button>
-            <button class="nav-btn next-btn" id="nextBtn" onclick="goToNextQuestion()">Дальше →</button>
-        </div>
+<div class="card">
+    <h1>🌍 Тест по Окружающему миру (4 класс)</h1>
+    
+    <div id="quiz-screen">
+        <div class="question" id="q-text">Загрузка вопроса...</div>
+        <div class="options" id="opt-container"></div>
     </div>
 
-    <div id="finalScreen" class="final-screen hidden">
-        <div class="final-title">🎉 Поздравляем! 🎉</div>
-        <div class="final-text" id="finalResultText">Вы успешно прошли тест по Окружающему миру!</div>
-        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+    <div id="result-screen" style="display: none;">
+        <h2>Результат тестирования</h2>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-fill"></div>
+        </div>
+        <div class="result-score" id="percent-text">0%</div>
+        <div class="result-details" id="stats-text"></div>
+        <div class="verdict" id="verdict-box"></div>
+        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
     </div>
 </div>
 
 <script>
     const questions = [
-        {
-            question: "1. Какую форму имеет наша планета Земля?",
-            options: ["Диск на трех китах", "Кубик", "Шар, сплюснутый с полюсов", "Тарелка"],
-            correct: 2,
-            explanation: "Настоящая форма Земли называется геоидом — это сплюснутый у полюсов шар из-за вращения вокруг своей оси. Вариант с диском на китах или плоской тарелкой — древние религиозные мифы. Кубической планета быть не может, так как гравитация всегда стягивает крупные небесные тела к центру, придавая им шарообразную форму."
-        },
-        {
-            question: "2. Что вызывает смену дня и ночи на Земле?",
-            options: ["Вращение Земли вокруг своей оси", "Вращение Земли вокруг Солнца", "Вращение Луны вокруг Земли", "Солнце вращается вокруг Земли"],
-            correct: 0,
-            explanation: "Земля делает полный оборот вокруг своей оси за 24 часа (сутки), поворачиваясь к Солнцу то одной, то другой стороной. Вращение Земли вокруг Солнца занимает 365 дней и вызывает смену времён года. Вращение Луны создает лунные фазы, а утверждение о вращении Солнца вокруг Земли — древнее заблуждение."
-        },
-        {
-            question: "3. Какая планета находится ближе всего к Солнцу?",
-            options: ["Венера", "Марс", "Земля", "Меркурий"],
-            correct: 3,
-            explanation: "Меркурий — самая близкая к Солнцу планета, поэтому днем там раскаленное пекло (+430°C), а ночью лютый мороз (-180°C) из-за отсутствия атмосферы. Венера идет второй (она самая горячая из-за плотного парникового эффекта). Земля — третья, а Марс — четвертая планета от Солнца."
-        },
-        {
-            question: "4. Как называется наша Галактика?",
-            options: ["Андромеда", "Млечный Путь", "Солнечная система", "Вселенная"],
-            correct: 1,
-            explanation: "Наша Галактика называется Млечный Путь, так как на ночном небе она выглядит как белая полоса пролитого молока. Андромеда — это наша ближайшая крупная соседняя галактика. Солнечная система — лишь маленькая звездная система внутри Млечного Пути, а Вселенная включает в себя абсолютно все галактики."
-        },
-        {
-            question: "5. Почему на Земле происходит смена времён года?",
-            options: ["Земля то приближается, то удаляется от Солнца", "Из-за наклона земной оси к плоскости орбиты", "Из-за вращения Земли вокруг оси"],
-            correct: 1,
-            explanation: "Причина смены сезонов — наклон земной оси. Из-за этого полушария получают разное количество солнечного света и тепла в течение года. Изменение расстояния до Солнца мало влияет на климат (зимой в Северном полушарии Земля даже чуть ближе к Солнцу, чем летом). Вращение вокруг оси отвечает за день и ночь."
-        },
-        {
-            question: "6. Какой океан на нашей планете самый большой и глубокий?",
-            options: ["Атлантический", "Индийский", "Тихий", "Северный Ледовитый"],
-            correct: 2,
-            explanation: "Тихий океан покрывает более трети поверхности Земли и содержит самую глубокую точку — Марианскую впадину (около 11 000 метров). Атлантический океан занимает второе место (в нем лежит затонувший «Титаник»). Индийский — самый теплый, а Северный Ледовитый — самый холодный и маленький."
-        },
-        {
-            question: "7. Какой цвет преобладает на физической карте в горах?",
-            options: ["Зеленый", "Синий", "Желтый", "Коричневый"],
-            correct: 3,
-            explanation: "На географических картах коричневым цветом обозначают горы (чем выше вершина, тем темнее оттенок). Зеленым цветом показывают равнины и низменности, синим — водные объекты (озера, моря, океаны), а желтым — возвышенности или песчаные пустыни."
-        },
-        {
-            question: "8. Как называется участок суши, со всех сторон окружённый водой?",
-            options: ["Полуостров", "Остров", "Материк", "Мыс"],
-            correct: 1,
-            explanation: "Остров со всех сторон омывается водой (самый крупный остров на Земле — Гренландия). Полуостров омывается водой только с трех сторон и связан с сушей. Материк — это огромный массив суши (всего их 6). Мыс — это крайний участок суши, вдающийся в воду."
-        },
-        {
-            question: "9. Какой из океанов является самым маленьким по размеру?",
-            options: ["Тихий", "Атлантический", "Индийский", "Северный Ледовитый"],
-            correct: 3,
-            explanation: "Северный Ледовитый океан — самый маленький, мелкий и холодный. Большая часть его акватории покрыта многолетними льдами. Тихий океан — крупнейший в мире, Атлантический — второй по величине, а Индийский занимает третье место."
-        },
-        {
-            question: "10. Какой океан омывает берега Евразии, Африки, Австралии и Антарктиды?",
-            options: ["Северный Ледовитый", "Индийский", "Атлантический", "Тихий"],
-            correct: 1,
-            explanation: "Индийский океан расположен аккуратно между Евразией на севере, Африкой на западе, Австралией на востоке и Антарктидой на юге. Он считается самым теплым океаном планеты. Северный Ледовитый омывает только Евразию и Северную Америку."
-        },
-        {
-            question: "11. Какая природная зона самая холодная и безлесная на севере нашей страны?",
-            options: ["Тайга", "Степь", "Тундра", "Смешанные леса"],
-            correct: 2,
-            explanation: "В тундре из-за сурового климата и вечной мерзлоты деревья не могут пустить глубокие корни, поэтому там растут карликовые растения, мхи и лишайники. Тайга — это густой хвойный лес. Степь — безлесная равнина на юге. Смешанные леса состоят из хвойных и лиственных деревьев."
-        },
-        {
-            question: "12. Какой зверек является настоящим хозяином тайги?",
-            options: ["Белый медведь", "Бурый медведь", "Лев", "Пингвин"],
-            correct: 1,
-            explanation: "Бурый медведь — крупный всеядный хищник и главный символ густой таежной зоны, на зиму он залегает в берлогу. Белый медведь обитает в ледяной Арктике. Лев живет в саваннах Африки, а пингвины обитают в Южном полушарии (в Антарктиде)."
-        },
-        {
-            question: "13. Какая природная зона находится южнее тайги и отличается плодородной почвой?",
-            options: ["Тундра", "Степь", "Арктика", "Пустыня"],
-            correct: 1,
-            explanation: "Степь — это травянистая равнина. Именно в степях благодаря перегниванию степных трав сформировался чернозем — самая плодородная почва на Земле. Тундра и Арктика расположены на севере и бедны растительностью, а в пустыне почва песчаная и сухая."
-        },
-        {
-            question: "14. Как называется природная зона с очень жарким климатом, где растут колючки?",
-            options: ["Тайга", "Тундра", "Широколиственные леса", "Пустыня"],
-            correct: 3,
-            explanation: "В пустынях выпадает крайне мало осадков. Чтобы выжить в жару, растения (например, верблюжья колючка и кактусы) превратили листья в колючки для уменьшения испарения воды. В тайге и широколиственных лесах влаги достаточно, а в тундре холодно."
-        },
-        {
-            question: "15. Какое дерево не сбрасывает иголки на зиму и является главным в тайге?",
-            options: ["Дуб", "Береза", "Ель", "Клен"],
-            correct: 2,
-            explanation: "Ель (как и сосна) — вечнозеленое хвойное дерево, хвоинки которого покрыты защитным восковым налетом от морозов. Береза, дуб и клен — лиственные деревья, сбрасывающие листву осенью, чтобы ветви не сломались под тяжестью снега."
-        },
-        {
-            question: "16. Какое растение является символом тундры и любимой едой северных оленей?",
-            options: ["Папоротник", "Верблюжья колючка", "Кувшинка", "Ягель (олений мох)"],
-            correct: 3,
-            explanation: "Ягель (олений мох) — это лишайник, служащий основным кормом для северных оленей зимой. Он растет очень медленно — всего по 3–5 мм в год. Папоротник растет в лесах, верблюжья колючка — в пустыне, а кувшинка — водное растение."
-        },
-        {
-            question: "17. Какой редкий хищник обитает в степях и приспособлен к зною?",
-            options: ["Морж", "Тигр", "Степная лисица (корсак)", "Белка"],
-            correct: 2,
-            explanation: "Корсак — мелкая степная лисица с большими ушами, прекрасно приспособленная к жаркому сухому климату и ночной охоте на грызунов. Моржи живут на крайнем севере во льдах, тигры предпочитают тайгу или джунгли, а белкам необходимы деревья."
-        },
-        {
-            question: "18. Как называется высотная природная зона, где условия меняются при подъеме вверх?",
-            options: ["Пустыня", "Горы", "Степь", "Тайга"],
-            correct: 1,
-            explanation: "В горах наблюдается высотная поясность: с подъемом на каждые 1000 метров температура воздуха падает, поэтому у подножия может быть жаркое лето, а на вершине — вечные льды и снега. На равнинах (в степи, тайге, пустыне) зональность меняется от севера к югу."
-        },
-        {
-            question: "19. Какие почвы образуются в хвойных и смешанных лесах?",
-            options: ["Черноземы", "Каштановые", "Подзолистые", "Красные"],
-            correct: 2,
-            explanation: "Подзолистые почвы формируются под хвойными лесами: обильные дожди вымывают питательные вещества вглубь, образуя светлый слой, похожий на золу. Черноземы образуются в степях, каштановые почвы — в сухих степях, а красные — в субтропиках."
-        },
-        {
-            question: "20. Какой природный заповедник находится на юге и восстанавливает леопардов?",
-            options: ["Байкальский", "Кавказский", "Астраханский", "Кронштадтский"],
-            correct: 1,
-            explanation: "В Кавказском биосферном заповеднике действует уникальная программа по возвращению в дикую природу переднеазиатского леопарда. В Байкальском заповеднике охраняют природу озера Байкал и нерп, а Астраханский заповедник славится дельтой Волги и лотосами."
-        },
-        {
-            question: "21. Какой орган перекачивает кровь по всему нашему телу, словно насос?",
-            options: ["Легкие", "Желудок", "Сердце", "Печень"],
-            correct: 2,
-            explanation: "Сердце — это сильный мышечный орган-насос, который непрерывно качает кровь по сосудам. За жизнь человека оно делает более 2 миллиардов ударов. Легкие отвечают за дыхание, желудок переваривает пищу, а печень очищает кровь от токсинов."
-        },
-        {
-            question: "22. Какой орган помогает нам дышать и забирает кислород из воздуха?",
-            options: ["Легкие", "Почки", "Мозг", "Кишечник"],
-            correct: 0,
-            explanation: "Легкие состоят из миллионов микроскопических пузырьков (альвеол), через которые кислород поступает в кровь, а углекислый газ выводится наружу. Почки фильтруют жидкие отходы, мозг управляет телом, а кишечник всасывает питательные вещества."
-        },
-        {
-            question: "23. Какой орган является главным командным центром нашего тела?",
-            options: ["Сердце", "Желудок", "Почки", "Головной мозг"],
-            correct: 3,
-            explanation: "Головной мозг — главный центр управления: он обрабатывает сигналы от всех органов чувств, отвечает за мысли, память, эмоции и движения. Сердце перекачивает кровь, желудок лишь подает сигналы голода, а почки очищают организм."
-        },
-        {
-            question: "24. Какая система органов отвечает за то, чтобы наш скелет мог двигаться?",
-            options: ["Пищеварительная", "Мышечная", "Дыхательная", "Нервная"],
-            correct: 1,
-            explanation: "Мышечная система прикреплена к костям скелета. Сокращаясь, мышцы работают как канаты и приводят в движение суставы и кости. Пищеварение перерабатывает еду, дыхание обеспечивает кислородом, а нервная система передает команды."
-        },
-        {
-            question: "25. Что защищает наш головной мозг от повреждений?",
-            options: ["Позвоночник", "Череп", "Грудная клетка", "Кожа"],
-            correct: 1,
-            explanation: "Череп — это прочная костная коробка, надежно защищающая чувствительную ткань головного мозга от ударов. Позвоночник защищает спинной мозг, грудная клетка бережет сердце и легкие, а кожа защищает тело от микробов и внешней среды."
-        },
-        {
-            question: "26. Какой город был первой столицей Древней Руси?",
-            options: ["Киев", "Москва", "Санкт-Петербург", "Владимир"],
-            correct: 0,
-            explanation: "Киев стал столицей Древнерусского государства в IX веке («Мать городов русских»). Москва была впервые упомянута лишь в 1147 году и стала столицей позже, а Санкт-Петербург был построен Петром I и стал столицей в 1712 году."
-        },
-        {
-            question: "27. Какой князь крестил Русь в 988 году?",
-            options: ["Ярослав Мудрый", "Александр Невский", "Олег Вещий", "Владимир"],
-            correct: 3,
-            explanation: "Князь Владимир Святославич (Владимир Красное Солнышко) принял христианство и крестил жителей Киева в водах Днепра в 988 году. Ярослав Мудрый создавал законы и школы, Александр Невский защищал Русь от рыцарей, а Олег объединил Новгород и Киев."
-        },
-        {
-            question: "28. Кто из русских правителей первым стал носить титул императора?",
-            options: ["Иван Грозный", "Петр I Великий", "Екатерина II", "Дмитрий Донской"],
-            correct: 1,
-            explanation: "Петр I Великий в 1721 году после победы в Северной войне провозгласил Россию Империей и стал её первым Императором. Иван Грозный в 1547 году первым венчался на царство (стал Царем), а Дмитрий Донской был великим московским князем."
-        },
-        {
-            question: "29. В каком году произошло знаменитое Ледовое побоище?",
-            options: ["988 год", "1612 год", "1242 год", "1380 год"],
-            correct: 2,
-            explanation: "Ледовое побоище произошло 5 апреля 1242 года на льду Чудского озера, где князь Александр Невский разгромил немецких рыцарей-крестоносцев. В 988 году было Крещение Руси, в 1380 — Куликовская битва, а в 1612 — освобождение Москвы ополчением Минина и Пожарского."
-        },
-        {
-            question: "30. Как называется постоянное пехотное войско, созданное Иваном Грозным?",
-            options: ["Рыцари", "Партизаны", "Дружинники", "Стрельцы"],
-            correct: 3,
-            explanation: "Стрельцы — первое регулярное пехотное войско на Руси, созданное Иваном Грозным в XVI веке. Они были вооружены пищалями (ружьями) и бердышами (топорами), носили яркие кафтаны и получали жалование. Дружинники воевали в древности, а рыцари — европейские воины."
-        }
+        { q: "Какая природная зона расположена южнее зоны лесов?", opts: ["Тундра", "Степь", "Арктическая пустыня", "Тайга"], correct: 1 },
+        { q: "Какой орган человека отвечает за дыхание?", opts: ["Сердце", "Желудок", "Лёгкие", "Печень"], correct: 2 },
+        { q: "Самая большая планета Солнечной системы:", opts: ["Марс", "Юпитер", "Земля", "Венера"], correct: 1 },
+        { q: "Основной закон нашей страны называется:", opts: ["Декларация", "Конституция", "Указ", "Кодекс"], correct: 1 },
+        { q: "Какое полезное ископаемое используется как топливо?", opts: ["Каменный уголь", "Гранит", "Песок", "Глина"], correct: 0 }
     ];
 
-    let currentQuestionIndex = 0;
-    const userAnswers = new Array(questions.length).fill(null);
-
-    const counterText = document.getElementById('counterText');
-    const questionText = document.getElementById('questionText');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const explanationBlock = document.getElementById('explanationBlock');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const gameScreen = document.getElementById('gameScreen');
-    const finalScreen = document.getElementById('finalScreen');
+    let currentQ = 0;
+    let score = 0;
 
     function renderQuestion() {
-        const q = questions[currentQuestionIndex];
-        
-        counterText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
-        questionText.textContent = q.question;
-        optionsContainer.innerHTML = '';
-        
-        const hasAnswered = userAnswers[currentQuestionIndex] !== null;
-
-        q.options.forEach((optionText, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.textContent = optionText;
-            
-            if (hasAnswered) {
-                btn.disabled = true;
-                const selectedIdx = userAnswers[currentQuestionIndex];
-                if (idx === q.correct) {
-                    btn.classList.add('correct');
-                }
-                if (idx === selectedIdx && selectedIdx !== q.correct) {
-                    btn.classList.add('wrong');
-                }
-            } else {
-                btn.onclick = () => selectOption(idx);
-            }
-
-            optionsContainer.appendChild(btn);
+        if (currentQ >= questions.length) {
+            showResults();
+            return;
+        }
+        let q = questions[currentQ];
+        document.getElementById("q-text").innerText = `Вопрос ${currentQ + 1} из ${questions.length}: ${q.q}`;
+        let container = document.getElementById("opt-container");
+        container.innerHTML = "";
+        q.opts.forEach((opt, idx) => {
+            let btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if (idx === q.correct) score++;
+                currentQ++;
+                renderQuestion();
+            };
+            container.appendChild(btn);
         });
+    }
 
-        if (hasAnswered) {
-            explanationBlock.textContent = q.explanation;
-            explanationBlock.classList.add('visible');
-            nextBtn.classList.remove('hidden');
+    function showResults() {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        
+        let total = questions.length;
+        let percent = Math.round((score / total) * 100);
+        let errors = total - score;
+
+        document.getElementById("percent-text").innerText = `${percent}%`;
+        document.getElementById("stats-text").innerText = `Правильно: ${score} из ${total} | Ошибок: ${errors}`;
+        
+        let bar = document.getElementById("progress-bar");
+        bar.style.width = percent + "%";
+
+        let verdict = document.getElementById("verdict-box");
+
+        if (percent === 100) {
+            bar.style.backgroundColor = "#2e7d32";
+            verdict.style.backgroundColor = "#e8f5e9";
+            verdict.style.color = "#2e7d32";
+            verdict.innerText = "🎉 Отлично! Всё выполнено на 100%! Покажи этот экран учителю.";
         } else {
-            explanationBlock.classList.remove('visible');
-            nextBtn.classList.add('hidden');
+            bar.style.backgroundColor = "#d32f2f";
+            verdict.style.backgroundColor = "#ffebee";
+            verdict.style.color = "#c62828";
+            verdict.innerText = "❌ Задание не выполнено! Нажмите «Пройти заново» и сделайте всё на 100%.";
         }
-
-        if (currentQuestionIndex === 0) {
-            prevBtn.classList.add('hidden');
-        } else {
-            prevBtn.classList.remove('hidden');
-        }
-
-        if (currentQuestionIndex === questions.length - 1 && hasAnswered) {
-            nextBtn.textContent = 'Завершить →';
-        } else {
-            nextBtn.textContent = 'Дальше →';
-        }
-    }
-
-    function selectOption(index) {
-        userAnswers[currentQuestionIndex] = index;
-        renderQuestion();
-    }
-
-    function goToNextQuestion() {
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            renderQuestion();
-        } else {
-            showFinalScreen();
-        }
-    }
-
-    function goToPreviousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            renderQuestion();
-        }
-    }
-
-    function showFinalScreen() {
-        gameScreen.classList.add('hidden');
-        finalScreen.classList.remove('hidden');
-    }
-
-    function restartQuiz() {
-        currentQuestionIndex = 0;
-        userAnswers.fill(null);
-        finalScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
-        renderQuestion();
     }
 
     renderQuestion();
