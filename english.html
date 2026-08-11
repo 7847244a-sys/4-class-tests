@@ -1,0 +1,737 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивный квест по Английскому языку (4 класс)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #e8f0fe;
+            color: #202124;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .quiz-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-status {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            color: #202124;
+        }
+
+        .speaker-btn {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: #1a73e8;
+            color: white;
+            border-radius: 50%;
+            border: none;
+            text-align: center;
+            line-height: 28px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .speaker-btn:hover {
+            background: #1557b0;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .option-btn {
+            flex-grow: 1;
+            padding: 14px 18px;
+            font-size: 16px;
+            text-align: left;
+            background-color: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            color: #3c4043;
+            outline: none;
+        }
+
+        .option-btn:not(:disabled):hover, .option-btn:not(:disabled):active {
+            background-color: #f1f3f4;
+            border-color: #1a73e8;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .option-btn.correct {
+            background-color: #c6e7ce !important;
+            border-color: #34a853 !important;
+            color: #137333;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: #f4c7c3 !important;
+            border-color: #ea4335 !important;
+            color: #c5221f;
+        }
+
+        .explanation-block {
+            display: none;
+            background-color: #f1f3f4;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #3c4043;
+        }
+
+        .explanation-block.visible {
+            display: block;
+        }
+
+        .navigation-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .prev-btn {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .prev-btn:hover {
+            background-color: #e8eaed;
+        }
+
+        .next-btn {
+            background-color: #1a73e8;
+            color: #ffffff;
+            margin-left: auto;
+        }
+
+        .next-btn:hover {
+            background-color: #1557b0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .final-screen {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .final-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a73e8;
+            margin-bottom: 12px;
+        }
+
+        .final-text {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #3c4043;
+        }
+
+        .restart-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .restart-btn:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card" id="quizCard">
+    <div id="gameScreen">
+        <div class="header-status" id="counterText">Вопрос 1 из 30</div>
+        <div class="question-text" id="questionContainer">
+            <span id="questionText">Текст вопроса...</span>
+            <span id="questionSpeaker"></span>
+        </div>
+        <div class="options-container" id="optionsContainer"></div>
+        <div class="explanation-block" id="explanationBlock"></div>
+        
+        <div class="navigation-container">
+            <button class="nav-btn prev-btn" id="prevBtn" onclick="goToPreviousQuestion()">← Назад</button>
+            <button class="nav-btn next-btn" id="nextBtn" onclick="goToNextQuestion()">Дальше →</button>
+        </div>
+    </div>
+
+    <div id="finalScreen" class="final-screen hidden">
+        <div class="final-title">🎉 Поздравляем! 🎉</div>
+        <div class="final-text" id="finalResultText">Вы успешно прошли тест по Английскому языку!</div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+    </div>
+</div>
+
+<script>
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    const questions = [
+        {
+            question: "1. Выберите правильную форму глагола: He ... to school every day.",
+            speakQuestion: "He to school every day",
+            options: [
+                { text: "go", speak: "go" },
+                { text: "goes", speak: "goes" },
+                { text: "going", speak: "going" },
+                { text: "went", speak: "went" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: goes. В времени Present Simple с местоимениями he/she/it к глаголу прибавляется окончание -s/-es. Фраза «every day» (каждый день) является маркером этого времени.\n• go — форма без окончания, используется с I/we/you/they (I go to school).\n• going — герундий или причастие (используется с to be в Present Continuous: He is going).\n• went — форма прошедшего времени (Past Simple: He went yesterday)."
+        },
+        {
+            question: "2. Как переводится слово \"Wednesday\"?",
+            speakQuestion: "Wednesday",
+            options: [
+                { text: "Понедельник", speak: "Monday" },
+                { text: "Вторник", speak: "Tuesday" },
+                { text: "Среда", speak: "Wednesday" },
+                { text: "Пятница", speak: "Friday" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Среда. Wednesday [ˈwenzdeɪ] переводится как «среда».\n• Понедельник — это Monday.\n• Вторник — это Tuesday.\n• Пятница — это Friday."
+        },
+        {
+            question: "3. Какое местоимение переводится как \"Она\"?",
+            speakQuestion: null,
+            options: [
+                { text: "He", speak: "He" },
+                { text: "She", speak: "She" },
+                { text: "It", speak: "It" },
+                { text: "They", speak: "They" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: She. Личное местоимение «She» переводится как «Она».\n• He — переводится как «Он» (для мужчин и мальчиков).\n• It — переводится как «Оно/Он/Она» для неодушевленных предметов и животных.\n• They — переводится как «Они» (для множественного числа)."
+        },
+        {
+            question: "4. Выберите правильный артикль: I have got ... apple.",
+            speakQuestion: "I have got an apple",
+            options: [
+                { text: "a", speak: "a" },
+                { text: "an", speak: "an" },
+                { text: "the", speak: "the" },
+                { text: "-", speak: null }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: an. Неопределенный артикль «an» используется перед исчисляемыми существительными в единственном числе, которые начинаются с гласного звука (apple [ˈæpl]).\n• a — используется перед согласными звуками (a banana, a book).\n• the — определенный артикль, указывающий на конкретный предмет.\n• - — пропуск артикля здесь невозможен, так как apple — исчисляемое существительное в единственном числе."
+        },
+        {
+            question: "5. Какое числительное переводится как \"12\"?",
+            speakQuestion: null,
+            options: [
+                { text: "Two", speak: "Two" },
+                { text: "Ten", speak: "Ten" },
+                { text: "Twelve", speak: "Twelve" },
+                { text: "Twenty", speak: "Twenty" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Twelve. Числительное «Twelve» переводится как «12».\n• Two — переводится как «2».\n• Ten — переводится как «10».\n• Twenty — переводится как «20»."
+        },
+        {
+            question: "6. Переведите слово \"Семья\":",
+            speakQuestion: null,
+            options: [
+                { text: "Friend", speak: "Friend" },
+                { text: "Family", speak: "Family" },
+                { text: "House", speak: "House" },
+                { text: "Mother", speak: "Mother" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Family. Слово «Family» переводится как «Семья».\n• Friend — переводится как «Друг».\n• House — переводится как «Дом».\n• Mother — переводится как «Мама»."
+        },
+        {
+            question: "7. Выберите правильную форму глагола TO BE: They ... happy.",
+            speakQuestion: "They happy",
+            options: [
+                { text: "am", speak: "am" },
+                { text: "is", speak: "is" },
+                { text: "are", speak: "are" },
+                { text: "was", speak: "was" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: are. В настоящем времени для местоимения множественного числа «They» используется форма глагола to be — «are» (They are happy = Они счастливы).\n• am — используется только с местоимением «I» (I am).\n• is — используется с местоимениями единственного числа he/she/it (He is happy).\n• was — форма прошедшего времени для единственного числа (They требует «were» в прошедшем времени)."
+        },
+        {
+            question: "8. На какой вопрос отвечает слово \"Where\"?",
+            speakQuestion: "Where",
+            options: [
+                { text: "Что?", speak: "What" },
+                { text: "Когда?", speak: "When" },
+                { text: "Где?", speak: "Where" },
+                { text: "Почему?", speak: "Why" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Где?. Вопросительное слово «Where» переводится как «Где?» или «Куда?».\n• Что? — это вопросительное слово «What».\n• Когда? — это вопросительное слово «When».\n• Почему? — это вопросительное слово «Why»."
+        },
+        {
+            question: "9. Выберите множественное число слова \"Cat\":",
+            speakQuestion: "Cat",
+            options: [
+                { text: "Cats", speak: "Cats" },
+                { text: "Cat", speak: "Cat" },
+                { text: "Cates", speak: "Cates" },
+                { text: "Mice", speak: "Mice" }
+            ],
+            correct: 0,
+            explanation: "Правильный ответ: Cats. Множественное число большинства правильных существительных образуется прибавлением окончания -s к форме единственного числа (Cat -> Cats).\n• Cat — это форма единственного числа (кошка).\n• Cates — неверное написание с лишней буквой e.\n• Mice — это множественное число слова «mouse» (мышь), исключение."
+        },
+        {
+            question: "10. Как переводится фраза \"Good morning\"?",
+            speakQuestion: "Good morning",
+            options: [
+                { text: "Добрый вечер", speak: "Good evening" },
+                { text: "Добрый день", speak: "Good afternoon" },
+                { text: "Доброе утро", speak: "Good morning" },
+                { text: "Привет", speak: "Hello" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Доброе утро. Фраза «Good morning» используется в качестве приветствия в первой половине дня и переводится как «Доброе утро».\n• Добрый вечер — переводится как «Good evening».\n• Добрый день — переводится как «Good afternoon».\n• Привет — переводится как «Hello» или «Hi»."
+        },
+        {
+            question: "11. Какое слово является лишним в этой группе: Apple, Banana, Orange, Tomato?",
+            speakQuestion: "Apple, Banana, Orange, Tomato",
+            options: [
+                { text: "Apple", speak: "Apple" },
+                { text: "Banana", speak: "Banana" },
+                { text: "Orange", speak: "Orange" },
+                { text: "Tomato", speak: "Tomato" }
+            ],
+            correct: 3,
+            explanation: "Правильный ответ: Tomato. Слово «Tomato» (помидор) лишнее, так как с кулинарной и обиходной точки зрения относится к овощам (vegetables).\n• Apple (яблоко) — сладостный фрукт.\n• Banana (банан) — фрукт.\n• Orange (апельсин) — цитрусовый фрукт."
+        },
+        {
+            question: "12. Выберите правильный предлог времени: ... 5 o'clock.",
+            speakQuestion: "5 o'clock",
+            options: [
+                { text: "in", speak: "in" },
+                { text: "at", speak: "at" },
+                { text: "on", speak: "on" },
+                { text: "under", speak: "under" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: at. Для обозначения точного времени на часах всегда используется предлог времени «at» (at 5 o'clock = в 5 часов).\n• in — используется с месяцами, годами и временами года (in May, in 2024, in summer).\n• on — используется с днями недели и датами (on Monday, on the 1st of May).\n• under — предлог места, означающий «под» (under the table)."
+        },
+        {
+            question: "13. Как сказать на английском \"Я умею плавать\"?",
+            speakQuestion: null,
+            options: [
+                { text: "I can swim", speak: "I can swim" },
+                { text: "I must swim", speak: "I must swim" },
+                { text: "I should swim", speak: "I should swim" },
+                { text: "I swim", speak: "I swim" }
+            ],
+            correct: 0,
+            explanation: "Правильный ответ: I can swim. Модальный глагол «can» выражает физическую возможность и умение что-то делать («умею/могу»).\n• I must swim — переводится как «Я должен плавать» (выражает долг или жесткую необходимость).\n• I should swim — переводится как «Мне следует поплавать» (совет или рекомендация).\n• I swim — переводится как «Я плаваю» (простое действие без акцента на умение)."
+        },
+        {
+            question: "14. Какая форма прошедшего времени (Past Simple) у правильного глагола \"Play\"?",
+            speakQuestion: "Play",
+            options: [
+                { text: "Playing", speak: "Playing" },
+                { text: "Played", speak: "Played" },
+                { text: "Plays", speak: "Plays" },
+                { text: "Play", speak: "Play" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Played. Глагол «play» — правильный, поэтому форма прошедшего времени (Past Simple) образуется путем прибавления окончания -ed (played).\n• Playing — причастие с окончанием -ing, используется во временах группы Continuous.\n• Plays — форма настоящего времени (Present Simple) для he/she/it.\n• Play — начальная форма глагола (инфинитив)."
+        },
+        {
+            question: "15. Как пишется слово \"Книга\" по-английски?",
+            speakQuestion: null,
+            options: [
+                { text: "Pen", speak: "Pen" },
+                { text: "Bag", speak: "Bag" },
+                { text: "Book", speak: "Book" },
+                { text: "Ruler", speak: "Ruler" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Book. Слово «Book» переводится как «книга».\n• Pen — переводится как «ручка».\n• Bag — переводится как «сумка» или «портфель».\n• Ruler — переводится как «линейка»."
+        },
+        {
+            question: "16. Выберите правильное притяжательное местоимение: This is ... book. (Моя книга).",
+            speakQuestion: "This is my book",
+            options: [
+                { text: "me", speak: "me" },
+                { text: "my", speak: "my" },
+                { text: "mine", speak: "mine" },
+                { text: "I", speak: "I" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: my. Притяжательное местоимение «my» (мой/моя/моё/мои) ставится непосредственно перед существительным (my book).\n• me — объектное местоимение (мне/меня: Help me).\n• mine — абсолютная форма притяжательного местоимения, после которой существительное НЕ ставится (This book is mine).\n• I — личное местоимение, подлежащее (Я: I read a book)."
+        },
+        {
+            question: "17. Как переводится слово \"Autumn\"?",
+            speakQuestion: "Autumn",
+            options: [
+                { text: "Весна", speak: "Spring" },
+                { text: "Лето", speak: "Summer" },
+                { text: "Осень", speak: "Autumn" },
+                { text: "Зима", speak: "Winter" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Осень. Слово «Autumn» [ˈɔːtəm] переводится как «Осень» (в американском английском также используется «Fall»).\n• Весна — это Spring.\n• Лето — это Summer.\n• Зима — это Winter."
+        },
+        {
+            question: "18. Выберите правильный вопрос к предложению \"My name is Tom\":",
+            speakQuestion: "My name is Tom",
+            options: [
+                { text: "How old are you?", speak: "How old are you?" },
+                { text: "Where are you from?", speak: "Where are you from?" },
+                { text: "What is your name?", speak: "What is your name?" },
+                { text: "Who are you?", speak: "Who are you?" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: What is your name?. Переводится как «Как тебя зовут?» и служит вопросом к ответу «My name is Tom».\n• How old are you? — «Сколько тебе лет?» (ответ: I am 10 years old).\n• Where are you from? — «Откуда ты?» (ответ: I am from Russia).\n• Who are you? — «Кто ты?»."
+        },
+        {
+            question: "19. Какое животное переводится как \"Bear\"?",
+            speakQuestion: "Bear",
+            options: [
+                { text: "Лиса", speak: "Fox" },
+                { text: "Волк", speak: "Wolf" },
+                { text: "Медведь", speak: "Bear" },
+                { text: "Заяц", speak: "Hare" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Медведь. Слово «Bear» [beə] переводится как «Медведь».\n• Лиса — это Fox.\n• Волк — это Wolf.\n• Заяц — это Hare (или Rabbit — кролик)."
+        },
+        {
+            question: "20. Какая из этих букв является гласной в английском алфавите?",
+            speakQuestion: null,
+            options: [
+                { text: "B", speak: "B" },
+                { text: "E", speak: "E" },
+                { text: "G", speak: "G" },
+                { text: "R", speak: "R" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: E. Буква «E» — гласная. В английском алфавите 6 гласных букв: A, E, I, O, U, Y.\n• Буквы B, G, R являются согласными (consonants)."
+        },
+        {
+            question: "21. Выберите правильную форму глагола: We ... TV yesterday.",
+            speakQuestion: "We TV yesterday",
+            options: [
+                { text: "watch", speak: "watch" },
+                { text: "watched", speak: "watched" },
+                { text: "watching", speak: "watching" },
+                { text: "watches", speak: "watches" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: watched. Маркер времени «yesterday» (вчера) указывает на прошедшее время Past Simple. Для правильного глагола watch прибавляем окончание -ed (watched).\n• watch — форма настоящего времени Present Simple для I/we/you/they.\n• watching — форма с -ing для времен группы Continuous.\n• watches — форма настоящего времени для he/she/it."
+        },
+        {
+            question: "22. Как переводится слово \"Kitchen\"?",
+            speakQuestion: "Kitchen",
+            options: [
+                { text: "Спальня", speak: "Bedroom" },
+                { text: "Кухня", speak: "Kitchen" },
+                { text: "Ванная", speak: "Bathroom" },
+                { text: "Гостиная", speak: "Living room" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Кухня. Слово «Kitchen» [ˈkɪtʃɪn] переводится как «Кухня».\n• Спальня — это Bedroom.\n• Ванная — это Bathroom.\n• Гостиная — это Living room."
+        },
+        {
+            question: "23. Какое слово переводится как \"Большой\"?",
+            speakQuestion: null,
+            options: [
+                { text: "Small", speak: "Small" },
+                { text: "Big", speak: "Big" },
+                { text: "Short", speak: "Short" },
+                { text: "Long", speak: "Long" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Big. Прилагательное «Big» переводится как «Большой».\n• Small — переводится как «Маленький» (антоним слова Big).\n• Short — переводится как «Короткий» или «Низкий».\n• Long — переводится как «Длинный»."
+        },
+        {
+            question: "24. Выберите правильное отрицание: I ... like milk.",
+            speakQuestion: "I like milk",
+            options: [
+                { text: "not", speak: "not" },
+                { text: "don't", speak: "don't" },
+                { text: "doesn't", speak: "doesn't" },
+                { text: "am not", speak: "am not" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: don't. В Present Simple для образования отрицания с местоимением «I» используется вспомогательный глагол do + not = don't (I don't like milk).\n• not — отрицательная частица, сама по себе без вспомогательного глагола с смысловым глаголом like не употребляется.\n• doesn't — используется для отрицания в 3-м лице единственного числа (he/she/it doesn't).\n• am not — используется для отрицания глагола to be (I am not a doctor), но не со смысловым глаголом like."
+        },
+        {
+            question: "25. Как сказать по-английски \"Спасибо\"?",
+            speakQuestion: null,
+            options: [
+                { text: "Please", speak: "Please" },
+                { text: "Hello", speak: "Hello" },
+                { text: "Thank you", speak: "Thank you" },
+                { text: "Goodbye", speak: "Goodbye" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Thank you. Фраза «Thank you» (или более кратко «Thanks») переводится как «Спасибо».\n• Please — переводится как «Пожалуйста» (при просьбе).\n• Hello — переводится как «Здравствуйте» или «Привет».\n• Goodbye — переводится как «До свидания»."
+        },
+        {
+            question: "26. Какое множественное число у слова-исключения \"Child\" (Ребенок)?",
+            speakQuestion: "Child",
+            options: [
+                { text: "Childs", speak: "Childs" },
+                { text: "Children", speak: "Children" },
+                { text: "Childrens", speak: "Childrens" },
+                { text: "Childes", speak: "Childes" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Children. Слово «Child» является существительным-исключением: во множественном числе оно меняется на «Children» (дети).\n• Childs — ошибочное добавление -s к форме единственного числа.\n• Childrens — ошибочное двойное множественное число (к слову children -s уже не добавляется).\n• Childes — неверная форма."
+        },
+        {
+            question: "27. Как переводится цвет \"Yellow\"?",
+            speakQuestion: "Yellow",
+            options: [
+                { text: "Красный", speak: "Red" },
+                { text: "Синий", speak: "Blue" },
+                { text: "Зелёный", speak: "Green" },
+                { text: "Жёлтый", speak: "Yellow" }
+            ],
+            correct: 3,
+            explanation: "Правильный ответ: Жёлтый. Слово «Yellow» переводится как «Жёлтый».\n• Красный — это Red.\n• Синий — это Blue.\n• Зелёный — это Green."
+        },
+        {
+            question: "28. Выберите правильное слово по смыслу: The sun is in the ...",
+            speakQuestion: "The sun is in the sky",
+            options: [
+                { text: "sky", speak: "sky" },
+                { text: "ground", speak: "ground" },
+                { text: "sea", speak: "sea" },
+                { text: "room", speak: "room" }
+            ],
+            correct: 0,
+            explanation: "Правильный ответ: sky. Предложение переводится как «Солнце находится в небе». Слово «sky» означает «небо».\n• ground — переводится как «земля/грунт».\n• sea — переводится как «море».\n• room — переводится как «комната»."
+        },
+        {
+            question: "29. Какое слово переводится как \"Завтрак\"?",
+            speakQuestion: null,
+            options: [
+                { text: "Lunch", speak: "Lunch" },
+                { text: "Dinner", speak: "Dinner" },
+                { text: "Breakfast", speak: "Breakfast" },
+                { text: "Food", speak: "Food" }
+            ],
+            correct: 2,
+            explanation: "Правильный ответ: Breakfast. Слово «Breakfast» переводится как «Завтрак».\n• Lunch — переводится как «Обед» (или второй завтрак).\n• Dinner — переводится как «Ужин» (или основной прием пищи в течение дня).\n• Food — общее слово, означающее «Еда/пища»."
+        },
+        {
+            question: "30. Как переводится фраза \"I am ten\"?",
+            speakQuestion: "I am ten",
+            options: [
+                { text: "Мне 5 лет", speak: "I am five" },
+                { text: "Мне 10 лет", speak: "I am ten" },
+                { text: "У меня десять книг", speak: "I have got ten books" },
+                { text: "Я иду домой", speak: "I am going home" }
+            ],
+            correct: 1,
+            explanation: "Правильный ответ: Мне 10 лет. Для выражения возраста в английском языке используется конструкция «I am + [число]» (I am ten = Мне 10 лет).\n• Мне 5 лет — переводилось бы как «I am five».\n• У меня десять книг — переводилось бы как «I have got ten books».\n• Я иду домой — переводилось бы как «I am going home»."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    const userAnswers = new Array(questions.length).fill(null);
+
+    const counterText = document.getElementById('counterText');
+    const questionText = document.getElementById('questionText');
+    const questionSpeaker = document.getElementById('questionSpeaker');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const explanationBlock = document.getElementById('explanationBlock');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const gameScreen = document.getElementById('gameScreen');
+    const finalScreen = document.getElementById('finalScreen');
+
+    function renderQuestion() {
+        const q = questions[currentQuestionIndex];
+        
+        counterText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
+        questionText.textContent = q.question;
+        
+        if (q.speakQuestion) {
+            questionSpeaker.innerHTML = `<button class="speaker-btn" onclick="speakText('${q.speakQuestion.replace(/'/g, "\\'")}')">🔊</button>`;
+        } else {
+            questionSpeaker.innerHTML = '';
+        }
+
+        optionsContainer.innerHTML = '';
+        const hasAnswered = userAnswers[currentQuestionIndex] !== null;
+
+        q.options.forEach((opt, idx) => {
+            const row = document.createElement('div');
+            row.className = 'option-row';
+
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt.text;
+            
+            if (hasAnswered) {
+                btn.disabled = true;
+                const selectedIdx = userAnswers[currentQuestionIndex];
+                if (idx === q.correct) {
+                    btn.classList.add('correct');
+                }
+                if (idx === selectedIdx && selectedIdx !== q.correct) {
+                    btn.classList.add('wrong');
+                }
+            } else {
+                btn.onclick = () => selectOption(idx);
+            }
+
+            row.appendChild(btn);
+
+            if (opt.speak) {
+                const spkBtn = document.createElement('button');
+                spkBtn.className = 'speaker-btn';
+                spkBtn.textContent = '🔊';
+                spkBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    speakText(opt.speak);
+                };
+                row.appendChild(spkBtn);
+            }
+
+            optionsContainer.appendChild(row);
+        });
+
+        if (hasAnswered) {
+            explanationBlock.textContent = q.explanation;
+            explanationBlock.classList.add('visible');
+            nextBtn.classList.remove('hidden');
+        } else {
+            explanationBlock.classList.remove('visible');
+            nextBtn.classList.add('hidden');
+        }
+
+        if (currentQuestionIndex === 0) {
+            prevBtn.classList.add('hidden');
+        } else {
+            prevBtn.classList.remove('hidden');
+        }
+
+        if (currentQuestionIndex === questions.length - 1 && hasAnswered) {
+            nextBtn.textContent = 'Завершить →';
+        } else {
+            nextBtn.textContent = 'Дальше →';
+        }
+    }
+
+    function selectOption(index) {
+        userAnswers[currentQuestionIndex] = index;
+        renderQuestion();
+    }
+
+    function goToNextQuestion() {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            renderQuestion();
+        } else {
+            showFinalScreen();
+        }
+    }
+
+    function goToPreviousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            renderQuestion();
+        }
+    }
+
+    function showFinalScreen() {
+        gameScreen.classList.add('hidden');
+        finalScreen.classList.remove('hidden');
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        userAnswers.fill(null);
+        finalScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        renderQuestion();
+    }
+
+    renderQuestion();
+</script>
+
+</body>
+</html>
