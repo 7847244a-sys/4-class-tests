@@ -1,490 +1,109 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивный квест по Русскому языку (4 класс)</title>
+    <title>Тест по Русскому языку — 4 класс</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #e8f0fe;
-            color: #202124;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 16px;
-        }
-
-        .quiz-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header-status {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a73e8;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .question-text {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: 20px;
-            color: #202124;
-        }
-
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            width: 100%;
-            padding: 14px 18px;
-            font-size: 16px;
-            text-align: left;
-            background-color: #f8f9fa;
-            border: 2px solid #dadce0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            color: #3c4043;
-            outline: none;
-        }
-
-        .option-btn:not(:disabled):hover, .option-btn:not(:disabled):active {
-            background-color: #f1f3f4;
-            border-color: #1a73e8;
-        }
-
-        .option-btn:disabled {
-            cursor: default;
-        }
-
-        .option-btn.correct {
-            background-color: #c6e7ce !important;
-            border-color: #34a853 !important;
-            color: #137333;
-            font-weight: bold;
-        }
-
-        .option-btn.wrong {
-            background-color: #f4c7c3 !important;
-            border-color: #ea4335 !important;
-            color: #c5221f;
-        }
-
-        .explanation-block {
-            display: none;
-            background-color: #f1f3f4;
-            border-left: 4px solid #1a73e8;
-            padding: 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 15px;
-            line-height: 1.5;
-            color: #3c4043;
-        }
-
-        .explanation-block.visible {
-            display: block;
-        }
-
-        .navigation-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .nav-btn {
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .prev-btn {
-            background-color: #f1f3f4;
-            color: #5f6368;
-        }
-
-        .prev-btn:hover {
-            background-color: #e8eaed;
-        }
-
-        .next-btn {
-            background-color: #1a73e8;
-            color: #ffffff;
-            margin-left: auto;
-        }
-
-        .next-btn:hover {
-            background-color: #1557b0;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .final-screen {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .final-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a73e8;
-            margin-bottom: 12px;
-        }
-
-        .final-text {
-            font-size: 18px;
-            margin-bottom: 24px;
-            color: #3c4043;
-        }
-
-        .restart-btn {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .restart-btn:hover {
-            background-color: #1557b0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #fce4ec; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: #ffffff; width: 100%; max-width: 500px; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #c2185b; font-size: 22px; margin-bottom: 20px; }
+        .question { font-size: 18px; margin-bottom: 20px; color: #202124; font-weight: 500; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .btn { padding: 14px; background: #f8f9fa; border: 2px solid #dadce0; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; color: #3c4043; }
+        .btn:hover { background: #fce4ec; border-color: #c2185b; }
+        .progress-container { background: #e0e0e0; border-radius: 10px; height: 24px; width: 100%; margin: 20px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 0.4s; }
+        .result-score { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+        .result-details { font-size: 18px; color: #5f6368; margin-bottom: 20px; }
+        .verdict { font-size: 18px; font-weight: bold; padding: 15px; border-radius: 10px; }
+        .restart-btn { margin-top: 20px; padding: 12px 24px; background: #c2185b; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="quiz-card" id="quizCard">
-    <div id="gameScreen">
-        <div class="header-status" id="counterText">Вопрос 1 из 30</div>
-        <div class="question-text" id="questionText">Текст вопроса...</div>
-        <div class="options-container" id="optionsContainer"></div>
-        <div class="explanation-block" id="explanationBlock"></div>
-        
-        <div class="navigation-container">
-            <button class="nav-btn prev-btn" id="prevBtn" onclick="goToPreviousQuestion()">← Назад</button>
-            <button class="nav-btn next-btn" id="nextBtn" onclick="goToNextQuestion()">Дальше →</button>
-        </div>
+<div class="card">
+    <h1>📖 Тест по Русскому языку (4 класс)</h1>
+    
+    <div id="quiz-screen">
+        <div class="question" id="q-text">Загрузка вопроса...</div>
+        <div class="options" id="opt-container"></div>
     </div>
 
-    <div id="finalScreen" class="final-screen hidden">
-        <div class="final-title">🎉 Поздравляем! 🎉</div>
-        <div class="final-text" id="finalResultText">Вы успешно прошли тест по Русскому языку!</div>
-        <button class="restart-btn" onclick="restartQuiz()">Пройти заново</button>
+    <div id="result-screen" style="display: none;">
+        <h2>Результат тестирования</h2>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-fill"></div>
+        </div>
+        <div class="result-score" id="percent-text">0%</div>
+        <div class="result-details" id="stats-text"></div>
+        <div class="verdict" id="verdict-box"></div>
+        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
     </div>
 </div>
 
 <script>
     const questions = [
-        {
-            question: "1. Какая часть речи обозначает действие предмета и отвечает на вопросы \"что делать?\", \"что сделать?\"?",
-            options: ["Существительное", "Прилагательное", "Глагол", "Местоимение"],
-            correct: 2,
-            explanation: "Глагол обозначает действие предмета и отвечает на вопросы «что делать?», «что сделать?». Имя существительное обозначает предмет (кто? что?). Имя прилагательное обозначает признак предмета (какой? какая?). Местоимение указывает на предметы и признаки, но не называет их (я, ты, он, этот)."
-        },
-        {
-            question: "2. В каком слове безударную гласную в корне НЕЛЬЗЯ проверить ударением?",
-            options: ["Вода", "Трава", "Корова", "Зима"],
-            correct: 2,
-            explanation: "Корова — словарное слово, написание непроверяемой безударной гласной «о» нужно запомнить. В остальных словах гласную можно проверить ударением: «вода» — во́ды, «трава» — тра́вы, «зима» — зи́мы."
-        },
-        {
-            question: "3. Укажите слово, в котором пропущена непроизносимая согласная буква \"Т\":",
-            options: ["Прекрас..ный", "Опас..ный", "Радос..ный", "Ужас..ный"],
-            correct: 2,
-            explanation: "Радостный — пишется с буквой «т», так как проверочное слово «радость». В словах «прекрасный» (прекрасен), «опасный» (опасен) и «ужасный» (ужасен) буква «т» не пишется."
-        },
-        {
-            question: "4. В каком падеже имя существительное ВСЕГДА употребляется без предлога?",
-            options: ["Именительный", "Родительный", "Дательный", "Предложный"],
-            correct: 0,
-            explanation: "Именительный падеж — это начальная форма существительного, он всегда употребляется без предлогов. Предложный падеж всегда употребляется с предлогами. Родительный и Дательный падежи могут употребляться как с предлогами, так и без них."
-        },
-        {
-            question: "5. Каким членом предложения является выделенное слово: \"Яркое СОЛНЦЕ светит в окно\"?",
-            options: ["Подлежащее", "Сказуемое", "Дополнение", "Обстоятельство"],
-            correct: 0,
-            explanation: "Слово «СОЛНЦЕ» отвечает на вопрос «что?» и обозначает предмет, совершающий действие (солнце светит) — это главное подлежащее. Сказуемое отвечает на вопрос «что делает?» (светит). Дополнение отвечает на косвенные вопросы, а обстоятельство — на вопросы «где?», «куда?», «как?»."
-        },
-        {
-            question: "6. Укажите глагол-исключение II спряжения:",
-            options: ["Читать", "Писать", "Смотреть", "Идти"],
-            correct: 2,
-            explanation: "Смотреть — глагол на -еть, который входит в число 11 глаголов-исключений и относится ко II спряжению. Глаголы «читать» и «писать» оканчиваются на -ать и относятся к I спряжению. Глагол «идти» — I спряжения с ударными личными окончаниями (идёшь, идёт)."
-        },
-        {
-            question: "7. В какой строчке во всех словах на конце после шипящих пишется мягкий знак (Ь)?",
-            options: ["Грач, борщ", "Рожь, мышь", "Луч, товарищ", "Шалаш, нож"],
-            correct: 1,
-            explanation: "«Рожь» и «мышь» — существительные 3-го склонения женского рода, поэтому на конце после шипящих пишется Ь. В словах «грач», «борщ», «луч», «товарищ», «шалаш», «нож» Ь не пишется, так как это существительные 2-го склонения мужского рода."
-        },
-        {
-            question: "8. Какое слово является антонимом к слову \"Широкий\"?",
-            options: ["Длинный", "Большой", "Узкий", "Просторный"],
-            correct: 2,
-            explanation: "Антонимы — это слова с противоположным значением. Узкий противоположно по значению слову «широкий». «Просторный» — это синоним к слову «широкий». «Длинный» указывает на протяженность в длину, а «большой» — на размер в целом."
-        },
-        {
-            question: "9. Укажите предложение с однородными членами:",
-            options: ["Наступила золотая осень", "В саду росли яблоки, сливы и груши", "Дети пошли в густой лес"],
-            correct: 1,
-            explanation: "В предложении «В саду росли яблоки, сливы и груши» есть однородные подлежащие (что росли? — яблоки, сливы, груши), отвечающие на один вопрос и связанное с одним словом. В первом и третьем предложениях однородных членов нет."
-        },
-        {
-            question: "10. Какое из этих слов является именем существительным 3-го склонения?",
-            options: ["Мама", "Окно", "Ночь", "Стол"],
-            correct: 2,
-            explanation: "«Ночь» — существительное женского рода с нулевым окончанием в именительном падеже, относится к 3-му склонению. «Мама» — 1-е склонение (женский род, окончание -а). «Окно» — 2-е склонение (средний род, окончание -о). «Стол» — 2-е склонение (мужской род с нулевым окончанием)."
-        },
-        {
-            question: "11. Какое окончание имеет глагол I спряжения во 2-м лице единственного числа (ты)?",
-            options: ["-ишь", "-ешь", "-ит", "-ет"],
-            correct: 1,
-            explanation: "Глаголы I спряжения во 2-м лице единственного числа (местоимение «ты») имеют окончание -ешь (или -ёшь), например: читаешь, поёшь. Окончание -ишь пишется у глаголов II спряжения (смотришь). Окончания -ет и -ит относятся к 3-му лицу (он, она)."
-        },
-        {
-            question: "12. В каком слове пропущена разделительная буква \"Ъ\"?",
-            options: ["С..ехал", "В..юга", "Сем..я", "П..еса"],
-            correct: 0,
-            explanation: "«Съехал» пишется с разделительным Ъ, так как он стоит после приставки на согласный «с-» перед гласной «е». В словах «вьюга», «семья» и «пьеса» пишется разделительный Ь в корне слова."
-        },
-        {
-            question: "13. Найдите слово с орфографической ошибкой:",
-            options: ["Свечка", "Ночка", "Дочка", "Жизнь (если написать \"Жызнь\")"],
-            correct: 3,
-            explanation: "По правилу «ЖИ-ШИ пиши с буквой И» в слове «жизнь» необходимо писать «и». Написание «жызнь» является орфографической ошибкой. В сочетаниях ЧК и ЧН (свечка, ночка, дочка) мягкий знак не пишется."
-        },
-        {
-            question: "14. Какое слово является проверочным для безударной гласной в слове \"Л..сной\"?",
-            options: ["Лесник", "Лесок", "Лес", "Лесистый"],
-            correct: 2,
-            explanation: "Проверочным словом является «лес», так как в нем проверяемая гласная находится под ударением. В словах «лесник», «лесок» и «лесистый» гласная в корне также остается безударной."
-        },
-        {
-            question: "15. Сколько звуков в слове \"Юла\"?",
-            options: ["3 звука", "4 звука", "2 звука", "5 звуков"],
-            correct: 1,
-            explanation: "Буква «Ю» в самом начале слова обозначает два звука: [й'] и [у]. Слово произносится как [й'у-л-а] и состоит из 3 букв и 4 звуков."
-        },
-        {
-            question: "16. Какая часть слова служит для связи слов в предложении?",
-            options: ["Корень", "Суффикс", "Приставка", "Окончание"],
-            correct: 3,
-            explanation: "Окончание — это изменяемая часть слова, которая служит для связи слов в предложении. Корень выражает основное значение слова. Приставка и суффикс служат для образования новых слов."
-        },
-        {
-            question: "17. Укажите слово, которое состоит только из корня и окончания:",
-            options: ["Вода", "Поездка", "Лесной", "Домик"],
-            correct: 0,
-            explanation: "В слове «Вода» корень вод- и окончание -а. В слове «Поездка» есть приставка по-, корень езд-, суффикс -к- и окончание -а. В слове «Лесной» — корень лес-, суффикс -н- и окончание -ой. В слове «Домик» — корень дом-, суффикс -ик и нулевое окончание."
-        },
-        {
-            question: "18. В каком словосочетании имя прилагательное стоит в форме женского рода?",
-            options: ["Синее море", "Деревянный стол", "Спелая ягода", "Верный друг"],
-            correct: 2,
-            explanation: "В словосочетании «Спелая ягода» прилагательное относится к существительному женского рода (ягода — она моя) и имеет окончание -ая. «Синее море» — средний род. «Деревянный стол» и «Верный друг» — мужской род."
-        },
-        {
-            question: "19. Какое местоимение относится к 1-му лицу единственного числа?",
-            options: ["Ты", "Я", "Он", "Мы"],
-            correct: 1,
-            explanation: "Местоимение «Я» относится к 1-му лицу единственного числа. «Ты» — 2-е лицо единственного числа. «Он» — 3-е лицо единственного числа. «Мы» — 1-е лицо множественного числа."
-        },
-        {
-            question: "20. Определите род существительного \"Метро\":",
-            options: ["Мужской", "Женский", "Средний", "Общий"],
-            correct: 2,
-            explanation: "Слово «метро» — несклоняемое имя существительное среднего рода (красивое метро, новое метро). К мужскому, женскому или общему роду данное слово не относится."
-        },
-        {
-            question: "21. Укажите слово с удвоенной согласной в корне:",
-            options: ["Суббота", "Капитан", "Работа", "Обед"],
-            correct: 0,
-            explanation: "«Суббота» — словарное слово с удвоенной согласной «бб» в корне. В словах «капитан», «работа» и «обед» удвоенных согласных нет."
-        },
-        {
-            question: "22. Как пишутся предлоги со словами?",
-            options: ["Всегда раздельно", "Всегда слитно", "Через дефис"],
-            correct: 0,
-            explanation: "Предлоги со словами всегда пишутся раздельно (в лесу, к дому). Между предлогом и словом можно вставить другое слово или вопрос (в густом лесу, к какому дому?). Слитно пишутся приставки."
-        },
-        {
-            question: "23. На какой вопрос отвечает имя существительное в дательном падеже?",
-            options: ["Кого? Чего?", "Кому? Чему?", "Кем? Чем?", "О ком? О чём?"],
-            correct: 1,
-            explanation: "Дательный падеж отвечает на вопросы «Кому? Чему?» (дать другу, радоваться солнцу). «Кого? Чего?» — вопросы Родительного падежа. «Кем? Чем?» — Творительного. «О ком? О чём?» — Предложного."
-        },
-        {
-            question: "24. Укажите глагол в прошедшем времени:",
-            options: ["Читает", "Будет писать", "Рисовал", "Поёт"],
-            correct: 2,
-            explanation: "Глагол «Рисовал» стоит в прошедшем времени, на это указывает суффикс -л-. Глаголы «Читает» и «Поёт» находятся в настоящем времени. Глагол «Будет писать» — в сложном будущем времени."
-        },
-        {
-            question: "25. Какое слово является синонимом к слову \"Смелый\"?",
-            options: ["Трусливый", "Храбрый", "Умный", "Сильный"],
-            correct: 1,
-            explanation: "Синонимы — это слова, близкие по значению. «Храбрый» является синонимом к слову «смелый». «Трусливый» — это противоположное по значению слово (антоним). «Умный» и «сильный» обозначают совершенно другие качества."
-        },
-        {
-            question: "26. В каком слове мягкий знак (Ь) указывает только на мягкость согласного?",
-            options: ["Соловьи", "Пальто", "Семья", "Ручьи"],
-            correct: 1,
-            explanation: "В слове «Пальто» мягкий знак служит смягчающим — он показывает мягкость предшествующего согласного [л']. В словах «соловьи», «семья» и «ручьи» мягкий знак является разделительным, так как стоит перед гласными И, Я."
-        },
-        {
-            question: "27. Укажите побудительное предложение:",
-            options: ["Какая сегодня погода?", "Дети играют во дворе.", "Закройте, пожалуйста, дверь!"],
-            correct: 2,
-            explanation: "Побудительное предложение содержит просьбу, приказ или призыв к действию («Закройте, пожалуйста, дверь!»). «Какая сегодня погода?» — вопросительное предложение. «Дети играют во дворе» — повествовательное предложение."
-        },
-        {
-            question: "28. Какая гласная пишется в суффиксе глагола прошедшего времени \"растаял\"?",
-            options: ["и", "я", "е", "а"],
-            correct: 1,
-            explanation: "В глаголах прошедшего времени перед суффиксом -л- пишется та же гласная буква, что и в неопределенной форме перед -ть. Неопределенная форма — та́ять (на -ять), поэтому в прошедшем времени пишется «растаял»."
-        },
-        {
-            question: "29. Какое из этих слов является одушевленным именем существительным?",
-            options: ["Дуб", "Собака", "Цветок", "Камень"],
-            correct: 1,
-            explanation: "Одушевленные существительные обозначают живых существ и отвечают на вопрос «Кто?». Слово «Собака» отвечает на вопрос «Кто?» и является одушевленным. Слова «дуб», «цветок» и «камень» отвечают на вопрос «Что?» и являются неодушевленными."
-        },
-        {
-            question: "30. Какое слово пишется с большой (заглавной) буквы, так как является именем собственным?",
-            options: ["Город", "Река", "Волга", "Озеро"],
-            correct: 2,
-            explanation: "«Волга» — это географическое название (название конкретной реки), т.е. имя собственное, которое пишется с заглавной буквы. Нарицательные существительные «город», «река» и «озеро» пишутся со строчной (маленькой) буквы."
-        }
+        { q: "Укажите слово с безударной гласной, проверяемой ударением:", opts: ["Завод", "Лесник", "Машина", "Работа"], correct: 1 },
+        { q: "В каком слове пишется разделительный Ъ знак?", opts: ["Въезд", "Вьюга", "Платье", "Семья"], correct: 0 },
+        { q: "Укажите существительное 1-го склонения:", opts: ["Конь", "Земля", "Окно", "Степь"], correct: 1 },
+        { q: "В каком глаголе пишется окончание -ет?", opts: ["Смотр..т", "Стро..т", "Пиш..т", "Дыш..т"], correct: 2 },
+        { q: "Найдите главные члены предложения: «Наступила золотая осень.»", opts: ["Золотая осень", "Наступила осень", "Наступила золотая"], correct: 1 }
     ];
 
-    let currentQuestionIndex = 0;
-    const userAnswers = new Array(questions.length).fill(null);
-
-    const counterText = document.getElementById('counterText');
-    const questionText = document.getElementById('questionText');
-    const optionsContainer = document.getElementById('optionsContainer');
-    const explanationBlock = document.getElementById('explanationBlock');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const gameScreen = document.getElementById('gameScreen');
-    const finalScreen = document.getElementById('finalScreen');
+    let currentQ = 0;
+    let score = 0;
 
     function renderQuestion() {
-        const q = questions[currentQuestionIndex];
-        
-        counterText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${questions.length}`;
-        questionText.textContent = q.question;
-        optionsContainer.innerHTML = '';
-        
-        const hasAnswered = userAnswers[currentQuestionIndex] !== null;
-
-        q.options.forEach((optionText, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.textContent = optionText;
-            
-            if (hasAnswered) {
-                btn.disabled = true;
-                const selectedIdx = userAnswers[currentQuestionIndex];
-                if (idx === q.correct) {
-                    btn.classList.add('correct');
-                }
-                if (idx === selectedIdx && selectedIdx !== q.correct) {
-                    btn.classList.add('wrong');
-                }
-            } else {
-                btn.onclick = () => selectOption(idx);
-            }
-
-            optionsContainer.appendChild(btn);
+        if (currentQ >= questions.length) {
+            showResults();
+            return;
+        }
+        let q = questions[currentQ];
+        document.getElementById("q-text").innerText = `Вопрос ${currentQ + 1} из ${questions.length}: ${q.q}`;
+        let container = document.getElementById("opt-container");
+        container.innerHTML = "";
+        q.opts.forEach((opt, idx) => {
+            let btn = document.createElement("button");
+            btn.className = "btn";
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if (idx === q.correct) score++;
+                currentQ++;
+                renderQuestion();
+            };
+            container.appendChild(btn);
         });
+    }
 
-        if (hasAnswered) {
-            explanationBlock.textContent = q.explanation;
-            explanationBlock.classList.add('visible');
-            nextBtn.classList.remove('hidden');
+    function showResults() {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+        
+        let total = questions.length;
+        let percent = Math.round((score / total) * 100);
+        let errors = total - score;
+
+        document.getElementById("percent-text").innerText = `${percent}%`;
+        document.getElementById("stats-text").innerText = `Правильно: ${score} из ${total} | Ошибок: ${errors}`;
+        
+        let bar = document.getElementById("progress-bar");
+        bar.style.width = percent + "%";
+
+        let verdict = document.getElementById("verdict-box");
+
+        if (percent === 100) {
+            bar.style.backgroundColor = "#2e7d32";
+            verdict.style.backgroundColor = "#e8f5e9";
+            verdict.style.color = "#2e7d32";
+            verdict.innerText = "🎉 Отлично! Всё выполнено на 100%! Покажи этот экран учителю.";
         } else {
-            explanationBlock.classList.remove('visible');
-            nextBtn.classList.add('hidden');
+            bar.style.backgroundColor = "#d32f2f";
+            verdict.style.backgroundColor = "#ffebee";
+            verdict.style.color = "#c62828";
+            verdict.innerText = "❌ Задание не выполнено! Нажмите «Пройти заново» и сделайте всё на 100%.";
         }
-
-        if (currentQuestionIndex === 0) {
-            prevBtn.classList.add('hidden');
-        } else {
-            prevBtn.classList.remove('hidden');
-        }
-
-        if (currentQuestionIndex === questions.length - 1 && hasAnswered) {
-            nextBtn.textContent = 'Завершить →';
-        } else {
-            nextBtn.textContent = 'Дальше →';
-        }
-    }
-
-    function selectOption(index) {
-        userAnswers[currentQuestionIndex] = index;
-        renderQuestion();
-    }
-
-    function goToNextQuestion() {
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            renderQuestion();
-        } else {
-            showFinalScreen();
-        }
-    }
-
-    function goToPreviousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            renderQuestion();
-        }
-    }
-
-    function showFinalScreen() {
-        gameScreen.classList.add('hidden');
-        finalScreen.classList.remove('hidden');
-    }
-
-    function restartQuiz() {
-        currentQuestionIndex = 0;
-        userAnswers.fill(null);
-        finalScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
-        renderQuestion();
     }
 
     renderQuestion();
