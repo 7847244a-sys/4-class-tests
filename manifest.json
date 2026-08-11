@@ -1,0 +1,16 @@
+{
+  "name": "В 5 класс с отличием!",
+  "short_name": "5 класс 100%",
+  "description": "Интерактивные квесты по всем предметам 4 класса",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e8f0fe",
+  "theme_color": "#1a73e8",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
